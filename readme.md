@@ -175,6 +175,6 @@ used as a base, but here's how it work:
 }
 ```
 
-![Example of Taskbar Icon 1](./.imgs/cgm-data-display-1.jpeg)
-![Example of Taskbar Icon 2](./.imgs/cgm-data-display-2.jpeg)
-![Example of Taskbar Icon 3](./.imgs/cgm-data-display-3.jpeg)
+![Example of Taskbar Icon 1](./.readme.imgs/cgm-data-display-1.jpeg)
+![Example of Taskbar Icon 2](./.readme.imgs/cgm-data-display-2.jpeg)
+![Example of Taskbar Icon 3](./.readme.imgs/cgm-data-display-3.jpeg)
