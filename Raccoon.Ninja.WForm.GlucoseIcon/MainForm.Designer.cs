@@ -1,4 +1,5 @@
-﻿using Raccoon.Ninja.WForm.GlucoseIcon.Utils;
+﻿using Raccoon.Ninja.Extensions.Desktop.Logging;
+using Raccoon.Ninja.WForm.GlucoseIcon.Utils;
 
 namespace Raccoon.Ninja.WForm.GlucoseIcon;
 
@@ -31,6 +32,7 @@ partial class MainForm
     /// </summary>
     private void InitializeComponent()
     {
+        Logger.LogTrace("Initializing Main form components");
         this.components = new System.ComponentModel.Container();
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.ClientSize = new System.Drawing.Size(800, 450);

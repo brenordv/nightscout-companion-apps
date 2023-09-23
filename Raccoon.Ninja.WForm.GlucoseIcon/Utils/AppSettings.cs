@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Raccoon.Ninja.Extensions.Desktop.Logging;
 using Raccoon.Ninja.WForm.GlucoseIcon.Enums;
 using Raccoon.Ninja.WForm.GlucoseIcon.Handlers.DataFetchers;
 using Raccoon.Ninja.WForm.GlucoseIcon.Interfaces;
@@ -17,6 +18,7 @@ public static class AppSettings
 
     public static void LoadSettings()
     {
+        Logger.LogTrace("Loading application settings...");
         if (!File.Exists(AppSettingsFile))
             throw new FileNotFoundException($"The file {AppSettingsFile} was not found.");
 
@@ -26,8 +28,10 @@ public static class AppSettings
         var osVersion = Environment.OSVersion.Version;
         _isWin11 = osVersion >= Win11Version;
         
+        Logger.LogInfo(_isWin11 ? "Detected App running on Windows 11" : "Detected App running on Windows 10");
+        
         if (osVersion < Win10Version)
-            Console.WriteLine("This application was only tested on Windows 10 and 11.");
+            Logger.LogInfo("This application was only tested on Windows 10 and 11");
         
         if (Config is not null)
             return;
@@ -37,6 +41,8 @@ public static class AppSettings
 
     public static IDataFetcher GetDataFetcherBasedOnSettings()
     {
+        var logDataSourceType = Config.DataSource.SelectedSource.ToString(); 
+        Logger.LogTrace("Getting data fetcher based on settings. Type: {DataSourceType}", logDataSourceType);
         return Config.DataSource.SelectedSource switch
         {
             DataSourceType.MongoDb => CreateFetcherForMongoDb(),

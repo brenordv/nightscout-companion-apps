@@ -1,3 +1,5 @@
+using Raccoon.Ninja.Extensions.Desktop.Logging;
+
 namespace Raccoon.Ninja.WForm.GlucoseIcon;
 
 static class Program
@@ -6,11 +8,25 @@ static class Program
     ///  The main entry point for the application.
     /// </summary>
     [STAThread]
-    static void Main()
+    private static void Main()
     {
-        // To customize application configuration such as set high DPI settings or default font,
-        // see https://aka.ms/applicationconfiguration.
-        ApplicationConfiguration.Initialize();
-        Application.Run(new MainForm());
+        try
+        {
+            Logger.LogTrace("Starting application");
+            Logger.LogTrace("Initializing application configuration");
+            ApplicationConfiguration.Initialize();
+
+            Logger.LogTrace("Starting Main form");
+            Application.Run(new MainForm());
+        }
+        catch (Exception e)
+        {
+            Logger.LogError("An unexpected error occurred while running the application: {Error}", e, e.Message);
+            throw;
+        }
+        finally
+        {
+            Logger.LogTrace("Exiting application");
+        }
     }
 }
