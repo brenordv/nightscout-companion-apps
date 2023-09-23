@@ -127,6 +127,16 @@ in the Taskbar and notification area. If you keep it open, it will refresh the d
 
 > If you don't want to use the compiled app, feel free to clone this repo and build the app.
 
+## Known Issues
+Depending on where you place the application in your hard drive, the app will open, but with that generic Windows 
+application icon. If you see the generic icon, please, move the app to another (more public) folder and try again.
+
+Generic Icon (bad): ![Generic Icon](./.readme.imgs/generic-icon.jpg)
+
+Windows Forms Icon (good): ![Windows Forms Icon](./.readme.imgs/windows-forms-icon.jpg)
+
+I have no idea what might be causing this. Maybe I need to sign the executable? I'll look into it...
+
 ## Settings
 This repo as an `appsettings.sample.json` ([link](Raccoon.Ninja.WForm.GlucoseIcon/appsettings.sample.json)) that can be 
 used as a base, but here's how it work:
