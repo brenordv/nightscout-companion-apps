@@ -146,16 +146,13 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Build
-        run: dotnet build --configuration Release
-
-      - name: Publish Project
-        run: dotnet publish ${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }} --configuration Release --framework ${{ env.TARGET_RUNTIME }} --runtime ${{ env.TARGET_PLATFORM }} --self-contained true /p:PublishSingleFile=true /p:DebugType=None
+      - name: Build Project
+        run: dotnet build ${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }} --configuration Release --output ./output 
 
       - name: Compressing artifact
         run: |
           $currentPath = Get-Location          
-          Compress-Archive -Path "$currentPath\${{ env.PROJECT_FOLDER }}\bin\Release\${{ env.TARGET_RUNTIME }}\${{ env.TARGET_PLATFORM }}\publish\*" -DestinationPath "${{ env.ARTIFACT_NAME }}.zip"
+          Compress-Archive -Path "$currentPath\output\*" -DestinationPath "${{ env.ARTIFACT_NAME }}.zip"
 
       - name: Uploading artifact
         id: upload_artifact
