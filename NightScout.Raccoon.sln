@@ -1,0 +1,75 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00. Applications", "00. Applications", "{0F4894B1-AE2F-4119-94D4-82B7B33A7C39}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "99. Tests", "99. Tests", "{BC1845AD-353C-4548-A86D-80A7EBC55C34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "98. Docs", "98. Docs", "{B4511EF8-6D39-4B4D-AC77-D00B2763F896}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+		.github\workflows\master-publish-dataapi.yml = .github\workflows\master-publish-dataapi.yml
+		.github\workflows\master-publish-datatransfer.yml = .github\workflows\master-publish-datatransfer.yml
+		.github\workflows\master-publish-glucose-mon-app.yml = .github\workflows\master-publish-glucose-mon-app.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01. Domain", "01. Domain", "{11F72AFB-B94A-4E9A-8817-F1FB60E9DF6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raccoon.Ninja.Domain.Core", "Raccoon.Ninja.Domain.Core\Raccoon.Ninja.Domain.Core.csproj", "{2B19A689-B703-450C-9E06-DFD0BE969053}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raccoon.Ninja.Domain.Core.Tests", "Raccoon.Ninja.Domain.Core.Tests\Raccoon.Ninja.Domain.Core.Tests.csproj", "{09718350-0A4E-4D05-A1D6-80A1CC5275A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raccoon.Ninja.TestHelpers", "Raccoon.Ninja.TestHelpers\Raccoon.Ninja.TestHelpers.csproj", "{3B8CFC31-3D0C-4BDA-94A1-38D572B64FFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raccoon.Ninja.AzFn.DataTransfer", "Raccoon.Ninja.AzFn.DataTransfer\Raccoon.Ninja.AzFn.DataTransfer.csproj", "{7367C858-3DAF-4FD7-B33E-31BA39B0F19E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raccoon.Ninja.AzFn.DataApi", "Raccoon.Ninja.AzFn.DataApi\Raccoon.Ninja.AzFn.DataApi.csproj", "{7D1BE348-53AF-4765-B0D9-9B87E685EE18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raccoon.Ninja.WForm.GlucoseIcon", "Raccoon.Ninja.WForm.GlucoseIcon\Raccoon.Ninja.WForm.GlucoseIcon.csproj", "{FDBD9D04-065E-46C4-9948-5E2BBA1998CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raccoon.Ninja.Extensions.MongoDb", "Raccoon.Ninja.Extensions.MongoDb\Raccoon.Ninja.Extensions.MongoDb.csproj", "{734F0969-C86D-449F-80FF-DC8129C07A61}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B19A689-B703-450C-9E06-DFD0BE969053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B19A689-B703-450C-9E06-DFD0BE969053}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B19A689-B703-450C-9E06-DFD0BE969053}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B19A689-B703-450C-9E06-DFD0BE969053}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09718350-0A4E-4D05-A1D6-80A1CC5275A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09718350-0A4E-4D05-A1D6-80A1CC5275A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09718350-0A4E-4D05-A1D6-80A1CC5275A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09718350-0A4E-4D05-A1D6-80A1CC5275A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B8CFC31-3D0C-4BDA-94A1-38D572B64FFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B8CFC31-3D0C-4BDA-94A1-38D572B64FFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B8CFC31-3D0C-4BDA-94A1-38D572B64FFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B8CFC31-3D0C-4BDA-94A1-38D572B64FFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7367C858-3DAF-4FD7-B33E-31BA39B0F19E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7367C858-3DAF-4FD7-B33E-31BA39B0F19E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7367C858-3DAF-4FD7-B33E-31BA39B0F19E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7367C858-3DAF-4FD7-B33E-31BA39B0F19E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D1BE348-53AF-4765-B0D9-9B87E685EE18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D1BE348-53AF-4765-B0D9-9B87E685EE18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D1BE348-53AF-4765-B0D9-9B87E685EE18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D1BE348-53AF-4765-B0D9-9B87E685EE18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDBD9D04-065E-46C4-9948-5E2BBA1998CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDBD9D04-065E-46C4-9948-5E2BBA1998CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDBD9D04-065E-46C4-9948-5E2BBA1998CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDBD9D04-065E-46C4-9948-5E2BBA1998CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{734F0969-C86D-449F-80FF-DC8129C07A61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{734F0969-C86D-449F-80FF-DC8129C07A61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{734F0969-C86D-449F-80FF-DC8129C07A61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{734F0969-C86D-449F-80FF-DC8129C07A61}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2B19A689-B703-450C-9E06-DFD0BE969053} = {11F72AFB-B94A-4E9A-8817-F1FB60E9DF6D}
+		{09718350-0A4E-4D05-A1D6-80A1CC5275A5} = {BC1845AD-353C-4548-A86D-80A7EBC55C34}
+		{3B8CFC31-3D0C-4BDA-94A1-38D572B64FFA} = {BC1845AD-353C-4548-A86D-80A7EBC55C34}
+		{7367C858-3DAF-4FD7-B33E-31BA39B0F19E} = {0F4894B1-AE2F-4119-94D4-82B7B33A7C39}
+		{7D1BE348-53AF-4765-B0D9-9B87E685EE18} = {0F4894B1-AE2F-4119-94D4-82B7B33A7C39}
+		{FDBD9D04-065E-46C4-9948-5E2BBA1998CB} = {0F4894B1-AE2F-4119-94D4-82B7B33A7C39}
+		{734F0969-C86D-449F-80FF-DC8129C07A61} = {11F72AFB-B94A-4E9A-8817-F1FB60E9DF6D}
+	EndGlobalSection
+EndGlobal
