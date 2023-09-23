@@ -178,3 +178,19 @@ used as a base, but here's how it work:
 ![Example of Taskbar Icon 1](./.readme.imgs/cgm-data-display-1.jpeg)
 ![Example of Taskbar Icon 2](./.readme.imgs/cgm-data-display-2.jpeg)
 ![Example of Taskbar Icon 3](./.readme.imgs/cgm-data-display-3.jpeg)
+
+# Azure Function - Data Transfer
+If you want to use this function, you'll need to set the following environment variables:
+- `MongoDbConnectionString`: Connection string to your MongoDb database.
+- `MongoDbDatabaseName`: Name of the MongoDb database.
+- `MongoDbCollectionName`: Name of the collection that has the data. You probably want to add the "entries" collection.
+- `CosmosConnectionString`: Connection string to your Azure CosmosDB database.
+- `CosmosDatabaseName`: Name of the Azure CosmosDB database.
+- `CosmosContainerName`: Name of the collection that has the data. You probably want to add the "entries" collection.
+
+# Azure Function - Data Api
+If you want to use this function, you'll need to set the following environment variables:
+- `CosmosConnectionString`: Connection string to your Azure CosmosDB database.
+- `CosmosDatabaseName`: Name of the Azure CosmosDB database.
+- `CosmosContainerName`: Name of the collection that has the data. You probably want to add the "entries" collection.
+- `SillySecret`: This is an arbitrary string that the function expects to receive. If you don't send it, the function will return a 401 error. I know it's not the best extra security ever implemented in an application, but I like the idea. If you're going to use and don't want that, feel free to remove it from the implementation.
