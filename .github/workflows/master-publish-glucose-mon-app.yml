@@ -11,6 +11,8 @@ env:
   TARGET_RUNTIME: net6.0-windows
   PROJECT_FOLDER: Raccoon.Ninja.WForm.GlucoseIcon
   PROJECT_FILE: Raccoon.Ninja.WForm.GlucoseIcon.csproj
+  LAUNCHER_PROJECT_FOLDER: Raccoon.Ninja.Cli.CGMDataDisplayLauncher
+  LAUNCHER_PROJECT_FILE: Raccoon.Ninja.Cli.CGMDataDisplayLauncher.csproj
   RELEASE_FILE_PREFIX: "CGMDataDisplayApp"
 
 jobs:
@@ -146,8 +148,11 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Build Project
+      - name: Building Project
         run: dotnet build ${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_FILE }} --configuration Release --output ./output 
+
+      - name: Building Launcher
+        run: dotnet build ${{ env.LAUNCHER_PROJECT_FOLDER }}/${{ env.LAUNCHER_PROJECT_FILE }} --configuration Release --output ./output
 
       - name: Compressing artifact
         run: |
