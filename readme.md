@@ -15,6 +15,7 @@
     - [Data Api Function](#data-api-function)
 - [CGM Data Display (Windows Forms app)](#cgm-data-display)
   - [How to use](#how-to-use)
+  - [Known Issues](#known-issues)
   - [Settings](#settings)
 
 
