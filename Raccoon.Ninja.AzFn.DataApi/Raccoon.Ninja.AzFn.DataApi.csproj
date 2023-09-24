@@ -2,8 +2,8 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <AzureFunctionsVersion>V4</AzureFunctionsVersion>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
-        <FileVersion>1.0.0</FileVersion>
+        <AssemblyVersion>1.0.1</AssemblyVersion>
+        <FileVersion>1.0.1</FileVersion>
         <NeutralLanguage>en-US</NeutralLanguage>
     </PropertyGroup>
     <ItemGroup>
@@ -22,8 +22,5 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Raccoon.Ninja.Domain.Core\Raccoon.Ninja.Domain.Core.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Models\" />
     </ItemGroup>
 </Project>
