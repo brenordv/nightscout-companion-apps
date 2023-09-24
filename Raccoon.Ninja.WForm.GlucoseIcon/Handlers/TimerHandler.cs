@@ -1,5 +1,6 @@
 ﻿using Raccoon.Ninja.Extensions.Desktop.Logging;
-using Timer = System.Timers.Timer;
+using Timer = System.Windows.Forms.Timer;
+
 
 namespace Raccoon.Ninja.WForm.GlucoseIcon.Handlers;
 
@@ -27,14 +28,14 @@ public class TimerHandler
     public void AddTicker(Guid timerId, Action handler)
     {
         EnsureTimerIdExists(timerId);
-        _timers[timerId].Elapsed += (sender, args) => handler();
+        _timers[timerId].Tick += (sender, args) => handler();
     }
 
     public void AddAsyncTicker(Guid timerId, Func<Task> handler)
     {
         Logger.LogTrace("Adding async ticker to timer with id {TimerId}", timerId);
         EnsureTimerIdExists(timerId);
-        _timers[timerId].Elapsed += async (sender, args) => await handler();
+        _timers[timerId].Tick += async (sender, args) => await handler();
     }
 
     public void StartTimer(Guid timerId)
