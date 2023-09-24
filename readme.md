@@ -200,3 +200,4 @@ If you want to use this function, you'll need to set the following environment v
 - `CosmosDatabaseName`: Name of the Azure CosmosDB database.
 - `CosmosContainerName`: Name of the collection that has the data. You probably want to add the "entries" collection.
 - `SillySecret`: This is an arbitrary string that the function expects to receive. If you don't send it, the function will return a 401 error. I know it's not the best extra security ever implemented in an application, but I like the idea. If you're going to use and don't want that, feel free to remove it from the implementation.
+- `DataSeriesMaxRecords`: Max number of records that can be returned at once by the DataSeriesApiFunc. If not provided, will use 4032 (two weeks worth of data).

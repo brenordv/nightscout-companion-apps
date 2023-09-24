@@ -8,6 +8,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Raccoon.Ninja.AzFn.DataApi.ExtensionMethods;
+using Raccoon.Ninja.AzFn.DataApi.Utils;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.Models;
 
@@ -32,13 +33,7 @@ public static class DataApiFunc
 
         try
         {
-            var key = await req.Body.ExtractKey();
-            var secret = GetSecret(); 
-            
-            if (string.IsNullOrWhiteSpace(key) || string.IsNullOrWhiteSpace(secret))
-                return new BadRequestResult();
-
-            if (!key.Equals(secret))
+            if (!Validators.IsKeyValid(await req.Body.ExtractKey()))
                 return new UnauthorizedResult();
             
             latestReading = previousReadings.FirstOrDefault();
@@ -56,8 +51,4 @@ public static class DataApiFunc
         }
     }
 
-    private static string GetSecret()
-    {
-        return Environment.GetEnvironmentVariable("SillySecret");
-    }
 }
