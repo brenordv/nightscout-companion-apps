@@ -9,4 +9,7 @@ public record BaseEntity
     
     [JsonProperty("value")]
     public float Value { get; init; }
+    
+    [JsonProperty("delta", NullValueHandling = NullValueHandling.Ignore)]
+    public float? Delta { get; init; }
 };

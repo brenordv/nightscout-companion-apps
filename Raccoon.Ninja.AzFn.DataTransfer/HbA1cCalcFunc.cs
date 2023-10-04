@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
@@ -26,6 +27,11 @@ public static class HbA1cCalcFunc
         [CosmosDB(databaseName: "%CosmosDatabaseName%", containerName: "%CosmosAggregateContainerName%",
             Connection = "CosmosConnectionString",
             CreateIfNotExists = false,
+            SqlQuery = "SELECT TOP 1 * FROM c WHERE c.docType = 1 ORDER BY c.createdAt DESC"
+        )] IEnumerable<HbA1cCalculation> previousCalculations,
+        [CosmosDB(databaseName: "%CosmosDatabaseName%", containerName: "%CosmosAggregateContainerName%",
+            Connection = "CosmosConnectionString",
+            CreateIfNotExists = false,
             PartitionKey = "/id"
         )]IAsyncCollector<HbA1cCalculation> calculationsOut,
         ILogger log)
@@ -34,7 +40,15 @@ public static class HbA1cCalcFunc
         log.LogTrace("Starting HbA1c calculation for {ReferenceDate}", referenceDate);
         try
         {
+            var previousCalculation = previousCalculations.FirstOrDefault();
+            
             var hbA1c = readings.CalculateHbA1c(referenceDate);
+
+            if (previousCalculation is not null)
+            {
+                hbA1c = hbA1c with {Delta = hbA1c.Value - previousCalculation.Value};
+            }
+            
             await calculationsOut.AddAsync(hbA1c);
         }
         catch (Exception e)
