@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
@@ -34,9 +35,8 @@ public static class DataTransferFunc
         try
         {
             var collection = GetMongoCollection(log);
-
-            var targetTimestamp = previousReadings.GetLatestTimestamp();
-
+            var previousReading = previousReadings.FirstOrDefault();
+            var targetTimestamp = previousReading?.ReadTimestampUtc ?? 0;
             var documents = collection.GetDocumentsSince(targetTimestamp);
 
             if (!documents.HasElements())
@@ -45,7 +45,7 @@ public static class DataTransferFunc
                 return;
             }
             
-            var documentsAdded = await readingsOut.AddRangeAsync(documents, log);
+            var documentsAdded = await readingsOut.AddRangeAsync(documents, log, previousReading);
 
             log.LogInformation("Added {Count} documents to CosmosDb", documentsAdded);
         }

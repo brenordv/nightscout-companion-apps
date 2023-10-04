@@ -26,16 +26,4 @@ public record NightScoutMongoDocument
     [BsonElement("utcOffset")] public int UtcOffset { get; init; }
     
     [BsonElement("sysTime")] public string SystemTime { get; init; }
-    
-
-    public static implicit operator GlucoseReading(NightScoutMongoDocument nightScoutMongoDocument)
-    {
-        return new GlucoseReading
-        {
-            ReadTimestampUtc = nightScoutMongoDocument.ReadingTimestamp,
-            Trend = nightScoutMongoDocument.Trend,
-            Value = nightScoutMongoDocument.Value
-        };
-    }
-    
 }
