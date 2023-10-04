@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Nightscout Companion Apps](#nightscout-companion-apps)
-  - [Table of Contents](#table-of-contents)
+  - Table of Contents
   - [Intro](#intro)
   - [How to get started with Nightscout](#how-to-get-started-with-nightscout)
   - [Context](#context)
@@ -193,6 +193,61 @@ If you want to use this function, you'll need to set the following environment v
 - `CosmosConnectionString`: Connection string to your Azure CosmosDB database.
 - `CosmosDatabaseName`: Name of the Azure CosmosDB database.
 - `CosmosContainerName`: Name of the collection that has the data. You probably want to add the "entries" collection.
+- `CosmosAggregateContainerName`: Name of the collection that will have the aggregated data. (Like HbA1c calculations)
+
+## DataTransferFunc
+This function runs every 5 minutes minutes, gets the latest documents from MongoDb and saves them in Azure CosmosDB.
+Besides converting the data to a smaller "native" type, it does not do much else.
+
+It gets this document (what Nightscout generates on MongoDb):
+```json
+{
+    "_id": "1587456b012db3df45678987",
+    "sgv":99,
+    "date": 1694843348000,
+    "dateString":"2023-09-16T05:49:08.000Z",
+    "trend": 3,
+    "direction":"FortyFiveUp",
+    "device":"",
+    "type":"sgv",
+    "utcOffset": 0,
+    "sysTime": "2023-09-16T05:49:08.000Z"
+}
+```
+
+and converts it to this:
+```json
+{
+  "id": "D034E1C4-357E-4578-8D65-C031C7ED83B7",
+  "trend": 4,
+  "value": 179,
+  "readAt": 1694836148000
+}
+```
+
+There are no particular reasons for this conversion, other than to save storage space and use a more "native" type (to 
+help with future changes in Nightscout that could break the app). The property `trend` directly maps to the `trend` in 
+the MongoDb document, but I created an enum so I won't have to save in the doc what it means (property `direction`).
+
+The property `date` (MongoDb) is mapped to `readAt` in my document.
+
+
+## HbA1cCalcFunc
+This function runs daily and tries to get the latest 115 days of data from CosmosDB and calculate the HbA1c value (in 
+percentage) based on the data. It then saves the result in CosmosDB.
+
+Formula:
+`HbA1c = (Average Blood Glucose + 46.7) / 28.7`
+
+
+
+- References:
+  - https://www.diabetes.org.uk/guide-to-diabetes/managing-your-diabetes/hba1c
+  - https://www.diabetes.co.uk/hba1c-to-blood-sugar-level-converter.html
+  - https://www.britannica.com/science/red-blood-cell
+  - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3678251/
+  - 
+
 
 # Azure Function - Data Api
 If you want to use this function, you'll need to set the following environment variables:
@@ -201,3 +256,30 @@ If you want to use this function, you'll need to set the following environment v
 - `CosmosContainerName`: Name of the collection that has the data. You probably want to add the "entries" collection.
 - `SillySecret`: This is an arbitrary string that the function expects to receive. If you don't send it, the function will return a 401 error. I know it's not the best extra security ever implemented in an application, but I like the idea. If you're going to use and don't want that, feel free to remove it from the implementation.
 - `DataSeriesMaxRecords`: Max number of records that can be returned at once by the DataSeriesApiFunc. If not provided, will use 4032 (two weeks worth of data).
+
+
+# Disclaimer
+## Licensing and Contributions
+This project is open-source and can be freely modified, distributed, or used in any manner you see fit. While there is 
+no obligation to do so, keeping the project public and aligned with the goal of helping people is highly encouraged. 
+Although the project does not enforce any specific license, a simple acknowledgment or "thanks" would be greatly 
+appreciated if you find the project useful or if you improve upon it.
+
+## Affiliation
+This project is not officially affiliated with, endorsed by, or connected to Nightscout or any of its subsidiaries or
+its affiliates. The project is an independent functionality built on top of the Nightscout platform.
+
+## No Medical Advice or Treatment
+The project is intended for informational and educational purposes only. It is not a substitute for professional 
+medical advice, diagnosis, or treatment. Always seek the advice of your physician or another qualified healthcare 
+provider for any questions you may have regarding a medical condition.
+
+## No Guarantees or Warranties
+This project comes with absolutely no guarantees or warranties, either expressed or implied. It is provided "as-is," 
+and you use it at your own risk. While the project aims to display blood sugar levels collected through Nightscout, 
+there is no guarantee regarding the accuracy, timeliness, or completeness of the data.
+
+## Trust Your Body
+If you experience symptoms or conditions that do not correspond with the data displayed by this project, you 
+should **always trust your body**. Immediately consult with a healthcare provider for accurate diagnosis and 
+appropriate treatment.

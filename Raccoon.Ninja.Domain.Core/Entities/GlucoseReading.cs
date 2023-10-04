@@ -4,15 +4,10 @@ using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
 namespace Raccoon.Ninja.Domain.Core.Entities;
 
-public record GlucoseReading
+public record GlucoseReading: BaseEntity
 {
-    [JsonProperty("id")] public string Id { get; init; } = Guid.NewGuid().ToString();
-    
     [JsonProperty("trend")]
     public Trend Trend { get; init; }
-    
-    [JsonProperty("value")]
-    public float Value { get; init; }
     
     [JsonProperty("readAt")]
     public long ReadTimestampUtc { get; init; }
