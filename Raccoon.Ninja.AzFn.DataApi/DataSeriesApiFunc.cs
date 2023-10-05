@@ -37,6 +37,7 @@ public static class DataSeriesApiFunc
         ILogger log, 
         int limit = 1)
     {
+        log.LogInformation("Data Series API call received. Request by IP: {Ip}", req.HttpContext.Connection.RemoteIpAddress);
         if (!Validators.IsKeyValid(await req.Body.ExtractKey()))
             return new UnauthorizedResult();
         

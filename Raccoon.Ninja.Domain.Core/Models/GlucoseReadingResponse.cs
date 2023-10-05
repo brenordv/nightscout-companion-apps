@@ -16,6 +16,9 @@ public record GlucoseReadingResponse
     [JsonProperty("value")]
     public float Value { get; init; }
     
+    [JsonProperty("delta", NullValueHandling = NullValueHandling.Ignore)]
+    public float? Delta { get; init; }
+    
     [JsonProperty("readAt")]
     public long ReadTimestampUtc { get; init; }
 
@@ -28,6 +31,7 @@ public record GlucoseReadingResponse
         Id = reading.Id,
         Trend = reading.Trend,
         Value = reading.Value,
-        ReadTimestampUtc = reading.ReadTimestampUtc
+        ReadTimestampUtc = reading.ReadTimestampUtc,
+        Delta = reading.Delta
     };
 }

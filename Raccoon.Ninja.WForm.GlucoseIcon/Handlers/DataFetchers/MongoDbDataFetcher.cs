@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Extensions.Desktop.Logging;
 using Raccoon.Ninja.Extensions.MongoDb.Builders;
 using Raccoon.Ninja.Extensions.MongoDb.ExtensionMethods;
@@ -31,8 +30,7 @@ public class MongoDbDataFetcher : IDataFetcher
         try
         {
             Logger.LogTrace("Fetching data from MongoDb");
-            GlucoseReading latestDoc = _collection.GetLatestDocument();
-
+            var latestDoc = _collection.GetLatestDocument().ToGlucoseReading();
 
             if (latestDoc is null)
             {

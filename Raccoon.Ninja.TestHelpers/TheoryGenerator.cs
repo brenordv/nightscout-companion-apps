@@ -4,6 +4,8 @@ namespace Raccoon.Ninja.TestHelpers;
 
 public static class TheoryGenerator
 {
+
+
     public static IEnumerable<object[]> AllTrendsWithExpectedStrings()
     {
         yield return new object[] { Trend.TripleUp, "Zooming Skyward" };
@@ -37,7 +39,6 @@ public static class TheoryGenerator
         yield return new object[] { testDate.ToUnixTimestamp(), testDate };
         
         testDate = DateTime.MaxValue.ToUniversalTime();
-        //testDate = new DateTime(9999, testDate.Month, testDate.Day, testDate.Hour, testDate.Minute, testDate.Second, DateTimeKind.Utc);
         yield return new object[] { testDate.ToUnixTimestamp(), testDate };
         
         testDate = DateTime.UtcNow;
@@ -47,4 +48,28 @@ public static class TheoryGenerator
         testDate = new DateTime(2020, 2, 29, 23, 59, 59, DateTimeKind.Utc);
         yield return new object[] { testDate.ToUnixTimestamp(), testDate };
     }
+
+    public static IEnumerable<object[]> ValidHb1AcDataSets()
+    {
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 80), 4.4146338f };
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 100), 5.111498f };
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 150), 6.853658f };
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 170), 7.5505223f };
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 210), 8.944251f };
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 300), 12.080139f };
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 400), 15.56446f };
+    }
+
+    public static IEnumerable<object[]> PartiallyValidHb1AcDataSets()
+    {
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 80), 4.4146338f };
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 100), 5.111498f };
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 150), 6.853658f };
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 170), 7.5505223f };
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 210), 8.944251f };
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 300), 12.080139f };
+        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 400), 15.56446f };
+    }
+    
+
 }
