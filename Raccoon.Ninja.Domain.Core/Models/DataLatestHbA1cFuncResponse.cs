@@ -2,7 +2,7 @@
 
 namespace Raccoon.Ninja.Domain.Core.Models;
 
-public record DataSeriesApiFuncResponse
+public record DataLatestHbA1cFuncResponse
 {
     [JsonProperty("latestSuccessful")]
     public HbA1cCalculationResponse LatestSuccessful { get; init; }

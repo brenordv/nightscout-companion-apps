@@ -50,7 +50,7 @@ public static class DataLatestHbA1cFunc
             if (latestSuccessful is null && latestPartialSuccessful is null)
                 return new NoContentResult();
 
-            return new OkObjectResult(new DataSeriesApiFuncResponse
+            return new OkObjectResult(new DataLatestHbA1cFuncResponse
             {
                 LatestSuccessful = latestSuccessful,
                 LatestPartialSuccessful = latestPartialSuccessful
