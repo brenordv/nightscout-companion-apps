@@ -39,7 +39,12 @@ public static class ListExtensions
         var avg = sum / count;
         var hbA1C = (avg + 46.7f) / 28.7f;
 
-        EnsureNumberOfReadingsDidntExceedMax(count);
+        if (HasNumberOfReadingsExceededMax(count))
+        {
+            return HbA1CCalculation.FromError(
+                $"Too many readings to calculate HbA1c reliably. Expected (max) {ReadingsIn115Days} but got {count}", 
+                referenceDate);
+        }
 
         return new HbA1CCalculation
         {
@@ -49,12 +54,10 @@ public static class ListExtensions
         };
     }
     
-    private static void EnsureNumberOfReadingsDidntExceedMax(int count)
+    private static bool HasNumberOfReadingsExceededMax(int count)
     {
-        if (count <= ReadingsIn115Days) return;
-        
-        throw new InvalidOperationException(
-            $"Too many readings to calculate HbA1c reliably. Expected {ReadingsIn115Days} but got {count}");
+        return count > ReadingsIn115Days;
+
     }
     
     private static HbA1CCalculationStatus GetStatusByReadingCount(int count)

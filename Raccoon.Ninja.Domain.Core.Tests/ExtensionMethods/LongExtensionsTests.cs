@@ -62,7 +62,7 @@ public class LongExtensionsTests
 
         // Assert
         result.Status.Should().Be(HbA1CCalculationStatus.Error);
-        result.Error.Should().Be($"Too many readings to calculate HbA1c reliably. Expected 33120 but got {actualReadingCount}");
+        result.Error.Should().Be($"Too many readings to calculate HbA1c reliably. Expected (max) 33120 but got {actualReadingCount}");
     }
     
     [Theory]
