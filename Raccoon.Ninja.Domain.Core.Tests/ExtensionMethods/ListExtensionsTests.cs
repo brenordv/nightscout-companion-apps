@@ -82,7 +82,7 @@ public class ListExtensionsTests
     {
         // Arrange
         var actualReadingCount = Constants.ReadingsIn115Days + 1;
-        var readings = Generators.GenerateList(actualReadingCount, 100);
+        var readings = Generators.GlucoseReadingMockList(actualReadingCount, 100);
 
         // Act
         var result = readings.CalculateHbA1C(ReferenceDate);

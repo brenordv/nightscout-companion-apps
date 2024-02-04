@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Diagnostics.CodeAnalysis;
+using Newtonsoft.Json;
 
 namespace Raccoon.Ninja.Domain.Core.Models;
 
+[ExcludeFromCodeCoverage]
 public record DataLatestHbA1CFuncResponse
 {
     [JsonProperty("latestSuccessful")]
