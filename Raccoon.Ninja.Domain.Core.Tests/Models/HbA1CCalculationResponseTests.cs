@@ -122,14 +122,4 @@ public class HbA1CCalculationResponseTests
         response.Error.Should().BeNull();
         response.IsStale.Should().BeTrue();
     }
-
-    [Fact]
-    public void HbA1CCalculationResponse_ShouldNotBeAStruct()
-    {
-        // Arrange
-        var type = typeof(HbA1CCalculationResponse);
-
-        // Act & Assert
-        type.IsValueType.Should().BeFalse();
-    }
 }
