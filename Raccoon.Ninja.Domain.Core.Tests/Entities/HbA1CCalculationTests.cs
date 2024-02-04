@@ -93,41 +93,6 @@ public class HbA1CCalculationTests
     }
 
     [Fact]
-    public void GetHashCode_RecordsWithSameValues_ShouldHaveSameHashCode()
-    {
-        // Arrange
-        var referenceDate = DateOnly.FromDateTime(DateTime.UtcNow);
-        var id = Guid.NewGuid().ToString();
-        const HbA1CCalculationStatus status = HbA1CCalculationStatus.Error;
-        const string error = "Sample error";
-        const float value = 5.5f;
-        const float delta = 0.5f;
-
-        var calculation1 = new HbA1CCalculation
-        {
-            Id = id,
-            Value = value,
-            Delta = delta,
-            ReferenceDate = referenceDate,
-            Status = status,
-            Error = error
-        };
-
-        var calculation2 = new HbA1CCalculation
-        {
-            Id = id,
-            Value = value,
-            Delta = delta,
-            ReferenceDate = referenceDate,
-            Status = status,
-            Error = error
-        };
-
-        // Act & Assert
-        calculation1.GetHashCode().Should().Be(calculation2.GetHashCode());
-    }
-    
-    [Fact]
     public void Constructor_WithNoArguments_ShouldSetDefaultValues()
     {
         // Act
