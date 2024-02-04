@@ -1,3 +1,17 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nightscout-companion-apps&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=brenordv_nightscout-companion-apps)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nightscout-companion-apps&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=brenordv_nightscout-companion-apps)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nightscout-companion-apps&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=brenordv_nightscout-companion-apps)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nightscout-companion-apps&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=brenordv_nightscout-companion-apps)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nightscout-companion-apps&metric=bugs)](https://sonarcloud.io/summary/new_code?id=brenordv_nightscout-companion-apps)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nightscout-companion-apps&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=brenordv_nightscout-companion-apps)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nightscout-companion-apps&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=brenordv_nightscout-companion-apps)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nightscout-companion-apps&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=brenordv_nightscout-companion-apps)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nightscout-companion-apps&metric=coverage)](https://sonarcloud.io/summary/new_code?id=brenordv_nightscout-companion-apps)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nightscout-companion-apps&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=brenordv_nightscout-companion-apps)
+[![CGM Data Display App CI/CD Using Reusable Workflow](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-glucose-mon-app.yml/badge.svg)](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-glucose-mon-app.yml)
+[![Data API Function App CI/CD Workflow Using Template](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-dataapi.yml/badge.svg)](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-dataapi.yml)
+[![Data Transfer Function CI/CD Using Reusable Workflow](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-datatransfer.yml/badge.svg)](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-datatransfer.yml)
+
 # Nightscout Companion Apps
 
 ## Table of Contents
