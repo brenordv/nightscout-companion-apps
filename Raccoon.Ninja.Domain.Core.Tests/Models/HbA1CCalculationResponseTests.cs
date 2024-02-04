@@ -138,7 +138,6 @@ public class HbA1CCalculationResponseTests
     public void EqualityOperator_ShouldReturnTrue_IfEqual()
     {
         // Arrange
-        // Arrange
         const float value = 5.5f;
         const float delta = 0.5f;
         const AggregateType docType = AggregateType.HbA1CCalculation;
@@ -175,5 +174,18 @@ public class HbA1CCalculationResponseTests
 
         // Act & Assert
         (response1 == response2).Should().BeTrue();
+    }
+    
+    [Fact]
+    public void ToString_ShouldReturnCorrectString()
+    {
+        // Arrange
+        var response = Generators.HbA1CCalculationResponseMockSingle();
+        
+        // Act
+        var str = response.ToString();
+
+        // Assert
+        str.Should().Be($"HbA1CCalculationResponse {{ Id = {response.Id}, Value = {response.Value}, Delta = {response.Delta}, DocType = {response.DocType}, ReferenceDate = {response.ReferenceDate}, CreatedAtUtc = {response.CreatedAtUtc}, Status = {response.Status}, Error = {response.Error}, IsStale = {response.IsStale} }}");
     }
 }
