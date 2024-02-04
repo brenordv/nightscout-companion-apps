@@ -2,7 +2,7 @@
 
 namespace Raccoon.Ninja.Domain.Core.Converters;
 
-public partial class Converter
+public static partial class Converter
 {
     public static string ToTrendString(Trend trend)
     {

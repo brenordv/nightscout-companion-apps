@@ -14,7 +14,7 @@ using Raccoon.Ninja.Domain.Core.Models;
 
 namespace Raccoon.Ninja.AzFn.DataApi;
 
-public static class DataLatestHbA1cFunc
+public static class DataLatestHbA1CFunc
 {
     [FunctionName("DataLatestHbA1cFunc")]
     public static async Task<IActionResult> RunAsync(
