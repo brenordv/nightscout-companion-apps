@@ -8,7 +8,7 @@ on:
 
 jobs:
   sonarcloud-analysis:
-    uses: ./.github/workflows//template-qa-sonarcloud.yml
+    uses: ./.github/workflows/template-qa-sonarcloud.yml
     with:
       projectKey: 'brenordv_nightscout-companion-apps'
       organization: 'raccoon-ninja'
