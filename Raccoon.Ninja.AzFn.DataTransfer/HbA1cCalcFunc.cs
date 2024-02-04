@@ -10,7 +10,7 @@ using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
 namespace Raccoon.Ninja.AzFn.DataTransfer;
 
-public static class HbA1cCalcFunc
+public static class HbA1CCalcFunc
 {
     [FunctionName("HbA1cCalcFunc")]
     public static async Task RunAsync(
