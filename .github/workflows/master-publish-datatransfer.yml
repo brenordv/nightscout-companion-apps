@@ -17,7 +17,7 @@ jobs:
       projectFile: Raccoon.Ninja.AzFn.DataTransfer.csproj
       releaseFilePrefix: "AzFnDataTransfer"
       publishToAzure: true
-      azureFunctionAppName: ${{ secrets.AZFN_DATA_TRANSFER_APP_NAME }}
-      azurePublishProfile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4FA5B62EE7A54F0FB008C8F7AC985444 }}
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
+      azureFunctionAppName: ${{ secrets.AZFN_DATA_TRANSFER_APP_NAME }}
+      azurePublishProfile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4FA5B62EE7A54F0FB008C8F7AC985444 }}
