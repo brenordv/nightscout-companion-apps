@@ -1,0 +1,90 @@
+name: SonarCloud Analysis Template
+on:
+  workflow_call:
+    inputs:
+      projectKey:
+        description: '[Required] SonarCloud project key.'
+        required: true
+        type: string
+      organization:
+        description: '[Required] SonarCloud organization.'
+        required: true
+        type: string
+      branchName:
+        description: 'Branch to run analysis on. (Defaults to the current branch if not specified.)'
+        required: false
+        type: string
+      verbose:
+        description: 'Enable verbose logging for SonarCloud analysis. (Default: true)'
+        required: false
+        type: boolean
+        default: true
+      sonarExclusions:
+        description: 'Files and directories to exclude from SonarCloud analysis. (Default: empty)'
+        required: false
+        type: string
+        default: ''
+      coverageExclusions:
+        description: 'Files and directories to exclude from coverage. (Default: empty)'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      githubToken:
+        description: '[Required] GitHub token for PR information and checkouts.'
+        required: true
+      sonarToken:
+        description: '[Required] SonarCloud token for authentication.'
+        required: true
+
+jobs:
+  build:
+    name: Build and analyze
+    runs-on: windows-latest
+    steps:
+      - name: Installing dotnet-coverage
+        shell: powershell
+        run: dotnet tool install --global dotnet-coverage
+      - name: Installing xmldocmd
+        shell: powershell
+        run: dotnet tool install --global xmldocmd
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.branchName }}
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache SonarCloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v1
+        with:
+          path: .\.sonar\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+      - name: Install SonarCloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          New-Item -Path .\.sonar\scanner -ItemType Directory
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.githubToken }}
+          SONAR_TOKEN: ${{ secrets.sonarToken }}
+        shell: powershell
+        run: |
+          $verboseFlag = ${{ inputs.verbose }}
+          $sonarExclusions = "${{ inputs.sonarExclusions }}"
+          $coverageExclusions = "${{ inputs.coverageExclusions }}"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"${{ inputs.projectKey }}" /o:"${{ inputs.organization }}" /d:sonar.login="${{ secrets.sonarToken }}" /d:sonar.host.url="https://sonarcloud.io" /d:"sonar.verbose=$verboseFlag" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.exclusions="$sonarExclusions" /d:sonar.coverage.exclusions="$coverageExclusions"
+          dotnet build --configuration Release
+          dotnet-coverage collect 'dotnet test' -f xml -o 'coverage.xml'
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.sonarToken }}"

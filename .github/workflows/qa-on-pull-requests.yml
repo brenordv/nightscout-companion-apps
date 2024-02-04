@@ -1,0 +1,19 @@
+name: SonarCloud analysis on pull requests
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarcloud-analysis:
+    uses: ./.github/workflows//template-qa-sonarcloud.yml
+    with:
+      projectKey: 'brenordv_nightscout-companion-apps'
+      organization: 'raccoon-ninja'
+      verbose: true
+
+    secrets:
+      githubToken: ${{ secrets.GITHUB_TOKEN }}
+      sonarToken: ${{ secrets.SONAR_TOKEN }}

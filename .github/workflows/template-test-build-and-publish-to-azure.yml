@@ -1,0 +1,287 @@
+name: Full Publish Pipeline Template Workflow
+# This template will test, build, create a new release with the .zip artifacts, and deploy to Azure Functions.
+#
+# To create a new release, the <AssemblyVersion> of the csproj must be updated. If it's the same, no new release 
+# will be created.
+#
+# If publishToAzure input is set to true, the workflow will also deploy the new release to the Azure Functions App.
+
+on:
+  workflow_call:
+    inputs:
+      dotnetVersion:
+        description: '[Required] The version of .NET to use. Example: "6.0.x"'
+        required: true
+        type: string
+      targetPlatform:
+        description: '[Required] The target platform for the build. Example: "win-x64"'
+        required: true
+        type: string
+      targetRuntime:
+        description: '[Required] The target runtime for the build. Example: "net6.0"'
+        required: true
+        type: string
+      projectFolder:
+        description: '[Required] The folder where the project is located. Example: "Raccoon.Ninja.AzFn.DataApi"'
+        required: true
+        type: string
+      projectFile:
+        description: '[Required] The project file. Example: "Raccoon.Ninja.AzFn.DataApi.csproj"'
+        required: true
+        type: string
+      releaseFilePrefix:
+        description: '[Required] The prefix for the release file. Example: "AzFnDataApi"'
+        required: true
+        type: string
+      publishToAzure:
+        description: '[Required] If true, the workflow will deploy the new release to the Azure Functions App.'
+        required: true
+        type: boolean
+      azureFunctionAppName:
+        description: '[Required only if publishToAzure is true] The name of the Azure Functions App to deploy to.'
+        required: false
+        type: string
+      azurePublishProfile:
+        description: '[Required only if publishToAzure is true] The Azure Publish Profile for deployment.'
+        required: false
+        type: string
+    secrets:
+      githubToken:
+        description: '[Required] The GitHub token to use for the workflow.'
+        required: true
+
+jobs:
+  set_release_version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set_version.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Define next release version
+        id: set_version
+        run: echo "version=$(cat ${{ inputs.projectFolder }}/${{ inputs.projectFile }} | grep -oP '(?<=<AssemblyVersion>).*(?=<\/AssemblyVersion>)')" >> $GITHUB_OUTPUT
+
+  test:
+    needs: set_release_version
+    permissions:
+      deployments: write
+      contents: write
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ inputs.dotnetVersion }}
+
+      - name: Test
+        run: dotnet test ${{ inputs.projectFolder }}/${{ inputs.projectFile }} --verbosity normal
+
+  check_tag:
+    needs: [set_release_version, test]
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ needs.set_release_version.outputs.version }}
+    outputs:
+      tag_exists: ${{ steps.check_tag.outputs.tag_exists }}
+      proceed_with_publish: ${{ steps.check_tag.outputs.proceed_with_publish }}
+      artifact_name: ${{ steps.set_artifact_name.outputs.artifact_name }}
+    steps:
+      - name: Set Artifact Name
+        id: set_artifact_name
+        run: |
+          echo "artifact_name=${{ inputs.releaseFilePrefix }}_${{ inputs.targetPlatform }}_${{ env.VERSION }}" >> $GITHUB_OUTPUT
+      - name: Check if this version is already built
+        id: check_tag
+        run: |
+          TAG_EXISTS=$(curl -o /dev/null -s -w "%{http_code}\n" -H "Authorization: token ${{ secrets.githubToken }}" https://api.github.com/repos/${{ github.repository }}/git/refs/tags/${{ env.VERSION }})
+
+          if [[ "$TAG_EXISTS" -eq 200 ]]; then
+            echo "Tag exists. Checking for release asset."
+            RELEASE_ID=$(curl -s -H "Authorization: token ${{ secrets.githubToken }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.VERSION }} | jq -r '.id')
+
+            if [[ -z "$RELEASE_ID" || "$RELEASE_ID" == "null" ]]; then
+              echo "Release ID is empty or null. Proceeding to publish."
+              echo "tag_exists=false" >> $GITHUB_OUTPUT
+              echo "proceed_with_publish=true" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+
+            RAW_RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.githubToken }}" https://api.github.com/repos/${{ github.repository }}/releases/$RELEASE_ID/assets)
+            echo "Raw Response: $RAW_RESPONSE"
+
+            JSON_TYPE=$(echo "$RAW_RESPONSE" | jq -r 'type')
+            if [[ "$JSON_TYPE" == "object" ]]; then
+              echo "RAW_RESPONSE is a JSON object."
+              # Check if RAW_RESPONSE contains a "message" field with the value "Not Found"
+              MESSAGE_VALUE=$(echo "$RAW_RESPONSE" | jq -r '.message // ""')
+            
+              if [[ "$MESSAGE_VALUE" == "Not Found" ]]; then
+                echo "No assets found for this release. Proceeding to publish."
+                echo "tag_exists=true" >> $GITHUB_OUTPUT
+                echo "proceed_with_publish=true" >> $GITHUB_OUTPUT
+                exit 0
+              elif [[ ! -z "$MESSAGE_VALUE" ]]; then
+                echo "An unexpected error occurred: $MESSAGE_VALUE. Exiting."
+                exit 1
+              fi
+
+            elif [[ "$JSON_TYPE" == "array" ]]; then
+              echo "RAW_RESPONSE is a JSON array."
+              ASSET_EXISTS=$(echo "$RAW_RESPONSE" | jq -r '.[] | select(.name=="${{ steps.set_artifact_name.outputs.artifact_name }}.zip").id')
+  
+              if [[ ! -z "$ASSET_EXISTS" ]]; then
+                echo "Release asset exists. No need to publish."
+                echo "tag_exists=true" >> $GITHUB_OUTPUT
+                echo "proceed_with_publish=false" >> $GITHUB_OUTPUT
+              else
+                echo "Release asset does not exist. Proceeding to publish."
+                echo "tag_exists=true" >> $GITHUB_OUTPUT
+                echo "proceed_with_publish=true" >> $GITHUB_OUTPUT
+              fi
+            else
+              echo "RAW_RESPONSE is neither a JSON object nor an array. Type: $JSON_TYPE"
+              exit 1
+            fi
+
+          else
+            echo "Tag does not exist. Proceeding to publish."
+            echo "tag_exists=false" >> $GITHUB_OUTPUT
+            echo "proceed_with_publish=true" >> $GITHUB_OUTPUT
+          fi
+
+  validate_azure_inputs_for_publishing:
+    if: inputs.publishToAzure == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Azure Function App Name
+        run: |
+          if [ -z "${{ inputs.azureFunctionAppName }}" ]; then
+            echo "Azure Function App Name (azureFunctionAppName) is empty or not set."
+            exit 1
+          else
+            echo "Azure Function App Name is set to '${{ inputs.azureFunctionAppName }}'."
+          fi
+      - name: Check Azure Publish Profile
+        run: |
+          if [ -z "${{ inputs.azurePublishProfile }}" ]; then
+            echo "Azure Publish Profile (azurePublishProfile) is empty or not set."
+            exit 1
+          else
+            echo "Azure Publish Profile is set."
+          fi
+
+  build_info:
+    needs: [set_release_version, check_tag]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        run: |
+          echo "Version: ${{ needs.set_release_version.outputs.version }}"
+          echo "Tag Exists: ${{ needs.check_tag.outputs.tag_exists }}"
+          echo "Proceed with Publish: ${{ needs.check_tag.outputs.proceed_with_publish }}"
+          echo "Artifact Name: ${{ needs.check_tag.outputs.artifact_name }}"
+
+  build:
+    needs: [set_release_version, check_tag]
+    if: needs.check_tag.outputs.proceed_with_publish == 'true'
+    permissions:
+      deployments: write
+      contents: write
+    runs-on: windows-latest
+    env:
+      VERSION: ${{ needs.set_release_version.outputs.version }}
+      ARTIFACT_NAME: ${{ needs.check_tag.outputs.artifact_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ inputs.dotnetVersion }}
+
+      - name: Build
+        run: dotnet build --configuration Release
+
+      - name: Publish Project
+        shell: pwsh
+        run: |
+          pushd './${{ inputs.projectFolder }}'
+          dotnet build --configuration Release --output ./output
+          popd
+
+      - name: Compressing artifact
+        run: |
+          $currentPath = Get-Location
+          Compress-Archive -Path "$currentPath\${{ inputs.projectFolder }}\output\*" -DestinationPath "${{ env.ARTIFACT_NAME }}.zip"
+
+      - name: Uploading artifact
+        id: upload_artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: "${{ env.ARTIFACT_NAME }}"
+          path: "${{ env.ARTIFACT_NAME }}.zip"
+          if-no-files-found: error  
+
+  deploy:
+    needs: [ set_release_version, check_tag, build ]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ needs.set_release_version.outputs.version }}
+      ARTIFACT_NAME: ${{ needs.check_tag.outputs.artifact_name }}
+    steps:
+      - name: Where Am I? What is going on?
+        run: |
+          echo "$(pwd) | ${{ env.VERSION }}"
+          ls -la
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Downloading artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: "${{ env.ARTIFACT_NAME }}"
+
+      - name: Extracting artifact
+        run: |
+          unzip "${{ env.ARTIFACT_NAME }}.zip" -d "./output"
+
+      - name: 'Publish to Azure Functions App'
+        uses: Azure/functions-action@v1
+        if: inputs.publishToAzure == true
+        with:
+          app-name: ${{ inputs.azureFunctionAppName }}
+          slot-name: 'Production'
+          package: './output'
+          publish-profile: ${{ inputs.azurePublishProfile }}
+
+      - name: Create Tag
+        if: needs.check_tag.outputs.tag_exists == false
+        run: |
+          git tag ${{ env.VERSION }}
+          git push origin ${{ env.VERSION }}
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          token: ${{ secrets.githubToken }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+          fail_on_unmatched_files: true
+          files: "${{ env.ARTIFACT_NAME }}.zip"
