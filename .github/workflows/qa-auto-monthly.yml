@@ -3,7 +3,7 @@ name: Monthly SonarCloud Analysis
 on:
   schedule:
     # Runs at 2 AM UTC on the 1st of every month
-    # This will help keep the project alive on SonarCloud.io
+    # This will help keep me being on top of any new security issue. :)
     - cron: '0 2 1 * *'
 
 jobs:

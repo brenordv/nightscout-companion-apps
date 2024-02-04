@@ -81,10 +81,19 @@ jobs:
           SONAR_TOKEN: ${{ secrets.sonarToken }}
         shell: powershell
         run: |
-          $verboseFlag = ${{ inputs.verbose }}
+          $verboseFlag = if (${{ inputs.verbose }}) {"true"} else {"false"}
           $sonarExclusions = "${{ inputs.sonarExclusions }}"
           $coverageExclusions = "${{ inputs.coverageExclusions }}"
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"${{ inputs.projectKey }}" /o:"${{ inputs.organization }}" /d:sonar.login="${{ secrets.sonarToken }}" /d:sonar.host.url="https://sonarcloud.io" /d:"sonar.verbose=$verboseFlag" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.exclusions="$sonarExclusions" /d:sonar.coverage.exclusions="$coverageExclusions"
+          
+          $sonarBeginCmd = ".\.sonar\scanner\dotnet-sonarscanner begin /k:`"${{ inputs.projectKey }}`" /o:`"${{ inputs.organization }}`" /d:sonar.login=`"${{ secrets.sonarToken }}`" /d:sonar.host.url=`"https://sonarcloud.io`" /d:`"sonar.verbose=$verboseFlag`""
+          if (-not [string]::IsNullOrWhiteSpace($sonarExclusions)) {
+            $sonarBeginCmd += " /d:`"sonar.exclusions=$sonarExclusions`""
+          }
+          if (-not [string]::IsNullOrWhiteSpace($coverageExclusions)) {
+            $sonarBeginCmd += " /d:`"sonar.coverage.exclusions=$coverageExclusions`""
+          }
+          
+          Invoke-Expression $sonarBeginCmd
           dotnet build --configuration Release
           dotnet-coverage collect 'dotnet test' -f xml -o 'coverage.xml'
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.sonarToken }}"
