@@ -18,7 +18,7 @@ public static class TrendConverter
             Trend.DoubleDown => " DD",
             Trend.TripleDown => "DDD",
             Trend.NotComputable => "? ?",
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new ArgumentOutOfRangeException($"{trend} is not a valid trend.")
         };
     }
     
@@ -36,27 +36,7 @@ public static class TrendConverter
             Trend.DoubleDown => "\u2193\u2193",
             Trend.TripleDown => "\u2b07\u2b07\u2b07",
             Trend.NotComputable => "? ?",
-            _ => throw new ArgumentOutOfRangeException()
-        };
-    }
-
-    public static Font ToFont(this Trend trend)
-    {
-        const string fontFamily = "Arial";
-        
-        return trend switch
-        {
-            Trend.TripleUp => new Font(fontFamily, 8),
-            Trend.DoubleUp => new Font(fontFamily, 10),
-            Trend.SingleUp => new Font(fontFamily, 12),
-            Trend.FortyFiveUp => new Font(fontFamily, 12),
-            Trend.Flat => new Font(fontFamily, 12),
-            Trend.FortyFiveDown => new Font(fontFamily, 12),
-            Trend.SingleDown => new Font(fontFamily, 12),
-            Trend.DoubleDown => new Font(fontFamily, 10),
-            Trend.TripleDown => new Font(fontFamily, 8),
-            Trend.NotComputable => new Font(fontFamily, 10),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new ArgumentOutOfRangeException($"{trend} is not a valid trend.")
         };
     }
 }

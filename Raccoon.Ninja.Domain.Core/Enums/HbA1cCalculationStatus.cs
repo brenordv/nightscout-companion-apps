@@ -1,6 +1,6 @@
 ﻿namespace Raccoon.Ninja.Domain.Core.Enums;
 
-public enum HbA1cCalculationStatus
+public enum HbA1CCalculationStatus
 {
     Success = 1,
     SuccessPartial = 2,

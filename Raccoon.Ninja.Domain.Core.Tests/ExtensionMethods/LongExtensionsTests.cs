@@ -29,10 +29,10 @@ public class LongExtensionsTests
         IEnumerable<GlucoseReading> list = null;
 
         // Act
-        var result = list.CalculateHbA1c(ReferenceDate);
+        var result = list.CalculateHbA1C(ReferenceDate);
 
         // Assert
-        result.Status.Should().Be(HbA1cCalculationStatus.Error);
+        result.Status.Should().Be(HbA1CCalculationStatus.Error);
         result.Error.Should().Be("No readings to calculate HbA1c");
     }
 
@@ -43,10 +43,10 @@ public class LongExtensionsTests
         var list = new List<GlucoseReading>();
 
         // Act
-        var result = list.CalculateHbA1c(ReferenceDate);
+        var result = list.CalculateHbA1C(ReferenceDate);
 
         // Assert
-        result.Status.Should().Be(HbA1cCalculationStatus.Error);
+        result.Status.Should().Be(HbA1CCalculationStatus.Error);
         result.Error.Should().Be("No readings returned from Db to calculate HbA1c");
     }
 
@@ -58,10 +58,10 @@ public class LongExtensionsTests
         var readings = Generators.GenerateList(actualReadingCount, 100);
 
         // Act
-        var result = readings.CalculateHbA1c(ReferenceDate);
+        var result = readings.CalculateHbA1C(ReferenceDate);
 
         // Assert
-        result.Status.Should().Be(HbA1cCalculationStatus.Error);
+        result.Status.Should().Be(HbA1CCalculationStatus.Error);
         result.Error.Should().Be($"Too many readings to calculate HbA1c reliably. Expected 33120 but got {actualReadingCount}");
     }
     
@@ -70,10 +70,10 @@ public class LongExtensionsTests
     public void CalculateHbA1c_WhenListHasOneReading_ShouldReturnPartialSuccess(List<GlucoseReading> readings, float expectedResult)
     {
         // Arrange & Act
-        var result = readings.CalculateHbA1c(ReferenceDate);
+        var result = readings.CalculateHbA1C(ReferenceDate);
 
         // Assert
-        result.Status.Should().Be(HbA1cCalculationStatus.SuccessPartial);
+        result.Status.Should().Be(HbA1CCalculationStatus.SuccessPartial);
         result.Value.Should().Be(expectedResult);
     }
    
@@ -82,10 +82,10 @@ public class LongExtensionsTests
     public void CalculateHbA1c_WhenListHasExactNumberOfReadings_ShouldReturnSuccess(List<GlucoseReading> readings, float expectedResult)
     {
         // Arrange & Act
-        var result = readings.CalculateHbA1c(ReferenceDate);
+        var result = readings.CalculateHbA1C(ReferenceDate);
 
         // Assert
-        result.Status.Should().Be(HbA1cCalculationStatus.Success);
+        result.Status.Should().Be(HbA1CCalculationStatus.Success);
         result.Value.Should().Be(expectedResult);
     }
 }
