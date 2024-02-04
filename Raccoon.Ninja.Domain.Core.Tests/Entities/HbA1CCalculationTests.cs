@@ -11,19 +11,25 @@ public class HbA1CCalculationTests
     {
         // Arrange
         var referenceDate = DateOnly.FromDateTime(DateTime.UtcNow);
+        var id = Guid.NewGuid().ToString();
         const HbA1CCalculationStatus status = HbA1CCalculationStatus.Error;
         const string error = "Sample error";
+        const float value = 5.5f;
+        const float delta = 0.5f;
 
         // Act
         var calculation = new HbA1CCalculation
         {
+            Id = id,
+            Value = value,
+            Delta = delta,
             ReferenceDate = referenceDate,
             Status = status,
             Error = error
         };
 
         // Assert
-        calculation.DocType.Should().Be(AggregateType.HbA1cCalculation);
+        calculation.DocType.Should().Be(AggregateType.HbA1CCalculation);
         calculation.ReferenceDate.Should().Be(referenceDate);
         calculation.CreatedAtUtc.Should().BeCloseTo(DateTime.UtcNow.ToUnixTimestamp(), 1000);
         calculation.Status.Should().Be(status);
@@ -41,10 +47,13 @@ public class HbA1CCalculationTests
         var calculation = HbA1CCalculation.FromError(error, referenceDate);
 
         // Assert
+        calculation.Id.Should().NotBeNullOrWhiteSpace();
+        calculation.Value.Should().Be(default);
+        calculation.Delta.Should().BeNull();
         calculation.Status.Should().Be(HbA1CCalculationStatus.Error);
         calculation.Error.Should().Be(error);
         calculation.ReferenceDate.Should().Be(referenceDate);
-        calculation.DocType.Should().Be(AggregateType.HbA1cCalculation);
+        calculation.DocType.Should().Be(AggregateType.HbA1CCalculation);
     }
 
     [Fact]
@@ -52,11 +61,18 @@ public class HbA1CCalculationTests
     {
         // Arrange
         var referenceDate = DateOnly.FromDateTime(DateTime.UtcNow);
+        var id = Guid.NewGuid().ToString();
         const HbA1CCalculationStatus status = HbA1CCalculationStatus.Error; // Assuming Error is a valid enum value
         const string error = "Error message";
+        const float value = 5.5f;
+        const float delta = 0.5f;
+        
 
         var calculation1 = new HbA1CCalculation
         {
+            Id = id,
+            Value = value,
+            Delta = delta,
             ReferenceDate = referenceDate,
             Status = status,
             Error = error
@@ -64,6 +80,9 @@ public class HbA1CCalculationTests
 
         var calculation2 = new HbA1CCalculation
         {
+            Id = id,
+            Value = value,
+            Delta = delta,
             ReferenceDate = referenceDate,
             Status = status,
             Error = error
@@ -78,11 +97,17 @@ public class HbA1CCalculationTests
     {
         // Arrange
         var referenceDate = DateOnly.FromDateTime(DateTime.UtcNow);
+        var id = Guid.NewGuid().ToString();
         const HbA1CCalculationStatus status = HbA1CCalculationStatus.Error;
         const string error = "Sample error";
+        const float value = 5.5f;
+        const float delta = 0.5f;
 
         var calculation1 = new HbA1CCalculation
         {
+            Id = id,
+            Value = value,
+            Delta = delta,
             ReferenceDate = referenceDate,
             Status = status,
             Error = error
@@ -90,6 +115,9 @@ public class HbA1CCalculationTests
 
         var calculation2 = new HbA1CCalculation
         {
+            Id = id,
+            Value = value,
+            Delta = delta,
             ReferenceDate = referenceDate,
             Status = status,
             Error = error
@@ -106,7 +134,10 @@ public class HbA1CCalculationTests
         var calculation = new HbA1CCalculation();
 
         // Assert
-        calculation.DocType.Should().Be(AggregateType.HbA1cCalculation);
+        calculation.Id.Should().NotBeNullOrWhiteSpace();
+        calculation.Value.Should().Be(default);
+        calculation.Delta.Should().BeNull();
+        calculation.DocType.Should().Be(AggregateType.HbA1CCalculation);
         calculation.CreatedAtUtc.Should().BeCloseTo(DateTime.UtcNow.ToUnixTimestamp(), 1000);
         calculation.Status.Should().Be(HbA1CCalculationStatus.NotCalculated);
         calculation.Error.Should().BeNull();

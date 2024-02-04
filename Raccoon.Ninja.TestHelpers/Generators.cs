@@ -25,7 +25,7 @@ public static class Generators
             .RuleFor(x => x.Id, f => f.Random.Guid().ToString())
             .RuleFor(x => x.Value, f => value ?? f.Random.Float(4, 8))
             .RuleFor(x => x.Delta, f => delta ?? f.Random.Float(-1, 2))
-            .RuleFor(x => x.DocType, f => AggregateType.HbA1cCalculation)
+            .RuleFor(x => x.DocType, f => AggregateType.HbA1CCalculation)
             .RuleFor(x => x.ReferenceDate, f => DateOnly.FromDateTime(f.Date.Past()))
             .RuleFor(x => x.CreatedAtUtc, f => f.Date.Past().ToUnixTimestamp())
             .RuleFor(x => x.Status, f => GetRandomHbA1CCalculationStatusWithinReason(f, status, error))

@@ -14,8 +14,8 @@ jobs:
       projectKey: 'brenordv_nightscout-companion-apps'
       organization: 'raccoon-ninja'
       verbose: true
-      sonarExclusions: 'Raccoon.Ninja.TestHelpers/*'
-      coverageExclusions: 'Raccoon.Ninja.TestHelpers/*,**/*Program.cs,Raccoon.Ninja.WForm.GlucoseIcon/Utils/AppSettings.cs,Raccoon.Ninja.AzFn.DataApi/DataLatestHbA1cFunc.cs,Raccoon.Ninja.AzFn.DataTransfer/HbA1cCalcFunc.cs'
+      sonarExclusions: '**/*Usings.cs,Raccoon.Ninja.TestHelpers/*'
+      coverageExclusions: '**/*Usings.cs,Raccoon.Ninja.TestHelpers/*,**/*Program.cs,Raccoon.Ninja.WForm.GlucoseIcon/Utils/AppSettings.cs,Raccoon.Ninja.AzFn.DataApi/DataLatestHbA1cFunc.cs,Raccoon.Ninja.AzFn.DataTransfer/HbA1cCalcFunc.cs'
 
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}

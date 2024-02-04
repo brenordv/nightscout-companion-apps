@@ -2,5 +2,6 @@
 
 public enum AggregateType
 {
-    HbA1cCalculation = 1,
+    Unknown = 0,
+    HbA1CCalculation = 1,
 }

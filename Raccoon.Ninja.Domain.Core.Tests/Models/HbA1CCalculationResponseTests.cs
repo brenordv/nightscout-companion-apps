@@ -14,7 +14,7 @@ public class HbA1CCalculationResponseTests
         // Arrange
         const float value = 5.5f;
         const float delta = 0.5f;
-        const AggregateType docType = AggregateType.HbA1cCalculation;
+        const AggregateType docType = AggregateType.HbA1CCalculation;
         const HbA1CCalculationStatus status = HbA1CCalculationStatus.Error;
         const string error = "No error";
 
@@ -103,5 +103,23 @@ public class HbA1CCalculationResponseTests
 
         // Assert
         response.Should().BeNull();
+    }
+    
+    [Fact]
+    public void Constructor_WithNoArguments_ShouldSetDefaultValues()
+    {
+        // Act
+        var response = new HbA1CCalculationResponse();
+
+        // Assert
+        response.Id.Should().BeNull();
+        response.Value.Should().Be(default);
+        response.Delta.Should().BeNull();
+        response.DocType.Should().Be(AggregateType.Unknown);
+        response.ReferenceDate.Should().Be(default);
+        response.CreatedAtUtc.Should().Be(default);
+        response.Status.Should().Be(HbA1CCalculationStatus.NotCalculated);
+        response.Error.Should().BeNull();
+        response.IsStale.Should().BeTrue();
     }
 }
