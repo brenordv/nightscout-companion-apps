@@ -37,18 +37,17 @@ on:
         description: '[Required] If true, the workflow will deploy the new release to the Azure Functions App.'
         required: true
         type: boolean
-      azureFunctionAppName:
-        description: '[Required only if publishToAzure is true] The name of the Azure Functions App to deploy to.'
-        required: false
-        type: string
-      azurePublishProfile:
-        description: '[Required only if publishToAzure is true] The Azure Publish Profile for deployment.'
-        required: false
-        type: string
+
     secrets:
       githubToken:
         description: '[Required] The GitHub token to use for the workflow.'
         required: true
+      azureFunctionAppName:
+        description: '[Required only if publishToAzure is true] The name of the Azure Functions App to deploy to.'
+        required: false
+      azurePublishProfile:
+        description: '[Required only if publishToAzure is true] The Azure Publish Profile for deployment.'
+        required: false
 
 jobs:
   set_release_version:
@@ -159,15 +158,15 @@ jobs:
     steps:
       - name: Check Azure Function App Name
         run: |
-          if [ -z "${{ inputs.azureFunctionAppName }}" ]; then
+          if [ -z "${{ secrets.azureFunctionAppName }}" ]; then
             echo "Azure Function App Name (azureFunctionAppName) is empty or not set."
             exit 1
           else
-            echo "Azure Function App Name is set to '${{ inputs.azureFunctionAppName }}'."
+            echo "Azure Function App Name is set to '${{ secrets.azureFunctionAppName }}'."
           fi
       - name: Check Azure Publish Profile
         run: |
-          if [ -z "${{ inputs.azurePublishProfile }}" ]; then
+          if [ -z "${{ secrets.azurePublishProfile }}" ]; then
             echo "Azure Publish Profile (azurePublishProfile) is empty or not set."
             exit 1
           else
@@ -262,10 +261,10 @@ jobs:
         uses: Azure/functions-action@v1
         if: inputs.publishToAzure == true
         with:
-          app-name: ${{ inputs.azureFunctionAppName }}
+          app-name: ${{ secrets.azureFunctionAppName }}
           slot-name: 'Production'
           package: './output'
-          publish-profile: ${{ inputs.azurePublishProfile }}
+          publish-profile: ${{ secrets.azurePublishProfile }}
 
       - name: Create Tag
         if: needs.check_tag.outputs.tag_exists == false
