@@ -10,6 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "98. Docs", "98. Docs", "{B4
 		.github\workflows\master-publish-dataapi.yml = .github\workflows\master-publish-dataapi.yml
 		.github\workflows\master-publish-datatransfer.yml = .github\workflows\master-publish-datatransfer.yml
 		.github\workflows\master-publish-glucose-mon-app.yml = .github\workflows\master-publish-glucose-mon-app.yml
+		.github\workflows\template-test-build-and-publish-to-azure.yml = .github\workflows\template-test-build-and-publish-to-azure.yml
+		.github\workflows\template-qa-sonarcloud.yml = .github\workflows\template-qa-sonarcloud.yml
+		.github\workflows\qa-auto-monthly.yml = .github\workflows\qa-auto-monthly.yml
+		.github\workflows\qa-on-pull-requests.yml = .github\workflows\qa-on-pull-requests.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01. Domain", "01. Domain", "{11F72AFB-B94A-4E9A-8817-F1FB60E9DF6D}"
