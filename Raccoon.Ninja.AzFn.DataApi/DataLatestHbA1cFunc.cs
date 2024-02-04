@@ -25,19 +25,19 @@ public static class DataLatestHbA1cFunc
             CreateIfNotExists = false,
             SqlQuery = "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.status = 1 ORDER BY c.createdAt DESC"
         )]
-        IEnumerable<HbA1cCalculation> latestSuccessCalculations,
+        IEnumerable<HbA1CCalculation> latestSuccessCalculations,
         [CosmosDB(databaseName: "%CosmosDatabaseName%", containerName: "%CosmosAggregateContainerName%",
             Connection = "CosmosConnectionString",
             CreateIfNotExists = false,
             SqlQuery = "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.status = 2 ORDER BY c.createdAt DESC"
         )]
-        IEnumerable<HbA1cCalculation> latestPartialSuccessCalculations,
+        IEnumerable<HbA1CCalculation> latestPartialSuccessCalculations,
         ILogger log)
     {
         log.LogInformation("Data Latest HbA1c API call received. Request by IP: {Ip}",
             req.HttpContext.Connection.RemoteIpAddress);
-        HbA1cCalculation latestSuccessful = null;
-        HbA1cCalculation latestPartialSuccessful = null;
+        HbA1CCalculation latestSuccessful = null;
+        HbA1CCalculation latestPartialSuccessful = null;
 
         try
         {
@@ -50,7 +50,7 @@ public static class DataLatestHbA1cFunc
             if (latestSuccessful is null && latestPartialSuccessful is null)
                 return new NoContentResult();
 
-            return new OkObjectResult(new DataLatestHbA1cFuncResponse
+            return new OkObjectResult(new DataLatestHbA1CFuncResponse
             {
                 LatestSuccessful = latestSuccessful,
                 LatestPartialSuccessful = latestPartialSuccessful

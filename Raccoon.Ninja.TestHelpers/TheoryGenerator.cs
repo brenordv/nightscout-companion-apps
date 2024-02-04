@@ -51,24 +51,24 @@ public static class TheoryGenerator
 
     public static IEnumerable<object[]> ValidHb1AcDataSets()
     {
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 80), 4.4146338f };
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 100), 5.111498f };
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 150), 6.853658f };
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 170), 7.5505223f };
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 210), 8.944251f };
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 300), 12.080139f };
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn115Days, 400), 15.56446f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 80), 4.4146338f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 100), 5.111498f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 150), 6.853658f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 170), 7.5505223f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 210), 8.944251f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 300), 12.080139f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 400), 15.56446f };
     }
 
     public static IEnumerable<object[]> PartiallyValidHb1AcDataSets()
     {
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 80), 4.4146338f };
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 100), 5.111498f };
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 150), 6.853658f };
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 170), 7.5505223f };
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 210), 8.944251f };
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 300), 12.080139f };
-        yield return new object[] { Generators.GenerateList(Constants.ReadingsIn1Day, 400), 15.56446f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 80), 4.4146338f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 100), 5.111498f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 150), 6.853658f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 170), 7.5505223f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 210), 8.944251f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 300), 12.080139f };
+        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 400), 15.56446f };
     }
     
 

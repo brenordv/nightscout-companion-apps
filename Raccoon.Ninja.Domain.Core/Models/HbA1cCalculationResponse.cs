@@ -5,7 +5,7 @@ using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
 namespace Raccoon.Ninja.Domain.Core.Models;
 
-public record HbA1cCalculationResponse
+public record HbA1CCalculationResponse
 {
     [JsonProperty("id")] public string Id { get; init; }
 
@@ -17,7 +17,7 @@ public record HbA1cCalculationResponse
     [JsonProperty("docType")] public AggregateType DocType { get; init; }
     [JsonProperty("referenceDate")] public DateOnly ReferenceDate { get; init; }
     [JsonProperty("createdAt")] public long CreatedAtUtc { get; init; }
-    [JsonProperty("status")] public HbA1cCalculationStatus Status { get; init; }
+    [JsonProperty("status")] public HbA1CCalculationStatus Status { get; init; }
 
     [JsonProperty("error", NullValueHandling = NullValueHandling.Ignore)]
     public string Error { get; init; }
@@ -27,12 +27,12 @@ public record HbA1cCalculationResponse
     /// </summary>
     [JsonProperty("isStale")] public bool IsStale => DateTime.UtcNow.Date.AddDays(-1) > CreatedAtUtc.ToUtcDateTime().Date;
 
-    public static implicit operator HbA1cCalculationResponse(HbA1cCalculation calculation)
+    public static implicit operator HbA1CCalculationResponse(HbA1CCalculation calculation)
     {
         if (calculation is null)
             return null;
         
-        return new HbA1cCalculationResponse
+        return new HbA1CCalculationResponse
         {
             Id = calculation.Id,
             Value = calculation.Value,

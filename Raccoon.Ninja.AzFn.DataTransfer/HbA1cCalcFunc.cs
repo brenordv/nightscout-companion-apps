@@ -28,12 +28,12 @@ public static class HbA1cCalcFunc
             Connection = "CosmosConnectionString",
             CreateIfNotExists = false,
             SqlQuery = "SELECT TOP 1 * FROM c WHERE c.docType = 1 ORDER BY c.createdAt DESC"
-        )] IEnumerable<HbA1cCalculation> previousCalculations,
+        )] IEnumerable<HbA1CCalculation> previousCalculations,
         [CosmosDB(databaseName: "%CosmosDatabaseName%", containerName: "%CosmosAggregateContainerName%",
             Connection = "CosmosConnectionString",
             CreateIfNotExists = false,
             PartitionKey = "/id"
-        )]IAsyncCollector<HbA1cCalculation> calculationsOut,
+        )]IAsyncCollector<HbA1CCalculation> calculationsOut,
         ILogger log)
     {
         var referenceDate = DateOnly.FromDateTime(DateTime.UtcNow);
@@ -42,7 +42,7 @@ public static class HbA1cCalcFunc
         {
             var previousCalculation = previousCalculations.FirstOrDefault();
             
-            var hbA1c = readings.CalculateHbA1c(referenceDate);
+            var hbA1c = readings.CalculateHbA1C(referenceDate);
 
             if (previousCalculation is not null)
             {

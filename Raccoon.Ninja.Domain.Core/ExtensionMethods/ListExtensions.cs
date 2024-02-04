@@ -18,10 +18,10 @@ public static class ListExtensions
         return list is not null && list.Count > 0;
     }
     
-    public static HbA1cCalculation CalculateHbA1c(this IEnumerable<GlucoseReading> list, DateOnly referenceDate)
+    public static HbA1CCalculation CalculateHbA1C(this IEnumerable<GlucoseReading> list, DateOnly referenceDate)
     {
         if (list is null)
-            return HbA1cCalculation.FromError("No readings to calculate HbA1c", referenceDate);
+            return HbA1CCalculation.FromError("No readings to calculate HbA1c", referenceDate);
 
         var count = 0;
         var sum = 0f;
@@ -33,28 +33,37 @@ public static class ListExtensions
 
         if (count == 0)
         {
-            return HbA1cCalculation.FromError("No readings returned from Db to calculate HbA1c", referenceDate);
+            return HbA1CCalculation.FromError("No readings returned from Db to calculate HbA1c", referenceDate);
         }
         
         var avg = sum / count;
-        var hbA1c = (avg + 46.7f) / 28.7f;
-        
-        //Should never happen, but just in case...
-#pragma warning disable S2583
-        if (count > ReadingsIn115Days)
-#pragma warning restore S2583
+        var hbA1C = (avg + 46.7f) / 28.7f;
+
+        if (HasNumberOfReadingsExceededMax(count))
         {
-            return HbA1cCalculation.FromError(
-                $"Too many readings to calculate HbA1c reliably. Expected {ReadingsIn115Days} but got {count}", referenceDate);
+            return HbA1CCalculation.FromError(
+                $"Too many readings to calculate HbA1c reliably. Expected (max) {ReadingsIn115Days} but got {count}", 
+                referenceDate);
         }
 
-        return new HbA1cCalculation
+        return new HbA1CCalculation
         {
-            Value = hbA1c,
+            Value = hbA1C,
             ReferenceDate = referenceDate,
-            Status = count == ReadingsIn115Days 
-                ? HbA1cCalculationStatus.Success 
-                : HbA1cCalculationStatus.SuccessPartial
+            Status = GetStatusByReadingCount(count)
         };
+    }
+    
+    private static bool HasNumberOfReadingsExceededMax(int count)
+    {
+        return count > ReadingsIn115Days;
+
+    }
+    
+    private static HbA1CCalculationStatus GetStatusByReadingCount(int count)
+    {
+        return count == ReadingsIn115Days 
+            ? HbA1CCalculationStatus.Success 
+            : HbA1CCalculationStatus.SuccessPartial;
     }
 }
