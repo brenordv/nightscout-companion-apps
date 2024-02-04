@@ -36,7 +36,7 @@ public static class AppSettings
         if (Config is not null)
             return;
         
-        throw new ApplicationException($"The file {AppSettingsFile} could not be deserialized.");
+        throw new ArgumentException($"The file {AppSettingsFile} could not be deserialized.");
     }
 
     public static IDataFetcher GetDataFetcherBasedOnSettings()
