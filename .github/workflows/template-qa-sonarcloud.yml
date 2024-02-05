@@ -93,7 +93,7 @@ jobs:
           $sonarExclusions = "${{ inputs.sonarExclusions }}"
           $coverageExclusions = "${{ inputs.coverageExclusions }}"
           
-          $sonarBeginCmd = ".\.sonar\scanner\dotnet-sonarscanner begin /k:`"${{ inputs.projectKey }}`" /o:`"${{ inputs.organization }}`" /d:sonar.login=`"${{ secrets.sonarToken }}`" /d:sonar.host.url=`"https://sonarcloud.io`" /d:`"sonar.verbose=$verboseFlag`" /d:sonar.cs.vscoveragexml.reportsPaths=`"coverage.xml`""
+          $sonarBeginCmd = ".\.sonar\scanner\dotnet-sonarscanner begin /k:`"${{ inputs.projectKey }}`" /o:`"${{ inputs.organization }}`" /d:sonar.token=`"${{ secrets.sonarToken }}`" /d:sonar.host.url=`"https://sonarcloud.io`" /d:`"sonar.verbose=$verboseFlag`" /d:sonar.cs.vscoveragexml.reportsPaths=`"coverage.xml`""
           if (-not [string]::IsNullOrWhiteSpace($sonarExclusions)) {
             $sonarBeginCmd += " /d:`"sonar.exclusions=$sonarExclusions`""
           }
@@ -104,4 +104,4 @@ jobs:
           Invoke-Expression $sonarBeginCmd
           dotnet build --configuration Release
           dotnet-coverage collect 'dotnet test' -f xml -o 'coverage.xml'
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.sonarToken }}"
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.sonarToken }}"
