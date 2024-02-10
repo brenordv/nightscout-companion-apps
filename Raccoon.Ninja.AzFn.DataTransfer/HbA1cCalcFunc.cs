@@ -2,62 +2,68 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
+using Microsoft.Azure.Functions.Worker;
 
 namespace Raccoon.Ninja.AzFn.DataTransfer;
 
-public static class HbA1CCalcFunc
+public class HbA1CCalcFunc
 {
-    [FunctionName("HbA1cCalcFunc")]
-    public static async Task RunAsync(
+    private readonly ILogger _logger;
+
+    public HbA1CCalcFunc(ILogger<HbA1CCalcFunc> logger)
+    {
+        _logger = logger;
+    }
+
+    [Function("HbA1cCalcFunc")]
+    [CosmosDBOutput(
+        "%CosmosDatabaseName%",
+        "%CosmosAggregateContainerName%", 
+        Connection = "CosmosConnectionString", 
+        PartitionKey = "/id",
+        CreateIfNotExists = false)]
+    public async Task<HbA1CCalculation> RunAsync(
         [TimerTrigger("0 0 0 * * *"
             #if DEBUG
             , RunOnStartup = true
             #endif
-            )] TimerInfo myTimer,
-        [CosmosDB(databaseName: "%CosmosDatabaseName%", containerName: "%CosmosContainerName%",
+            )] TimerInfo myTimer, 
+        [CosmosDBInput(databaseName: "%CosmosDatabaseName%", containerName: "%CosmosContainerName%",
             Connection = "CosmosConnectionString",
-            CreateIfNotExists = false,
             SqlQuery = "SELECT TOP 33120 * FROM c ORDER BY c.readAt DESC"
-        )] IEnumerable<GlucoseReading> readings,
-        [CosmosDB(databaseName: "%CosmosDatabaseName%", containerName: "%CosmosAggregateContainerName%",
+        )] IEnumerable<GlucoseReading> readings, 
+        [CosmosDBInput(databaseName: "%CosmosDatabaseName%", containerName: "%CosmosAggregateContainerName%",
             Connection = "CosmosConnectionString",
-            CreateIfNotExists = false,
             SqlQuery = "SELECT TOP 1 * FROM c WHERE c.docType = 1 ORDER BY c.createdAt DESC"
-        )] IEnumerable<HbA1CCalculation> previousCalculations,
-        [CosmosDB(databaseName: "%CosmosDatabaseName%", containerName: "%CosmosAggregateContainerName%",
-            Connection = "CosmosConnectionString",
-            CreateIfNotExists = false,
-            PartitionKey = "/id"
-        )]IAsyncCollector<HbA1CCalculation> calculationsOut,
-        ILogger log)
+        )] IEnumerable<HbA1CCalculation> previousCalculations)
     {
         var referenceDate = DateOnly.FromDateTime(DateTime.UtcNow);
-        log.LogTrace("Starting HbA1c calculation for {ReferenceDate}", referenceDate);
+        _logger.LogTrace("Starting HbA1c calculation for {ReferenceDate}", referenceDate);
         try
         {
             var previousCalculation = previousCalculations.FirstOrDefault();
-            
-            var hbA1c = readings.CalculateHbA1C(referenceDate);
+
+            var hbA1C = readings.CalculateHbA1C(referenceDate);
 
             if (previousCalculation is not null)
             {
-                hbA1c = hbA1c with {Delta = hbA1c.Value - previousCalculation.Value};
+                hbA1C = hbA1C with { Delta = hbA1C.Value - previousCalculation.Value };
             }
-            
-            await calculationsOut.AddAsync(hbA1c);
+
+            return hbA1C;
         }
         catch (Exception e)
         {
-            log.LogError(e, "Failed to calculate HbA1c for {ReferenceDate}", referenceDate);
+            _logger.LogError(e, "Failed to calculate HbA1c for {ReferenceDate}", referenceDate);
         }
         finally
         {
-            log.LogTrace("HbA1c calculation for {ReferenceDate} finished!", referenceDate);
+            _logger.LogTrace("HbA1c calculation for {ReferenceDate} finished!", referenceDate);
         }
+
+        return null;
     }
 }

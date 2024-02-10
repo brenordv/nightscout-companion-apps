@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using Raccoon.Ninja.AzFn.DataTransfer.ExtensionMethods;
@@ -11,55 +11,63 @@ using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 using Raccoon.Ninja.Extensions.MongoDb.Builders;
 using Raccoon.Ninja.Extensions.MongoDb.ExtensionMethods;
 using Raccoon.Ninja.Extensions.MongoDb.Models;
+using Microsoft.Azure.Functions.Worker;
 
 namespace Raccoon.Ninja.AzFn.DataTransfer;
 
-public static class DataTransferFunc
+public class DataTransferFunc
 {
-    [FunctionName("DataTransferFunc")]
-    public static async Task RunAsync(
-        [TimerTrigger("0 */5 * * * *", RunOnStartup = true)] TimerInfo timer,
-        [CosmosDB(databaseName: "%CosmosDatabaseName%", containerName: "%CosmosContainerName%",
-            Connection = "CosmosConnectionString",
-            CreateIfNotExists = false,
-            SqlQuery = "SELECT TOP 1 * FROM c ORDER BY c.readAt DESC"
-        )] IEnumerable<GlucoseReading> previousReadings,
-        [CosmosDB(databaseName: "%CosmosDatabaseName%", containerName: "%CosmosContainerName%",
-            Connection = "CosmosConnectionString",
-            CreateIfNotExists = false,
-            PartitionKey = "/id"
-        )]IAsyncCollector<GlucoseReading> readingsOut,
-        ILogger log)
+    private readonly ILogger _logger;
+
+    public DataTransferFunc(ILogger<DataTransferFunc> logger)
     {
-        log.LogInformation("Nightscout Data Transfer Function started");
+        _logger = logger;
+    }
+
+    [Function("DataTransferFunc")]
+    [CosmosDBOutput(
+        "%CosmosDatabaseName%",
+        "%CosmosContainerName%", 
+        Connection = "CosmosConnectionString", 
+        PartitionKey = "/id",
+        CreateIfNotExists = false)]
+    public async Task<IEnumerable<GlucoseReading>> RunAsync(
+        [TimerTrigger("0 */5 * * * *", RunOnStartup = true)] TimerInfo timer, 
+        [CosmosDBInput(databaseName: "%CosmosDatabaseName%", containerName: "%CosmosContainerName%",
+            Connection = "CosmosConnectionString",
+            SqlQuery = "SELECT TOP 1 * FROM c ORDER BY c.readAt DESC"
+        )] IEnumerable<GlucoseReading> previousReadings)
+    {
+        _logger.LogInformation("Nightscout Data Transfer Function started");
         try
         {
-            var collection = GetMongoCollection(log);
+            var collection = GetMongoCollection(_logger);
             var previousReading = previousReadings.FirstOrDefault();
             var targetTimestamp = previousReading?.ReadTimestampUtc ?? 0;
             var documents = collection.GetDocumentsSince(targetTimestamp);
 
             if (!documents.HasElements())
             {
-                log.LogWarning("No documents to transfer");
-                return;
+                _logger.LogWarning("No documents to transfer");
+                return new List<GlucoseReading>();
             }
-            
-            var documentsAdded = await readingsOut.AddRangeAsync(documents, log, previousReading);
 
-            log.LogInformation("Added {Count} documents to CosmosDb", documentsAdded);
+            var glucoseReadings = documents.ToGlucoseReadings(previousReading);
+            _logger.LogInformation("Converted {Count} documents to CosmosDb", documents.Count);
+            
+            return glucoseReadings;
         }
         catch (Exception e)
         {
-            log.LogError(e, "Failed to transfer data from MongoDb to CosmosDb");
+            _logger.LogError(e, "Failed to transfer data from MongoDb to CosmosDb");
             throw;
         }
         finally
         {
-            log.LogTrace("Nightscout Data Transfer Function finished!");
+            _logger.LogTrace("Nightscout Data Transfer Function finished!");
         }
     }
-    
+
     /// <summary>
     /// Initializes the MongoDb collection.
     /// This is the source of data for Nightscout.
@@ -82,11 +90,11 @@ public static class DataTransferFunc
         }
         catch (Exception e)
         {
-            log.LogError(e, 
+            log.LogError(e,
                 "Error while getting MongoDb collection. " +
                 "Connection string size: {ConnectionStringSize} " +
                 "| Database: {DatabaseName} " +
-                "| Collection: {CollectionName}", 
+                "| Collection: {CollectionName}",
                 string.IsNullOrWhiteSpace(connectionString) ? "null" : connectionString.Length,
                 databaseName,
                 collectionName);

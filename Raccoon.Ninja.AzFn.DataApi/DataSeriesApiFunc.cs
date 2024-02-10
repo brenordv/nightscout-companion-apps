@@ -5,18 +5,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Raccoon.Ninja.AzFn.DataApi.ExtensionMethods;
 using Raccoon.Ninja.AzFn.DataApi.Utils;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.Models;
+using Microsoft.Azure.Functions.Worker;
 
 namespace Raccoon.Ninja.AzFn.DataApi;
 
-public static class DataSeriesApiFunc
+public class DataSeriesApiFunc
 {
+    private readonly ILogger _logger;
+
+    public DataSeriesApiFunc(ILogger<DataSeriesApiFunc> logger)
+    {
+        _logger = logger;
+    }
+
     // 14 days.
     private const int DefaultLimit = 4032;
     private static int? _dataSeriesMaxRecords;
@@ -29,20 +35,19 @@ public static class DataSeriesApiFunc
         }
     }
 
-    [FunctionName("DataSeriesApiFunc")]
-    public static async Task<IActionResult> RunAsync(
+    [Function("DataSeriesApiFunc")]
+    public async Task<IActionResult> RunAsync(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "DataSeriesApiFunc/{limit:int}")]
-        HttpRequest req,
-        [CosmosDB(Connection = "CosmosConnectionString")] CosmosClient client, 
-        ILogger log, 
+        HttpRequest req, 
+        [CosmosDBInput(Connection = "CosmosConnectionString")] CosmosClient client, 
         int limit = 1)
     {
-        log.LogInformation("Data Series API call received. Request by IP: {Ip}", req.HttpContext.Connection.RemoteIpAddress);
+        _logger.LogInformation("Data Series API call received. Request by IP: {Ip}", req.HttpContext.Connection.RemoteIpAddress);
         if (!Validators.IsKeyValid(await req.Body.ExtractKey()))
             return new UnauthorizedResult();
-        
+
         var (limitIsValid, adjustedLimit) = ValidateLimit(limit);
-        
+
         if (!limitIsValid)
             return new BadRequestResult();
 
@@ -55,7 +60,7 @@ public static class DataSeriesApiFunc
 
         using var resultSet = container.GetItemQueryIterator<GlucoseReading>(queryDefinition);
         var response = new List<GlucoseReadingResponse>();
-        
+
         while (resultSet.HasMoreResults)
         {
             response.AddRange((await resultSet.ReadNextAsync()).Select(x => (GlucoseReadingResponse)x));
@@ -71,7 +76,7 @@ public static class DataSeriesApiFunc
         var maxRecords = Environment.GetEnvironmentVariable("DataSeriesMaxRecords");
         return int.TryParse(maxRecords, out var result) ? result : DefaultLimit;
     }
-    
+
     private static (bool limitIsValid, int adjustedLimit) ValidateLimit(int limit)
     {
         return limit <= 0
