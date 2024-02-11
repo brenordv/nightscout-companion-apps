@@ -10,6 +10,7 @@ using Raccoon.Ninja.AzFn.DataApi.Utils;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.Models;
 using Microsoft.Azure.Functions.Worker;
+using Newtonsoft.Json;
 
 namespace Raccoon.Ninja.AzFn.DataApi;
 
@@ -58,11 +59,11 @@ public class DataLatestHbA1CFunc
             if (latestSuccessful is null && latestPartialSuccessful is null)
                 return new NoContentResult();
 
-            return new OkObjectResult(new DataLatestHbA1CFuncResponse
+            return new OkObjectResult(JsonConvert.SerializeObject(new DataLatestHbA1CFuncResponse
             {
                 LatestSuccessful = latestSuccessful,
                 LatestPartialSuccessful = latestPartialSuccessful
-            });
+            }));
         }
         catch (Exception e)
         {

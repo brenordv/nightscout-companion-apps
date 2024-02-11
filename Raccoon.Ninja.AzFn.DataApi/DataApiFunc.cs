@@ -10,6 +10,7 @@ using Raccoon.Ninja.AzFn.DataApi.Utils;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.Models;
 using Microsoft.Azure.Functions.Worker;
+using Newtonsoft.Json;
 
 namespace Raccoon.Ninja.AzFn.DataApi;
 
@@ -49,7 +50,7 @@ public class DataApiFunc
 
             return latestReading is null
                 ? new NoContentResult()
-                : new OkObjectResult(response);
+                : new OkObjectResult(JsonConvert.SerializeObject(response));
         }
         catch (Exception e)
         {

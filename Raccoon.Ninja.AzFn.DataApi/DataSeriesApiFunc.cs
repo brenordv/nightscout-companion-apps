@@ -11,6 +11,7 @@ using Raccoon.Ninja.AzFn.DataApi.Utils;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.Models;
 using Microsoft.Azure.Functions.Worker;
+using Newtonsoft.Json;
 
 namespace Raccoon.Ninja.AzFn.DataApi;
 
@@ -72,7 +73,7 @@ public class DataSeriesApiFunc
 
         return response.Count == 0
             ? new NoContentResult()
-            : new OkObjectResult(response);
+            : new OkObjectResult(JsonConvert.SerializeObject(response));
     }
 
     private static int GetDataSeriesMaxRecords()
