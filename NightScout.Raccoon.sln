@@ -7,13 +7,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "98. Docs", "98. Docs", "{B4511EF8-6D39-4B4D-AC77-D00B2763F896}"
 	ProjectSection(SolutionItems) = preProject
 		readme.md = readme.md
-		.github\workflows\master-publish-dataapi.yml = .github\workflows\master-publish-dataapi.yml
-		.github\workflows\master-publish-datatransfer.yml = .github\workflows\master-publish-datatransfer.yml
-		.github\workflows\master-publish-glucose-mon-app.yml = .github\workflows\master-publish-glucose-mon-app.yml
-		.github\workflows\template-test-build-and-publish-to-azure.yml = .github\workflows\template-test-build-and-publish-to-azure.yml
-		.github\workflows\template-qa-sonarcloud.yml = .github\workflows\template-qa-sonarcloud.yml
-		.github\workflows\qa-auto-monthly.yml = .github\workflows\qa-auto-monthly.yml
-		.github\workflows\qa-on-pull-requests.yml = .github\workflows\qa-on-pull-requests.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01. Domain", "01. Domain", "{11F72AFB-B94A-4E9A-8817-F1FB60E9DF6D}"
@@ -35,6 +28,17 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raccoon.Ninja.Cli.CGMDataDisplayLauncher", "Raccoon.Ninja.Cli.CGMDataDisplayLauncher\Raccoon.Ninja.Cli.CGMDataDisplayLauncher.csproj", "{7BC539F4-D458-40C0-8277-0E6D24416E8C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raccoon.Ninja.Extensions.Desktop.Logging", "Raccoon.Ninja.Extensions.Desktop.Logging\Raccoon.Ninja.Extensions.Desktop.Logging.csproj", "{1CAC242F-719D-4E31-BEF8-7E3972F12482}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "97. Pipelines", "97. Pipelines", "{E55E0AE2-F43E-4647-9884-7F41EA819D5E}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\master-publish-dataapi.yml = .github\workflows\master-publish-dataapi.yml
+		.github\workflows\master-publish-datatransfer.yml = .github\workflows\master-publish-datatransfer.yml
+		.github\workflows\master-publish-glucose-mon-app.yml = .github\workflows\master-publish-glucose-mon-app.yml
+		.github\workflows\qa-auto-monthly.yml = .github\workflows\qa-auto-monthly.yml
+		.github\workflows\qa-on-pull-requests.yml = .github\workflows\qa-on-pull-requests.yml
+		.github\workflows\template-qa-sonarcloud.yml = .github\workflows\template-qa-sonarcloud.yml
+		.github\workflows\template-test-build-and-publish-to-azure.yml = .github\workflows\template-test-build-and-publish-to-azure.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
