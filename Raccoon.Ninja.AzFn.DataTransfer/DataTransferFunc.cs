@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using Raccoon.Ninja.AzFn.DataTransfer.ExtensionMethods;
@@ -12,6 +10,7 @@ using Raccoon.Ninja.Extensions.MongoDb.Builders;
 using Raccoon.Ninja.Extensions.MongoDb.ExtensionMethods;
 using Raccoon.Ninja.Extensions.MongoDb.Models;
 using Microsoft.Azure.Functions.Worker;
+using Newtonsoft.Json;
 
 namespace Raccoon.Ninja.AzFn.DataTransfer;
 
@@ -24,42 +23,52 @@ public class DataTransferFunc
         _logger = logger;
     }
 
-    [Function("DataTransferFunc")]
+    //[Function("DataTransferFunc")]
     [CosmosDBOutput(
         "%CosmosDatabaseName%",
         "%CosmosContainerName%", 
-        Connection = "CosmosConnectionString", 
-        PartitionKey = "/id",
+        Connection = "CosmosConnectionString",
         CreateIfNotExists = false)]
-    public async Task<IEnumerable<GlucoseReading>> RunAsync(
+    public string Run(
         [TimerTrigger("0 */5 * * * *", RunOnStartup = true)] TimerInfo timer, 
-        [CosmosDBInput(databaseName: "%CosmosDatabaseName%", containerName: "%CosmosContainerName%",
+        [CosmosDBInput(
+            databaseName: "%CosmosDatabaseName%", 
+            containerName: "%CosmosContainerName%",
             Connection = "CosmosConnectionString",
             SqlQuery = "SELECT TOP 1 * FROM c ORDER BY c.readAt DESC"
         )] IEnumerable<GlucoseReading> previousReadings)
     {
         _logger.LogInformation("Nightscout Data Transfer Function started");
+
         try
         {
-            var collection = GetMongoCollection(_logger);
             var previousReading = previousReadings.FirstOrDefault();
+
             var targetTimestamp = previousReading?.ReadTimestampUtc ?? 0;
+
+            var collection = GetMongoCollection(_logger);
+
             var documents = collection.GetDocumentsSince(targetTimestamp);
 
             if (!documents.HasElements())
             {
                 _logger.LogWarning("No documents to transfer");
-                return new List<GlucoseReading>();
+
+                return null;
             }
 
             var glucoseReadings = documents.ToGlucoseReadings(previousReading);
+
             _logger.LogInformation("Converted {Count} documents to CosmosDb", documents.Count);
+
+            var result = JsonConvert.SerializeObject(glucoseReadings);
             
-            return glucoseReadings;
+            return result;
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Failed to transfer data from MongoDb to CosmosDb");
+
             throw;
         }
         finally
