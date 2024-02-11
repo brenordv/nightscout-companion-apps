@@ -10,7 +10,7 @@ on:
   workflow_call:
     inputs:
       dotnetVersion:
-        description: '[Required] The version of .NET to use. Example: "6.0.x"'
+        description: '[Required] The version of .NET to use. Example: "8.0.x"'
         required: true
         type: string
       targetPlatform:
@@ -18,7 +18,7 @@ on:
         required: true
         type: string
       targetRuntime:
-        description: '[Required] The target runtime for the build. Example: "net6.0"'
+        description: '[Required] The target runtime for the build. Example: "net8.0"'
         required: true
         type: string
       projectFolder:

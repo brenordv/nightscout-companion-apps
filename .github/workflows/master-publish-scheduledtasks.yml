@@ -14,9 +14,9 @@ jobs:
   deploy-using-template:
     uses: ./.github/workflows/template-test-build-and-publish-to-azure.yml
     with:
-      dotnetVersion: '6.0.x'
+      dotnetVersion: '8.0.x'
       targetPlatform: win-x64
-      targetRuntime: net6.0
+      targetRuntime: net8.0
       projectFolder: Raccoon.Ninja.AzFn.ScheduledTasks
       projectFile: Raccoon.Ninja.AzFn.ScheduledTasks.csproj
       releaseFilePrefix: "AzFnScheduledTasks"
