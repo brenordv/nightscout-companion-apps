@@ -23,7 +23,7 @@ public class DataTransferFunc
         _logger = logger;
     }
 
-    //[Function("DataTransferFunc")]
+    [Function("DataTransferFunc")]
     [CosmosDBOutput(
         "%CosmosDatabaseName%",
         "%CosmosContainerName%", 
