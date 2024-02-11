@@ -29,7 +29,7 @@ public class DataTransferFunc
         "%CosmosContainerName%", 
         Connection = "CosmosConnectionString",
         CreateIfNotExists = false)]
-    public string Run(
+    public IEnumerable<GlucoseReading> Run(
         [TimerTrigger("0 */5 * * * *", RunOnStartup = true)] TimerInfo timer, 
         [CosmosDBInput(
             databaseName: "%CosmosDatabaseName%", 
@@ -54,16 +54,14 @@ public class DataTransferFunc
             {
                 _logger.LogWarning("No documents to transfer");
 
-                return null;
+                return new List<GlucoseReading>();
             }
 
             var glucoseReadings = documents.ToGlucoseReadings(previousReading);
 
             _logger.LogInformation("Converted {Count} documents to CosmosDb", documents.Count);
 
-            var result = JsonConvert.SerializeObject(glucoseReadings);
-            
-            return result;
+            return glucoseReadings;
         }
         catch (Exception e)
         {

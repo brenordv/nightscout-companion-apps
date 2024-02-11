@@ -50,7 +50,7 @@ public class DataApiFunc
 
             return latestReading is null
                 ? new NoContentResult()
-                : new OkObjectResult(JsonConvert.SerializeObject(response));
+                : new OkObjectResult(response);
         }
         catch (Exception e)
         {

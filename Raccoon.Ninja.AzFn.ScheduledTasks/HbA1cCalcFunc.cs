@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
@@ -24,7 +23,7 @@ public class HbA1CCalcFunc
         "%CosmosAggregateContainerName%", 
         Connection = "CosmosConnectionString",
         CreateIfNotExists = false)]
-    public string Run(
+    public HbA1CCalculation Run(
         [TimerTrigger("0 0 0 * * *"
             #if DEBUG
             , RunOnStartup = true
@@ -56,9 +55,7 @@ public class HbA1CCalcFunc
             if (previousCalculation is not null)
                 hbA1C = hbA1C with { Delta = hbA1C.Value - previousCalculation.Value };
 
-            var result = JsonConvert.SerializeObject(hbA1C);
-
-            return result;
+            return hbA1C;
         }
         catch (Exception e)
         {
