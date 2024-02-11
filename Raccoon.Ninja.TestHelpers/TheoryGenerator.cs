@@ -1,75 +1,92 @@
-﻿using Raccoon.Ninja.Domain.Core.Enums;
+﻿using Raccoon.Ninja.Domain.Core.Entities;
+using Raccoon.Ninja.Domain.Core.Enums;
+using Xunit;
 
 namespace Raccoon.Ninja.TestHelpers;
 
 public static class TheoryGenerator
 {
-
-
-    public static IEnumerable<object[]> AllTrendsWithExpectedStrings()
+    public static TheoryData<Trend, string> AllTrendsWithExpectedStrings()
     {
-        yield return new object[] { Trend.TripleUp, "Zooming Skyward" };
-        yield return new object[] { Trend.DoubleUp, "Rapid Ascent" };
-        yield return new object[] { Trend.SingleUp, "Steep Climb" };
-        yield return new object[] { Trend.FortyFiveUp, "Going Up, Captain" };
-        yield return new object[] { Trend.Flat, "Nice and easy" };
-        yield return new object[] { Trend.FortyFiveDown, "Descending Swiftly" };
-        yield return new object[] { Trend.SingleDown, "Plummet Mode" };
-        yield return new object[] { Trend.DoubleDown, "Double the plunge" };
-        yield return new object[] { Trend.TripleDown, "Free-fall Frenzy" };
-        yield return new object[] { Trend.NotComputable, "Wandering in the Unknown" };
+        return new TheoryData<Trend, string>
+        {
+            { Trend.TripleUp, "Zooming Skyward" },
+            { Trend.DoubleUp, "Rapid Ascent" },
+            { Trend.SingleUp, "Steep Climb" },
+            { Trend.FortyFiveUp, "Going Up, Captain" },
+            { Trend.Flat, "Nice and easy" },
+            { Trend.FortyFiveDown, "Descending Swiftly" },
+            { Trend.SingleDown, "Plummet Mode" },
+            { Trend.DoubleDown, "Double the plunge" },
+            { Trend.TripleDown, "Free-fall Frenzy" },
+            { Trend.NotComputable, "Wandering in the Unknown" },
+        };
     }
 
-    public static IEnumerable<object[]> VariantStringsWithCorrespondingTrend()
+    public static TheoryData<Trend, string> VariantStringsWithCorrespondingTrend()
     {
+        var data = new TheoryData<Trend, string>();
+
         foreach (var valueLabelPair in AllTrendsWithExpectedStrings())
         {
-            var trend = (Trend) valueLabelPair[0];
-            var label = (string) valueLabelPair[1];
+            var trend = (Trend)valueLabelPair[0];
+            var label = (string)valueLabelPair[1];
 
-            yield return new object[] { label, trend };
-            yield return new object[] { label.ToLowerInvariant(), trend };
-            yield return new object[] { label.ToUpperInvariant(), trend };
+            data.Add(trend, label);
+            data.Add(trend, label.ToLowerInvariant());
+            data.Add(trend, label.ToUpperInvariant());
         }
+
+        return data;
     }
 
-    public static IEnumerable<object[]> TimeStampAndCorrespondingDateTimes()
+    public static TheoryData<long, DateTime> TimeStampAndCorrespondingDateTimes()
     {
+        var data = new TheoryData<long, DateTime>();
+
         var testDate = DateTime.MinValue.ToUniversalTime();
-        yield return new object[] { testDate.ToUnixTimestamp(), testDate };
-        
+        data.Add(testDate.ToUnixTimestamp(), testDate);
+
         testDate = DateTime.MaxValue.ToUniversalTime();
-        yield return new object[] { testDate.ToUnixTimestamp(), testDate };
-        
+        data.Add(testDate.ToUnixTimestamp(), testDate);
+
         testDate = DateTime.UtcNow;
-        yield return new object[] { testDate.ToUnixTimestamp(), testDate };
-        
+        data.Add(testDate.ToUnixTimestamp(), testDate);
+
         //Leap year day test.
         testDate = new DateTime(2020, 2, 29, 23, 59, 59, DateTimeKind.Utc);
-        yield return new object[] { testDate.ToUnixTimestamp(), testDate };
+        data.Add(testDate.ToUnixTimestamp(), testDate);
+
+        return data;
     }
 
-    public static IEnumerable<object[]> ValidHb1AcDataSets()
+    public static TheoryData<IList<GlucoseReading>, float> ValidHb1AcDataSets()
     {
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 80), 4.4146338f };
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 100), 5.111498f };
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 150), 6.853658f };
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 170), 7.5505223f };
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 210), 8.944251f };
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 300), 12.080139f };
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 400), 15.56446f };
+        var data = new TheoryData<IList<GlucoseReading>, float>
+        {
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 80), 4.4146338f },
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 100), 5.111498f },
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 150), 6.853658f },
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 170), 7.5505223f },
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 210), 8.944251f },
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 300), 12.080139f },
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 400), 15.56446f }
+        };
+
+        return data;
     }
 
-    public static IEnumerable<object[]> PartiallyValidHb1AcDataSets()
+    public static TheoryData<IList<GlucoseReading>, float> PartiallyValidHb1AcDataSets()
     {
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 80), 4.4146338f };
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 100), 5.111498f };
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 150), 6.853658f };
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 170), 7.5505223f };
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 210), 8.944251f };
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 300), 12.080139f };
-        yield return new object[] { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 400), 15.56446f };
+        return new TheoryData<IList<GlucoseReading>, float>
+        {
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 80), 4.4146338f },
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 100), 5.111498f },
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 150), 6.853658f },
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 170), 7.5505223f },
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 210), 8.944251f },
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 300), 12.080139f },
+            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 400), 15.56446f },
+        };
     }
-    
-
 }

@@ -9,7 +9,7 @@ public class StringConvertersTests
 {
     [Theory]
     [MemberData(nameof(TheoryGenerator.VariantStringsWithCorrespondingTrend), MemberType = typeof(TheoryGenerator))]
-    public void ToTrend_Success(string label, Trend expected)
+    public void ToTrend_Success(Trend expected, string label)
     {
         //Arrange
         var actual = Converter.ToTrend(label);

@@ -94,7 +94,7 @@ public class ListExtensionsTests
 
     [Theory]
     [MemberData(nameof(TheoryGenerator.PartiallyValidHb1AcDataSets), MemberType = typeof(TheoryGenerator))]
-    public void CalculateHbA1c_WhenListHasOneReading_ShouldReturnPartialSuccess(List<GlucoseReading> readings, float expectedResult)
+    public void CalculateHbA1c_WhenListHasOneReading_ShouldReturnPartialSuccess(IList<GlucoseReading> readings, float expectedResult)
     {
         // Arrange & Act
         var result = readings.CalculateHbA1C(ReferenceDate);
@@ -106,7 +106,7 @@ public class ListExtensionsTests
 
     [Theory]
     [MemberData(nameof(TheoryGenerator.ValidHb1AcDataSets), MemberType = typeof(TheoryGenerator))]
-    public void CalculateHbA1c_WhenListHasExactNumberOfReadings_ShouldReturnSuccess(List<GlucoseReading> readings, float expectedResult)
+    public void CalculateHbA1c_WhenListHasExactNumberOfReadings_ShouldReturnSuccess(IList<GlucoseReading> readings, float expectedResult)
     {
         // Arrange & Act
         var result = readings.CalculateHbA1C(ReferenceDate);

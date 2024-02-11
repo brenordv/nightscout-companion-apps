@@ -10,5 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="35.4.0" />
+    <PackageReference Include="xunit.extensibility.core" Version="2.6.6" />
   </ItemGroup>
 </Project>

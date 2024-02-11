@@ -9,6 +9,7 @@
     <FileVersion>2.0.2</FileVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
     <AssemblyName>CGMDataDisplay</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.23.1" />

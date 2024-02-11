@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using Raccoon.Ninja.Domain.Core.Converters;
+﻿using Raccoon.Ninja.Domain.Core.Converters;
 using Raccoon.Ninja.Domain.Core.Enums;
 using Raccoon.Ninja.TestHelpers;
 
