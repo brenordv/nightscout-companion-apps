@@ -10,7 +10,7 @@
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=brenordv_nightscout-companion-apps&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=brenordv_nightscout-companion-apps)
 [![CGM Data Display App CI/CD Using Reusable Workflow](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-glucose-mon-app.yml/badge.svg)](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-glucose-mon-app.yml)
 [![Data API Function App CI/CD Workflow Using Template](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-dataapi.yml/badge.svg)](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-dataapi.yml)
-[![Data Transfer Function CI/CD Using Reusable Workflow](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-datatransfer.yml/badge.svg)](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-datatransfer.yml)
+[![Data Transfer Function CI/CD Using Reusable Workflow](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-scheduledtasks.yml/badge.svg)](https://github.com/brenordv/nightscout-companion-apps/actions/workflows/master-publish-scheduledtasks.yml)
 
 # Nightscout Companion Apps
 
