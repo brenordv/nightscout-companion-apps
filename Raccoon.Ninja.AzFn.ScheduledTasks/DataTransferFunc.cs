@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using Raccoon.Ninja.AzFn.DataTransfer.ExtensionMethods;
+using Newtonsoft.Json;
+using Raccoon.Ninja.AzFn.ScheduledTasks.ExtensionMethods;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 using Raccoon.Ninja.Extensions.MongoDb.Builders;
 using Raccoon.Ninja.Extensions.MongoDb.ExtensionMethods;
 using Raccoon.Ninja.Extensions.MongoDb.Models;
-using Microsoft.Azure.Functions.Worker;
-using Newtonsoft.Json;
 
-namespace Raccoon.Ninja.AzFn.DataTransfer;
+namespace Raccoon.Ninja.AzFn.ScheduledTasks;
 
 public class DataTransferFunc
 {

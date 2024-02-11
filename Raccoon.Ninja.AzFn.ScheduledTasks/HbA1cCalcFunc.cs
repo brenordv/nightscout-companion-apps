@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
-using Microsoft.Azure.Functions.Worker;
-using Newtonsoft.Json;
 
-namespace Raccoon.Ninja.AzFn.DataTransfer;
+namespace Raccoon.Ninja.AzFn.ScheduledTasks;
 
 public class HbA1CCalcFunc
 {

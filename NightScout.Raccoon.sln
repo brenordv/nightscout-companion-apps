@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raccoon.Ninja.Domain.Core.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raccoon.Ninja.TestHelpers", "Raccoon.Ninja.TestHelpers\Raccoon.Ninja.TestHelpers.csproj", "{3B8CFC31-3D0C-4BDA-94A1-38D572B64FFA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raccoon.Ninja.AzFn.DataTransfer", "Raccoon.Ninja.AzFn.DataTransfer\Raccoon.Ninja.AzFn.DataTransfer.csproj", "{7367C858-3DAF-4FD7-B33E-31BA39B0F19E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raccoon.Ninja.AzFn.ScheduledTasks", "Raccoon.Ninja.AzFn.ScheduledTasks\Raccoon.Ninja.AzFn.ScheduledTasks.csproj", "{7367C858-3DAF-4FD7-B33E-31BA39B0F19E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raccoon.Ninja.AzFn.DataApi", "Raccoon.Ninja.AzFn.DataApi\Raccoon.Ninja.AzFn.DataApi.csproj", "{7D1BE348-53AF-4765-B0D9-9B87E685EE18}"
 EndProject
@@ -32,7 +32,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "97. Pipelines", "97. Pipelines", "{E55E0AE2-F43E-4647-9884-7F41EA819D5E}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\master-publish-dataapi.yml = .github\workflows\master-publish-dataapi.yml
-		.github\workflows\master-publish-datatransfer.yml = .github\workflows\master-publish-datatransfer.yml
+		.github\workflows\master-publish-scheduledtasks.yml = .github\workflows\master-publish-scheduledtasks.yml
 		.github\workflows\master-publish-glucose-mon-app.yml = .github\workflows\master-publish-glucose-mon-app.yml
 		.github\workflows\qa-auto-monthly.yml = .github\workflows\qa-auto-monthly.yml
 		.github\workflows\qa-on-pull-requests.yml = .github\workflows\qa-on-pull-requests.yml

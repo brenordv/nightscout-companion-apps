@@ -3,7 +3,7 @@ using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Extensions.MongoDb.ExtensionMethods;
 using Raccoon.Ninja.Extensions.MongoDb.Models;
 
-namespace Raccoon.Ninja.AzFn.DataTransfer.ExtensionMethods;
+namespace Raccoon.Ninja.AzFn.ScheduledTasks.ExtensionMethods;
 
 public static class ListExtensions
 {
