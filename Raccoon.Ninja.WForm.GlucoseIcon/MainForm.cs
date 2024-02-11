@@ -22,11 +22,10 @@ public partial class MainForm : Form
     private static partial int DestroyIcon(IntPtr handle);
 
 // Wrapper method to call the P/Invoke method and convert the return value to bool
-    private static bool DestroyIconWrapper(IntPtr handle) {
-        if (DestroyIcon(handle) == 0) return true;
+    private static void DestroyIconWrapper(IntPtr handle) {
+        if (DestroyIcon(handle) == 0) return;
 
         Logger.LogTrace("DestroyIcon failed with error code: {ErrorCode}", Marshal.GetLastWin32Error());
-        return false;
     }
     
     public MainForm()
