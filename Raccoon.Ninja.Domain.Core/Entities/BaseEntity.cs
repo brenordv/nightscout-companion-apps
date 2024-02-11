@@ -1,15 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Raccoon.Ninja.Domain.Core.Entities;
 
 public record BaseEntity
 {
-    [JsonProperty("id")] 
+    [JsonPropertyName("id")] 
     public string Id { get; init; } = Guid.NewGuid().ToString();
     
-    [JsonProperty("value")]
+    [JsonPropertyName("value")]
     public float Value { get; init; }
     
-    [JsonProperty("delta", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("delta")]
     public float? Delta { get; init; }
 };

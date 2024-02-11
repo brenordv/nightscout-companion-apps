@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Raccoon.Ninja.Domain.Core.Enums;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
@@ -6,10 +6,10 @@ namespace Raccoon.Ninja.Domain.Core.Entities;
 
 public record GlucoseReading: BaseEntity
 {
-    [JsonProperty("trend")]
+    [JsonPropertyName("trend")]
     public Trend Trend { get; init; }
     
-    [JsonProperty("readAt")]
+    [JsonPropertyName("readAt")]
     public long ReadTimestampUtc { get; init; }
 
     [JsonIgnore] public DateTime ReadTimestampUtcAsDateTime => ReadTimestampUtc.ToUtcDateTime();
