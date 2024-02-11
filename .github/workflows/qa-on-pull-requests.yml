@@ -15,7 +15,7 @@ jobs:
       organization: 'raccoon-ninja'
       verbose: true
       sonarExclusions: '**/*Usings.cs,Raccoon.Ninja.TestHelpers/*'
-      coverageExclusions: '**/*Usings.cs,Raccoon.Ninja.TestHelpers/*,**/*Program.cs,Raccoon.Ninja.WForm.GlucoseIcon/Utils/AppSettings.cs,Raccoon.Ninja.AzFn.DataApi/DataLatestHbA1cFunc.cs,Raccoon.Ninja.AzFn.ScheduledTasks/HbA1cCalcFunc.cs'
+      coverageExclusions: '**/*Usings.cs,Raccoon.Ninja.TestHelpers/*,**/*Program.cs,Raccoon.Ninja.WForm.GlucoseIcon/Utils/AppSettings.cs,Raccoon.Ninja.AzFn.DataApi/*Func.cs,Raccoon.Ninja.AzFn.ScheduledTasks/*Func.cs'
 
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
