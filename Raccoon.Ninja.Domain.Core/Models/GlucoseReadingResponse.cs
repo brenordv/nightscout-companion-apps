@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using Raccoon.Ninja.Domain.Core.Converters;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.Enums;
@@ -6,6 +7,7 @@ using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
 namespace Raccoon.Ninja.Domain.Core.Models;
 
+[ExcludeFromCodeCoverage]
 public record GlucoseReadingResponse
 {
     [JsonPropertyName("id")] public string Id { get; init; }
