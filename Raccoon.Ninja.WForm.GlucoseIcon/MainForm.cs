@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using Raccoon.Ninja.Extensions.Desktop.Logging;
@@ -9,6 +10,7 @@ using Raccoon.Ninja.WForm.GlucoseIcon.Utils;
 
 namespace Raccoon.Ninja.WForm.GlucoseIcon;
 
+[ExcludeFromCodeCoverage]
 public partial class MainForm : Form
 {
     private TimerHandler _timerHandler;
@@ -16,8 +18,16 @@ public partial class MainForm : Form
     private IDataFetcher _dataFetcher;
 
     // Import the DestroyIcon extern method
-    [DllImport("user32.dll", CharSet = CharSet.Auto)]
-    private static extern bool DestroyIcon(IntPtr handle);
+    [LibraryImport("user32.dll")]
+    private static partial int DestroyIcon(IntPtr handle);
+
+// Wrapper method to call the P/Invoke method and convert the return value to bool
+    private static bool DestroyIconWrapper(IntPtr handle) {
+        if (DestroyIcon(handle) == 0) return true;
+
+        Logger.LogTrace("DestroyIcon failed with error code: {ErrorCode}", Marshal.GetLastWin32Error());
+        return false;
+    }
     
     public MainForm()
     {
@@ -111,7 +121,7 @@ public partial class MainForm : Form
         Icon = (Icon)createdIcon.Clone();
 
         Logger.LogTrace("Releasing icon handle");
-        DestroyIcon(taskbarIconHandle);
+        DestroyIconWrapper(taskbarIconHandle);
     }
 
     private void SetNotificationIcon(DataFetchResult dataFetched)
@@ -146,6 +156,6 @@ public partial class MainForm : Form
         _notifyIcon.Icon = (Icon)createdIcon.Clone();
 
         Logger.LogTrace("Releasing icon handle");
-        DestroyIcon(notificationIconHandle);
+        DestroyIconWrapper(notificationIconHandle);
     }
 }
