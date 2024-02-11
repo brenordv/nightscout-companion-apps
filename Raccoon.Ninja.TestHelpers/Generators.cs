@@ -1,23 +1,48 @@
 ﻿using Bogus;
+using MongoDB.Bson;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.Enums;
 using Raccoon.Ninja.Domain.Core.Models;
+using Raccoon.Ninja.Extensions.MongoDb.Models;
 
 namespace Raccoon.Ninja.TestHelpers;
 
 public static class Generators
 {
-    public static IList<GlucoseReading> GlucoseReadingMockList(int qty, float value)
+    public static IList<NightScoutMongoDocument> NightScoutMongoDocumentMockList(int qty, int? value = null)
+    {
+        var faker = new Faker<NightScoutMongoDocument>()
+            .RuleFor(x => x.Id, f => new ObjectId())
+            .RuleFor(x => x.Value, f => value ?? f.Random.Number(60, 399))
+            .RuleFor(x => x.ReadingTimestamp, f => f.Date.Past().ToUnixTimestamp())
+            .RuleFor(x => x.ReadingTimestampAsString, f => f.Date.Past().ToString("yyyy-MM-ddTHH:mm:ssZ"))
+            .RuleFor(x => x.Trend, f => f.Random.Enum<Trend>())
+            .RuleFor(x => x.Direction, f => f.Random.String2(5))
+            .RuleFor(x => x.Device, f => f.Random.String2(5))
+            .RuleFor(x => x.Type, f => f.Random.String2(5))
+            .RuleFor(x => x.UtcOffset, f => f.Random.Number(-12, 12))
+            .RuleFor(x => x.SystemTime, f => f.Date.Past().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+
+
+        return faker.Generate(qty).OrderBy(doc => doc.ReadingTimestamp).ToList();
+    }
+    
+    public static IList<GlucoseReading> GlucoseReadingMockList(int qty, float? value = null)
     {
         var faker = new Faker<GlucoseReading>()
             .RuleFor(x => x.Id, f => f.Random.Guid().ToString())
-            .RuleFor(x => x.Value, f => value)
+            .RuleFor(x => x.Value, f =>  value ?? f.Random.Number(60, 399))
             .RuleFor(x => x.Trend, f => f.Random.Enum<Trend>())
             .RuleFor(x => x.ReadTimestampUtc, f => f.Date.Past().ToUnixTimestamp());
 
         return faker.Generate(qty);
     }
-    
+
+    public static GlucoseReading GlucoseReadingMockSingle(float? value = null)
+    {
+        return GlucoseReadingMockList(1, value)[0];
+    }
+
     public static IList<HbA1CCalculationResponse> HbA1CCalculationResponseMockList(int qty, float? value = null, 
         float? delta = null, HbA1CCalculationStatus? status = null, string error = null)
     {

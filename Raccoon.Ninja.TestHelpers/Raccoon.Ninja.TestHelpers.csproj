@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Raccoon.Ninja.Domain.Core\Raccoon.Ninja.Domain.Core.csproj" />
+    <ProjectReference Include="..\Raccoon.Ninja.Extensions.MongoDb\Raccoon.Ninja.Extensions.MongoDb.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="35.4.0" />
