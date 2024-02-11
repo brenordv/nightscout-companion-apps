@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using Raccoon.Ninja.Extensions.Desktop.Logging;
@@ -9,6 +10,7 @@ using Raccoon.Ninja.WForm.GlucoseIcon.Utils;
 
 namespace Raccoon.Ninja.WForm.GlucoseIcon;
 
+[ExcludeFromCodeCoverage]
 public partial class MainForm : Form
 {
     private TimerHandler _timerHandler;
