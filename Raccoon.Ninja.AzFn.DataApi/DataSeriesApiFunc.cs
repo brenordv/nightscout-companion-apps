@@ -18,14 +18,11 @@ public class DataSeriesApiFunc
 {
     private readonly ILogger _logger;
 
-    public DataSeriesApiFunc(ILogger<DataSeriesApiFunc> logger)
-    {
-        _logger = logger;
-    }
-
     // 14 days.
     private const int DefaultLimit = 4032;
+
     private static int? _dataSeriesMaxRecords;
+
     private static int DataSeriesMaxRecords
     {
         get
@@ -33,6 +30,11 @@ public class DataSeriesApiFunc
             _dataSeriesMaxRecords ??= GetDataSeriesMaxRecords();
             return _dataSeriesMaxRecords.Value;
         }
+    }
+
+    public DataSeriesApiFunc(ILogger<DataSeriesApiFunc> logger)
+    {
+        _logger = logger;
     }
 
     [Function("DataSeriesApiFunc")]
@@ -43,6 +45,7 @@ public class DataSeriesApiFunc
         int limit = 1)
     {
         _logger.LogInformation("Data Series API call received. Request by IP: {Ip}", req.HttpContext.Connection.RemoteIpAddress);
+
         if (!Validators.IsKeyValid(await req.Body.ExtractKey()))
             return new UnauthorizedResult();
 
@@ -59,6 +62,7 @@ public class DataSeriesApiFunc
             .WithParameter("@limit", adjustedLimit);
 
         using var resultSet = container.GetItemQueryIterator<GlucoseReading>(queryDefinition);
+
         var response = new List<GlucoseReadingResponse>();
 
         while (resultSet.HasMoreResults)
@@ -74,6 +78,7 @@ public class DataSeriesApiFunc
     private static int GetDataSeriesMaxRecords()
     {
         var maxRecords = Environment.GetEnvironmentVariable("DataSeriesMaxRecords");
+
         return int.TryParse(maxRecords, out var result) ? result : DefaultLimit;
     }
 

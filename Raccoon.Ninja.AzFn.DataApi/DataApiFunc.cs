@@ -35,6 +35,7 @@ public class DataApiFunc
         IEnumerable<GlucoseReading> previousReadings)
     {
         _logger.LogInformation("Data API call received. Request by IP: {Ip}", req.HttpContext.Connection.RemoteIpAddress);
+
         GlucoseReading latestReading = null;
 
         try
@@ -43,6 +44,7 @@ public class DataApiFunc
                 return new UnauthorizedResult();
 
             latestReading = previousReadings.FirstOrDefault();
+
             GlucoseReadingResponse response = latestReading;
 
             return latestReading is null
@@ -53,6 +55,7 @@ public class DataApiFunc
         {
             _logger.LogError(e, "Error while processing request from IP: {Ip} | Latest reading : {LatestReading}",
                             req.HttpContext.Connection.RemoteIpAddress, latestReading);
+
             return new StatusCodeResult(500);
         }
     }
