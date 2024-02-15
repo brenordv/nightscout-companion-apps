@@ -1,4 +1,5 @@
-﻿using Raccoon.Ninja.Domain.Core.Entities;
+﻿using Raccoon.Ninja.Domain.Core.Constants;
+using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.Enums;
 using Xunit;
 
@@ -6,6 +7,15 @@ namespace Raccoon.Ninja.TestHelpers;
 
 public static class TheoryGenerator
 {
+    public static TheoryData<IList<float>> InvalidFloatListsWithNull()
+    {
+        return new TheoryData<IList<float>>
+        {
+            null,
+            new List<float>()
+        };
+    }
+    
     public static TheoryData<Trend, string> AllTrendsWithExpectedStrings()
     {
         return new TheoryData<Trend, string>
@@ -60,33 +70,33 @@ public static class TheoryGenerator
         return data;
     }
 
-    public static TheoryData<IList<GlucoseReading>, float> ValidHb1AcDataSets()
+    public static TheoryData<IList<float>, float> ValidHb1AcDataSets()
     {
-        var data = new TheoryData<IList<GlucoseReading>, float>
+        var data = new TheoryData<IList<float>, float>
         {
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 80), 4.4146338f },
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 100), 5.111498f },
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 150), 6.853658f },
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 170), 7.5505223f },
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 210), 8.944251f },
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 300), 12.080139f },
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn115Days, 400), 15.56446f }
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn115Days, 80f).ToList(), 4.4146338f },
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn115Days, 100f).ToList(), 5.111498f },
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn115Days, 150f).ToList(), 6.853658f },
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn115Days, 170f).ToList(), 7.5505223f },
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn115Days, 210f).ToList(), 8.944251f },
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn115Days, 300f).ToList(), 12.080139f },
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn115Days, 400f).ToList(), 15.56446f }
         };
 
         return data;
     }
 
-    public static TheoryData<IList<GlucoseReading>, float> PartiallyValidHb1AcDataSets()
+    public static TheoryData<IList<float>, float> PartiallyValidHb1AcDataSets()
     {
-        return new TheoryData<IList<GlucoseReading>, float>
+        return new TheoryData<IList<float>, float>
         {
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 80), 4.4146338f },
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 100), 5.111498f },
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 150), 6.853658f },
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 170), 7.5505223f },
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 210), 8.944251f },
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 300), 12.080139f },
-            { Generators.GlucoseReadingMockList(Constants.ReadingsIn1Day, 400), 15.56446f },
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn1Day, 80f).ToList(), 4.4146338f },
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn1Day, 100f).ToList(), 5.111498f },
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn1Day, 150f).ToList(), 6.853658f },
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn1Day, 170f).ToList(), 7.5505223f },
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn1Day, 210f).ToList(), 8.944251f },
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn1Day, 300f).ToList(), 12.080139f },
+            { Generators.ListWithNumbers(HbA1CConstants.ReadingsIn1Day, 400f).ToList(), 15.56446f },
         };
     }
 }

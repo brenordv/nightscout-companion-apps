@@ -1,5 +1,7 @@
-﻿using Bogus;
+﻿using System.Runtime.InteropServices.JavaScript;
+using Bogus;
 using MongoDB.Bson;
+using Raccoon.Ninja.Domain.Core.Calculators;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.Enums;
 using Raccoon.Ninja.Domain.Core.Models;
@@ -9,6 +11,33 @@ namespace Raccoon.Ninja.TestHelpers;
 
 public static class Generators
 {
+    public static IEnumerable<float> ListWithNumbers(int qty, float? exactValue = null, float? minValue = null, float? maxValue = null)
+    {
+        var faker = new Faker();
+
+        for (var i = 0; i < qty; i++)
+        {
+            yield return exactValue ?? faker.Random.Float(minValue ?? 0f, maxValue ?? 100f);
+        }
+    }
+
+    public static IEnumerable<int> ListWithNumbers(int qty, int? exactValue = null, int? minValue = null, int? maxValue = null)
+    {
+        foreach (var number in ListWithNumbers(qty, (float?)exactValue, (float?)minValue, (float?)maxValue))
+        {
+            yield return (int)number;
+        }
+    }
+
+    public static CalculationData CalculationDataMockSingle(IList<float> glucoseValues)
+    {
+        return new CalculationData
+        {
+            GlucoseValues = glucoseValues,
+            Average = glucoseValues is null || glucoseValues.Count == 0? 0f : glucoseValues.Average()
+        };
+    }
+
     public static IList<NightScoutMongoDocument> NightScoutMongoDocumentMockList(int qty, int? value = null)
     {
         var faker = new Faker<NightScoutMongoDocument>()

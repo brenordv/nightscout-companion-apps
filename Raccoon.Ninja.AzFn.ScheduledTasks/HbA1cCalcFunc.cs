@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using Raccoon.Ninja.Domain.Core.Calculators;
+using Raccoon.Ninja.Domain.Core.Calculators.Abstractions;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
@@ -50,12 +52,18 @@ public class HbA1CCalcFunc
         {
             var previousCalculation = previousCalculations.FirstOrDefault();
 
-            var hbA1C = readings.CalculateHbA1C(referenceDate);
+            var sortedGlucoseValues = readings.ToSortedValueArray();
 
-            if (previousCalculation is not null)
-                hbA1C = hbA1C with { Delta = hbA1C.Value - previousCalculation.Value };
+            var chain = BaseCalculatorHandler.BuildChain();
 
-            return hbA1C;
+            var calculatedData = chain.Handle(new CalculationData
+            {
+                GlucoseValues = sortedGlucoseValues,
+                PreviousHbA1C = previousCalculation
+            });
+            
+            // TODO: Convert the calculated data into the appropriate CosmosDb documents. 
+            return null;
         }
         catch (Exception e)
         {
