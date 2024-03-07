@@ -7,12 +7,8 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 /// distribution or frequency distribution. It's particularly useful because it allows for
 /// comparison of variability across different mean glucose levels.
 /// </summary>
-public class CoefficientOfVariationCalculator: BaseCalculatorHandler
+public class CoefficientOfVariationCalculatorHandler: BaseCalculatorHandler
 {
-    public CoefficientOfVariationCalculator(BaseCalculatorHandler nextHandler) : base(nextHandler)
-    {
-    }
-
     protected override bool CanHandle(CalculationData data)
     {
         return data.StandardDeviation > 0 && data.Average > 0;
@@ -26,7 +22,7 @@ public class CoefficientOfVariationCalculator: BaseCalculatorHandler
             {
                 Success = false,
                 Message = "Cannot calculate Coefficient of Variation without Standard Deviation and Average.",
-                FirstFailedStep = nameof(CoefficientOfVariationCalculator)
+                FirstFailedStep = nameof(CoefficientOfVariationCalculatorHandler)
             }
         };
     }

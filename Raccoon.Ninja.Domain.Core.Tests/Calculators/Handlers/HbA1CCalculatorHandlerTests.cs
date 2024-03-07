@@ -5,22 +5,21 @@ using Raccoon.Ninja.TestHelpers;
 
 namespace Raccoon.Ninja.Domain.Core.Tests.Calculators.Handlers;
 
-public class HbA1CCalculatorTests
+public class HbA1CCalculatorHandlerTests
 {
+    private readonly HbA1CCalculatorHandler _sut = new ();
+    
     [Theory]
     [MemberData(nameof(TheoryGenerator.InvalidFloatListsWithNull), MemberType = typeof(TheoryGenerator))]
     public void Handle_WhenListIsInvalid_ShouldReturnError(IList<float> glucoseValues)
     {
-        // Arrange
-        var calculator = new HbA1CCalculator(null);
-
         // Act
-        var result = calculator.Handle(Generators.CalculationDataMockSingle(glucoseValues));
+        var result = _sut.Handle(Generators.CalculationDataMockSingle(glucoseValues));
 
         // Assert
         var status = result.Status;
         status.Success.Should().BeFalse();
-        status.FirstFailedStep.Should().Be(nameof(HbA1CCalculator));
+        status.FirstFailedStep.Should().Be(nameof(HbA1CCalculatorHandler));
         status.Message.Should().Be("This calculation requires a valid average glucose value.");
     }
 
@@ -28,19 +27,17 @@ public class HbA1CCalculatorTests
     public void Handle_WhenListHasMoreThanExpected_ShouldReturnError()
     {
         // Arrange
-        var calculator = new HbA1CCalculator(null);
-
         const int actualReadingCount = HbA1CConstants.ReadingsIn115Days + 1;
 
         var glucoseValues = Generators.ListWithFloats(actualReadingCount, 100f).ToList();
 
         // Act
-        var result = calculator.Handle(Generators.CalculationDataMockSingle(glucoseValues));
+        var result = _sut.Handle(Generators.CalculationDataMockSingle(glucoseValues));
 
         // Assert
         var status = result.Status;
         status.Success.Should().BeFalse();
-        status.FirstFailedStep.Should().Be(nameof(HbA1CCalculator));
+        status.FirstFailedStep.Should().Be(nameof(HbA1CCalculatorHandler));
         status.Message.Should().Be($"Too many readings to calculate HbA1c reliably. Expected (max) 33120 but got {actualReadingCount}");
     }
 
@@ -48,11 +45,8 @@ public class HbA1CCalculatorTests
     [MemberData(nameof(TheoryGenerator.PartiallyValidHb1AcDataSets), MemberType = typeof(TheoryGenerator))]
     public void Handle_WhenListHasLessThanExpectedReadings_ShouldReturnPartialSuccess(IList<float> glucoseValues, float expectedResult)
     {
-        // Arrange
-        var calculator = new HbA1CCalculator(null);
-
         // Act
-        var result = calculator.Handle(Generators.CalculationDataMockSingle(glucoseValues));
+        var result = _sut.Handle(Generators.CalculationDataMockSingle(glucoseValues));
         
         // Assert
         result.Status.Success.Should().BeTrue();
@@ -65,11 +59,8 @@ public class HbA1CCalculatorTests
     [MemberData(nameof(TheoryGenerator.ValidHb1AcDataSets), MemberType = typeof(TheoryGenerator))]
     public void CalculateHbA1c_WhenListHasExactNumberOfReadings_ShouldReturnSuccess(IList<float> glucoseValues, float expectedResult)
     {
-        // Arrange
-        var calculator = new HbA1CCalculator(null);
-
         // Act
-        var result = calculator.Handle(Generators.CalculationDataMockSingle(glucoseValues));
+        var result = _sut.Handle(Generators.CalculationDataMockSingle(glucoseValues));
         
         // Assert
         result.Status.Success.Should().BeTrue();

@@ -7,12 +7,8 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 /// around the mean. A higher standard deviation indicates greater variability, which could be
 /// significant for managing diabetes.
 /// </summary>
-public class StandardDeviationCalculator: BaseCalculatorHandler
+public class StandardDeviationCalculatorHandler: BaseCalculatorHandler
 {
-    public StandardDeviationCalculator(BaseCalculatorHandler nextHandler) : base(nextHandler)
-    {
-    }
-
     public override CalculationData Handle(CalculationData data)
     {
         if (!CanHandle(data))

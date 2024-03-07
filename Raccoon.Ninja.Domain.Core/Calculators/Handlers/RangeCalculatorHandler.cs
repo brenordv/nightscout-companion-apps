@@ -6,12 +6,8 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 /// Range of glucose levels (difference between the maximum and minimum values) can provide insights into the
 /// variability of glucose levels over a period.
 /// </summary>
-public class RangeCalculator: BaseCalculatorHandler
+public class RangeCalculatorHandler: BaseCalculatorHandler
 {
-    public RangeCalculator(BaseCalculatorHandler nextHandler) : base(nextHandler)
-    {
-    }
-
     public override CalculationData Handle(CalculationData data)
     {
         if (!CanHandle(data))

@@ -8,12 +8,8 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 /// This measure is increasingly used in diabetes management to assess how well blood glucose levels
 /// are controlled.
 /// </summary>
-public class TimeInRangeCalculator: BaseCalculatorHandler
+public class TimeInRangeCalculatorHandler: BaseCalculatorHandler
 {
-    public TimeInRangeCalculator(BaseCalculatorHandler nextHandler) : base(nextHandler)
-    {
-    }
-
     public override CalculationData Handle(CalculationData data)
     {
         if (!CanHandle(data))

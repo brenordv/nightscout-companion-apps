@@ -17,7 +17,7 @@ public class BaseCalculatorHandlerTests
         
         // Assert
         result.Should().NotBeNull();
-        result.Should().BeOfType<AverageCalculator>();
+        result.Should().BeOfType<AverageCalculatorHandler>();
     }
     
     [Fact]
@@ -26,12 +26,13 @@ public class BaseCalculatorHandlerTests
         // Arrange
         const float expectedAverage = 3;
 
-        var lastHandler = new AddOneToAvgMockCalculator(null);
+        var firstHandler = new AddOneToAvgMockCalculator();
+        var middleHandler = new AddOneToAvgMockCalculator();
+        var lastHandler = new AddOneToAvgMockCalculator();
 
-        var middleHandler = new AddOneToAvgMockCalculator(lastHandler);
+        firstHandler.SetNextHandler(middleHandler);
+        middleHandler.SetNextHandler(lastHandler);
 
-        var firstHandler = new AddOneToAvgMockCalculator(middleHandler);
-        
         // Act
         var result = firstHandler.Handle(new CalculationData());
         

@@ -23,12 +23,8 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 /// understanding the variability of glucose levels while being less sensitive to outliers than the
 /// range.
 /// </summary>
-public class PercentileCalculator: BaseCalculatorHandler
+public class PercentileCalculatorHandler: BaseCalculatorHandler
 {
-    public PercentileCalculator(BaseCalculatorHandler nextHandler) : base(nextHandler)
-    {
-    }
-
     public override CalculationData Handle(CalculationData data)
     {
         if (!CanHandle(data))

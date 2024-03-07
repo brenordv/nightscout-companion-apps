@@ -3,8 +3,10 @@ using Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 
 namespace Raccoon.Ninja.Domain.Core.Tests.Calculators.Handlers;
 
-public class CoefficientOfVariationCalculatorTests
+public class CoefficientOfVariationCalculatorHandlerTests
 {
+    private readonly CoefficientOfVariationCalculatorHandler _sut = new ();
+    
     [Theory]
     [InlineData(-1, -1)]
     [InlineData(0, -1)]
@@ -21,15 +23,13 @@ public class CoefficientOfVariationCalculatorTests
             Average = average
         };
 
-        var calculator = new CoefficientOfVariationCalculator(null);
-
         // Act
-        var result = calculator.Handle(data);
+        var result = _sut.Handle(data);
 
         // Assert
         var status = result.Status;
         status.Success.Should().BeFalse();
-        status.FirstFailedStep.Should().Be(nameof(CoefficientOfVariationCalculator));
+        status.FirstFailedStep.Should().Be(nameof(CoefficientOfVariationCalculatorHandler));
         status.Message.Should().Be("Cannot calculate Coefficient of Variation without Standard Deviation and Average.");
     }
     
@@ -48,10 +48,8 @@ public class CoefficientOfVariationCalculatorTests
             Average = average
         };
 
-        var calculator = new CoefficientOfVariationCalculator(null);
-
         // Act
-        var result = calculator.Handle(data);
+        var result = _sut.Handle(data);
 
         // Assert
         result.CoefficientOfVariation.Should().Be(expected);

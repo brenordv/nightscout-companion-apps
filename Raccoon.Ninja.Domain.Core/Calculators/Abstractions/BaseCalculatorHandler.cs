@@ -15,13 +15,13 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Abstractions;
 /// </remarks>
 public abstract class BaseCalculatorHandler
 {
-    private readonly BaseCalculatorHandler _nextHandler;
+    private BaseCalculatorHandler _nextHandler;
 
-    protected BaseCalculatorHandler(BaseCalculatorHandler nextHandler)
+    public void SetNextHandler(BaseCalculatorHandler nextHandler)
     {
         _nextHandler = nextHandler;
     }
-
+    
     protected virtual bool CanHandle(CalculationData data)
     {
         return data.GlucoseValues is not null && data.GlucoseValues.Count > 0;
@@ -55,18 +55,29 @@ public abstract class BaseCalculatorHandler
     /// <returns>First link in the chain.</returns>
     public static BaseCalculatorHandler BuildChain()
     {
-        // Last step of the chain
-        var mageCalculator = new MageCalculator(null);
-        var tirCalculator = new TimeInRangeCalculator(mageCalculator);
-        var hbA1CCalculator = new HbA1CCalculator(tirCalculator);
-        var glucoseVariabilityCalculator = new RangeCalculator(hbA1CCalculator);
-        var medianCalculator = new MedianCalculator(glucoseVariabilityCalculator);
-        var percentileCalculator = new PercentileCalculator(medianCalculator);
-        var sdCalculator = new StandardDeviationCalculator(percentileCalculator);
-        var cvCalculator = new CoefficientOfVariationCalculator(sdCalculator);
-        var avgCalculator = new AverageCalculator(cvCalculator);
-        //First step of the chain
-
+        //First step (link) of the chain
+        var avgCalculator = new AverageCalculatorHandler();
+        var cvCalculator = new CoefficientOfVariationCalculatorHandler();
+        var sdCalculator = new StandardDeviationCalculatorHandler();
+        var percentileCalculator = new PercentileCalculatorHandler();
+        var medianCalculator = new MedianCalculatorHandler();
+        var glucoseVariabilityCalculator = new RangeCalculatorHandler();
+        var hbA1CCalculator = new HbA1CCalculatorHandler();
+        var tirCalculator = new TimeInRangeCalculatorHandler();        
+        var mageCalculator = new MageCalculatorHandler();
+        // Last step (link) of the chain
+        
+        // Chaining the links
+        avgCalculator.SetNextHandler(cvCalculator);
+        cvCalculator.SetNextHandler(sdCalculator);
+        sdCalculator.SetNextHandler(percentileCalculator);
+        percentileCalculator.SetNextHandler(medianCalculator);
+        medianCalculator.SetNextHandler(glucoseVariabilityCalculator);
+        glucoseVariabilityCalculator.SetNextHandler(hbA1CCalculator);
+        hbA1CCalculator.SetNextHandler(tirCalculator);
+        tirCalculator.SetNextHandler(mageCalculator);
+        
+        // Returning first link of the chain, that has a reference to the rest.
         return avgCalculator;
     }
 }

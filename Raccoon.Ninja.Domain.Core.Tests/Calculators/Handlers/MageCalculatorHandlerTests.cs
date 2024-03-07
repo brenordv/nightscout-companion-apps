@@ -4,9 +4,9 @@ using Raccoon.Ninja.TestHelpers;
 
 namespace Raccoon.Ninja.Domain.Core.Tests.Calculators.Handlers
 {
-    public class MageCalculatorTests
+    public class MageCalculatorHandlerTests
     {
-        private readonly MageCalculator _sut = new(null);
+        private readonly MageCalculatorHandler _sut = new();
 
         [Theory]
         [MemberData(nameof(TheoryGenerator.ValidMageDataSets), MemberType = typeof(TheoryGenerator))]

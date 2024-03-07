@@ -7,12 +7,8 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 /// the median is the average of the two middle values.
 /// For control of blood glucose, the median is a measure of central tendency that can be used to.
 /// </summary>
-public class MedianCalculator: BaseCalculatorHandler
+public class MedianCalculatorHandler: BaseCalculatorHandler
 {
-    public MedianCalculator(BaseCalculatorHandler nextHandler) : base(nextHandler)
-    {
-    }
-
     public override CalculationData Handle(CalculationData data)
     {
         if (!CanHandle(data))

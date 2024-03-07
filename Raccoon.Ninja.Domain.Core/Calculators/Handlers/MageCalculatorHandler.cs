@@ -15,12 +15,8 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 ///
 /// Lower is better.
 /// </summary>
-public class MageCalculator: BaseCalculatorHandler
+public class MageCalculatorHandler: BaseCalculatorHandler
 {
-    public MageCalculator(BaseCalculatorHandler nextHandler) : base(nextHandler)
-    {
-    }
-
     protected override bool CanHandle(CalculationData data)
     {
         return base.CanHandle(data) && data.StandardDeviation > 0;
@@ -33,7 +29,7 @@ public class MageCalculator: BaseCalculatorHandler
             Status = new CalculationDataStatus
             {
                 Success = false,
-                FirstFailedStep = nameof(MageCalculator),
+                FirstFailedStep = nameof(MageCalculatorHandler),
                 Message =
                     "This calculation requires the list of glucose readings, and standard deviation glucose values."
             }

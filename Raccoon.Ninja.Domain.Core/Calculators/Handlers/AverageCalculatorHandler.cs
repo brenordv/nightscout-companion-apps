@@ -6,12 +6,8 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 ///  Average Glucose: The average glucose level is a measure of central tendency that can be used to assess
 /// overall glucose control.
 /// </summary>
-public class AverageCalculator: BaseCalculatorHandler
+public class AverageCalculatorHandler: BaseCalculatorHandler
 {
-    public AverageCalculator(BaseCalculatorHandler nextHandler) : base(nextHandler)
-    {
-    }
-
     public override CalculationData Handle(CalculationData data)
     {
         if (!CanHandle(data))

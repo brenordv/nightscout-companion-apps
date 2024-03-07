@@ -9,14 +9,10 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 ///  HbA1C: The HbA1C test measures the average blood glucose level over the past 2-3 months.
 ///  It is used to monitor the effectiveness of diabetes treatment.
 /// </summary>
-public class HbA1CCalculator: BaseCalculatorHandler
+public class HbA1CCalculatorHandler: BaseCalculatorHandler
 {
     private const float GlucoseConversionFactor = 46.7f;
     private const float HbA1CDivisor = 28.7f;
-
-    public HbA1CCalculator(BaseCalculatorHandler nextHandler) : base(nextHandler)
-    {
-    }
 
     protected override bool CanHandle(CalculationData data)
     {
@@ -30,7 +26,7 @@ public class HbA1CCalculator: BaseCalculatorHandler
             Status = new CalculationDataStatus
             {
                 Success = false,
-                FirstFailedStep = nameof(HbA1CCalculator),
+                FirstFailedStep = nameof(HbA1CCalculatorHandler),
                 Message = data.Count <= HbA1CConstants.ReadingsIn115Days 
                     ? "This calculation requires a valid average glucose value." 
                     : $"Too many readings to calculate HbA1c reliably. Expected (max) {HbA1CConstants.ReadingsIn115Days} but got {data.Count}",
