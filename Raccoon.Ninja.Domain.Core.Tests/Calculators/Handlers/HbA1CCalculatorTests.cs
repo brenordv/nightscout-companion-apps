@@ -32,7 +32,7 @@ public class HbA1CCalculatorTests
 
         const int actualReadingCount = HbA1CConstants.ReadingsIn115Days + 1;
 
-        var glucoseValues = Generators.ListWithNumbers(actualReadingCount, 100f).ToList();
+        var glucoseValues = Generators.ListWithFloats(actualReadingCount, 100f).ToList();
 
         // Act
         var result = calculator.Handle(Generators.CalculationDataMockSingle(glucoseValues));

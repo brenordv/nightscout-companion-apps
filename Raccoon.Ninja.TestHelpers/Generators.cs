@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using Bogus;
+﻿using Bogus;
 using MongoDB.Bson;
 using Raccoon.Ninja.Domain.Core.Calculators;
 using Raccoon.Ninja.Domain.Core.Entities;
@@ -9,9 +8,60 @@ using Raccoon.Ninja.Extensions.MongoDb.Models;
 
 namespace Raccoon.Ninja.TestHelpers;
 
+public enum GeneratorSpikeDirection
+{
+    Up = 1,
+    Down = 2
+}
+
 public static class Generators
 {
-    public static IEnumerable<float> ListWithNumbers(int qty, float? exactValue = null, float? minValue = null, float? maxValue = null)
+    /// <summary>
+    /// This will generate a list of floats representing a blood sugar (glucose) value.
+    /// The values will go from min to max several times until the quantity of numbers generated
+    /// reach qty.
+    /// This will represent a timeline where the blood sugar of a person was spiking.
+    /// </summary>
+    /// <param name="qty"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <param name="spikeDirection"></param>
+    /// <returns></returns>
+    public static IEnumerable<float> GlucoseTimelineWithSpikes(int qty, float min=30, float max=350, int numberOfSpikes = 10, GeneratorSpikeDirection spikeDirection=GeneratorSpikeDirection.Up)
+    {
+        if (spikeDirection == GeneratorSpikeDirection.Up)
+        {
+            var range = max - min;
+            var increment = range / (qty / numberOfSpikes);
+            var currentValue = min;
+            for (var i = 0; i < qty; i++)
+            {
+                yield return currentValue;
+                currentValue += increment;
+                if (currentValue >= max)
+                {
+                    currentValue = min;
+                }
+            }
+        }
+        else if (spikeDirection == GeneratorSpikeDirection.Down)
+        {
+            var range = max - min;
+            var decrement = range / (qty / numberOfSpikes);
+            var currentValue = max;
+            for (var i = 0; i < qty; i++)
+            {
+                yield return currentValue;
+                currentValue -= decrement;
+                if (currentValue < min)
+                {
+                    currentValue = max;
+                }
+            }
+        }
+        
+    }
+    public static IEnumerable<float> ListWithFloats(int qty, float? exactValue = null, float? minValue = null, float? maxValue = null)
     {
         var faker = new Faker();
 
@@ -21,11 +71,13 @@ public static class Generators
         }
     }
 
-    public static IEnumerable<int> ListWithNumbers(int qty, int? exactValue = null, int? minValue = null, int? maxValue = null)
+    public static IEnumerable<int> ListWithIntegers(int qty, int? exactValue = null, int? minValue = null, int? maxValue = null)
     {
-        foreach (var number in ListWithNumbers(qty, (float?)exactValue, (float?)minValue, (float?)maxValue))
+        var faker = new Faker();
+
+        for (var i = 0; i < qty; i++)
         {
-            yield return (int)number;
+            yield return exactValue ?? faker.Random.Int(minValue ?? 0, maxValue ?? 100);
         }
     }
 

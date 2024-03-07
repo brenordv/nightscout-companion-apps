@@ -30,7 +30,7 @@ public class AverageCalculatorTests
         // Arrange
         var calculator = new AverageCalculator(null);
         
-        var data = Generators.CalculationDataMockSingle(Generators.ListWithNumbers(10, 100f).ToList());
+        var data = Generators.CalculationDataMockSingle(Generators.ListWithFloats(10, 100f).ToList());
         
         // Act
         var result = calculator.Handle(data);
