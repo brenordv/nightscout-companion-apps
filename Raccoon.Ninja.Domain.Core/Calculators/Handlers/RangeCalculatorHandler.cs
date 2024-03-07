@@ -8,17 +8,12 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 /// </summary>
 public class RangeCalculatorHandler: BaseCalculatorHandler
 {
-    public override CalculationData Handle(CalculationData data)
+    protected override CalculationData RunCalculation(CalculationData data)
     {
-        if (!CanHandle(data))
-        {
-            return HandleError(data);
-        }
-
-        return HandleNext(data with
+        return data with
         {
             Min = data.GlucoseValues.Min(),
             Max = data.GlucoseValues.Max(),
-        });
+        };
     }
 }

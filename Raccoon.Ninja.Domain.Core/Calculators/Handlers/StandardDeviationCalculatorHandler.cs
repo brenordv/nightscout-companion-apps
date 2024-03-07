@@ -9,22 +9,17 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 /// </summary>
 public class StandardDeviationCalculatorHandler: BaseCalculatorHandler
 {
-    public override CalculationData Handle(CalculationData data)
+    protected override CalculationData RunCalculation(CalculationData data)
     {
-        if (!CanHandle(data))
-        {
-            return HandleError(data);
-        }
-
         var glucoseValues = data.GlucoseValues;
 
         var average = data.Average;
 
         var standardDeviation = (float)Math.Sqrt(glucoseValues.Sum(r => Math.Pow(r - average, 2)) / glucoseValues.Count);
 
-        return HandleNext(data with
+        return data with
         {
             StandardDeviation = standardDeviation
-        });
+        };
     }
 }

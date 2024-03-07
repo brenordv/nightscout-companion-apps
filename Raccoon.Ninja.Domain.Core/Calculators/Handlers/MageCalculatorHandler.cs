@@ -19,30 +19,12 @@ public class MageCalculatorHandler: BaseCalculatorHandler
 {
     protected override bool CanHandle(CalculationData data)
     {
+        SetErrorMessage("This calculation requires the list of glucose readings, and standard deviation glucose values.");
         return base.CanHandle(data) && data.StandardDeviation > 0;
     }
 
-    protected override CalculationData HandleError(CalculationData data)
+    protected override CalculationData RunCalculation(CalculationData data)
     {
-        return data with
-        {
-            Status = new CalculationDataStatus
-            {
-                Success = false,
-                FirstFailedStep = nameof(MageCalculatorHandler),
-                Message =
-                    "This calculation requires the list of glucose readings, and standard deviation glucose values."
-            }
-        };
-    }
-
-    public override CalculationData Handle(CalculationData data)
-    {
-        if (!CanHandle(data))
-        {
-            return HandleError(data);
-        }
-
         var standardDeviation = data.StandardDeviation;
         var glucoseReadings = data.GlucoseValues;
 
@@ -72,6 +54,6 @@ public class MageCalculatorHandler: BaseCalculatorHandler
             ? significantExcursions.Average()
             : 0;
 
-        return HandleNext(data with { Mage = mage });
+        return data with { Mage = mage };
     }
 }

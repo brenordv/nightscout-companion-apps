@@ -9,23 +9,18 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 /// </summary>
 public class MedianCalculatorHandler: BaseCalculatorHandler
 {
-    public override CalculationData Handle(CalculationData data)
+    protected override CalculationData RunCalculation(CalculationData data)
     {
-        if (!CanHandle(data))
-        {
-            return HandleError(data);
-        }
-        
         var glucoseValues = data.GlucoseValues;
         var count = glucoseValues.Count;
         var isEven = count % 2 == 0;
         var middle = count / 2;
 
-        return HandleNext(data with
+        return data with
         {
             Median = isEven
                 ? (glucoseValues[(count - 1) / 2] + glucoseValues[count / 2]) / 2.0f
                 : glucoseValues[middle],
-        });
+        };
     }
 }

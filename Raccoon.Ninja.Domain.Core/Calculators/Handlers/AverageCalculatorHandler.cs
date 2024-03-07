@@ -8,18 +8,13 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 /// </summary>
 public class AverageCalculatorHandler: BaseCalculatorHandler
 {
-    public override CalculationData Handle(CalculationData data)
+    protected override CalculationData RunCalculation(CalculationData data)
     {
-        if (!CanHandle(data))
-        {
-            return HandleError(data);
-        }
-
         var average = data.GlucoseValues.Average();
 
-        return HandleNext(data with
+        return data with
         {
             Average = average,
-        });
+        };
     }
 }

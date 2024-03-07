@@ -10,19 +10,14 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 /// </summary>
 public class TimeInRangeCalculatorHandler: BaseCalculatorHandler
 {
-    public override CalculationData Handle(CalculationData data)
+    protected override CalculationData RunCalculation(CalculationData data)
     {
-        if (!CanHandle(data))
-        {
-            return HandleError(data);
-        }
-        
         var low = data.GlucoseValues.Count(v => v < GlucoseConstants.LowGlucoseThreshold);
         var normal = data.GlucoseValues.Count(v => v >= GlucoseConstants.LowGlucoseThreshold && v <= GlucoseConstants.HighGlucoseThreshold);
         var high = data.GlucoseValues.Count(v => v >= GlucoseConstants.HighGlucoseThreshold && v <= GlucoseConstants.VeryHighGlucoseThreshold);
         var veryHigh = data.GlucoseValues.Count(v => v > GlucoseConstants.VeryHighGlucoseThreshold);
 
-        return HandleNext(data with
+        return data with
         {
             TimeInRange = new CalculationDataTimeInRange
             {
@@ -31,7 +26,7 @@ public class TimeInRangeCalculatorHandler: BaseCalculatorHandler
                 High = ToPercents(high, data.Count),
                 VeryHigh = ToPercents(veryHigh, data.Count)
             }
-        });
+        };
     }
 
     private static float ToPercents(float value, float total)

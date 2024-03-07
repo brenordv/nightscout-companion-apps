@@ -15,39 +15,57 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Abstractions;
 /// </remarks>
 public abstract class BaseCalculatorHandler
 {
+    private string _errorMessage = "No glucose values were provided.";
     private BaseCalculatorHandler _nextHandler;
 
-    public void SetNextHandler(BaseCalculatorHandler nextHandler)
-    {
-        _nextHandler = nextHandler;
-    }
-    
-    protected virtual bool CanHandle(CalculationData data)
-    {
-        return data.GlucoseValues is not null && data.GlucoseValues.Count > 0;
-    }
-
-    protected virtual CalculationData HandleError(CalculationData data)
-    {
-        return data with
-        {
-            Status = new CalculationDataStatus
-            {
-                Message = "No glucose values were provided.",
-                Success = false,
-                FirstFailedStep = GetType().Name
-            }
-        };
-    }
-
-    protected CalculationData HandleNext(CalculationData data)
+    private CalculationData HandleNext(CalculationData data)
     {
         return _nextHandler is null 
             ? data 
             : _nextHandler.Handle(data);
     }
 
-    public abstract CalculationData Handle(CalculationData data);
+    protected void SetErrorMessage(string message)
+    {
+        _errorMessage = message;
+    }
+
+    protected virtual bool CanHandle(CalculationData data)
+    {
+        return data.GlucoseValues is not null && data.GlucoseValues.Count > 0;
+    }
+
+    protected CalculationData HandleError(CalculationData data)
+    {
+        return data with
+        {
+            Status = new CalculationDataStatus
+            {
+                Message = _errorMessage,
+                Success = false,
+                FirstFailedStep = GetType().Name
+            }
+        };
+    }
+
+    protected abstract CalculationData RunCalculation(CalculationData data);
+
+    public void SetNextHandler(BaseCalculatorHandler nextHandler)
+    {
+        _nextHandler = nextHandler;
+    }
+    
+    public CalculationData Handle(CalculationData data)
+    {
+        if (!CanHandle(data))
+        {
+            return HandleError(data);
+        }
+
+        var calculationResult = RunCalculation(data);
+
+        return HandleNext(calculationResult);
+    }
 
     /// <summary>
     /// Build the default chain of calculations.

@@ -11,32 +11,15 @@ public class CoefficientOfVariationCalculatorHandler: BaseCalculatorHandler
 {
     protected override bool CanHandle(CalculationData data)
     {
+        SetErrorMessage("Cannot calculate Coefficient of Variation without Standard Deviation and Average.");
         return data.StandardDeviation > 0 && data.Average > 0;
     }
 
-    protected override CalculationData HandleError(CalculationData data)
+    protected override CalculationData RunCalculation(CalculationData data)
     {
         return data with
         {
-            Status = new CalculationDataStatus
-            {
-                Success = false,
-                Message = "Cannot calculate Coefficient of Variation without Standard Deviation and Average.",
-                FirstFailedStep = nameof(CoefficientOfVariationCalculatorHandler)
-            }
-        };
-    }
-
-    public override CalculationData Handle(CalculationData data)
-    {
-        if (!CanHandle(data))
-        {
-            return HandleError(data);
-        }
-        
-        return HandleNext(data with
-        {
             CoefficientOfVariation = data.StandardDeviation / data.Average
-        });
+        };
     }
 }

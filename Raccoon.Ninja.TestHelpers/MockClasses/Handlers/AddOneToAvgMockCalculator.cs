@@ -5,11 +5,16 @@ namespace Raccoon.Ninja.TestHelpers.MockClasses.Handlers;
 
 public class AddOneToAvgMockCalculator: BaseCalculatorHandler
 {
-    public override CalculationData Handle(CalculationData data)
+    protected override bool CanHandle(CalculationData data)
     {
-        return HandleNext(data with
+        return data is not null;
+    }
+
+    protected override CalculationData RunCalculation(CalculationData data)
+    {
+        return data with
         {
             Average = data.Average + 1
-        });
+        };
     }
 }

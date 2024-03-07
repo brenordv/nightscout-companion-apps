@@ -25,19 +25,14 @@ namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 /// </summary>
 public class PercentileCalculatorHandler: BaseCalculatorHandler
 {
-    public override CalculationData Handle(CalculationData data)
+    protected override CalculationData RunCalculation(CalculationData data)
     {
-        if (!CanHandle(data))
-        {
-            return HandleError(data);
-        }
-        
         var p10 = CalculatePercentile(data.GlucoseValues, 10);
         var p25 = CalculatePercentile(data.GlucoseValues, 25);
         var p75 = CalculatePercentile(data.GlucoseValues, 75);
         var p90 = CalculatePercentile(data.GlucoseValues, 90);
 
-        return HandleNext(data with
+        return data with
         {
             Percentile = new CalculationDataPercentile
             {
@@ -47,7 +42,7 @@ public class PercentileCalculatorHandler: BaseCalculatorHandler
                 P90 = p90,
                 Iqr = p75 - p25
             }
-        });
+        };
     }
 
     private static float CalculatePercentile(IList<float> values, float percentile)

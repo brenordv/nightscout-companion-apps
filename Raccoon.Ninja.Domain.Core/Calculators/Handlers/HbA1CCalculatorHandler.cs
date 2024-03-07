@@ -16,36 +16,20 @@ public class HbA1CCalculatorHandler: BaseCalculatorHandler
 
     protected override bool CanHandle(CalculationData data)
     {
+        SetErrorMessage(data.Count <= HbA1CConstants.ReadingsIn115Days 
+            ? "This calculation requires a valid average glucose value." 
+            : $"Too many readings to calculate HbA1c reliably. Expected (max) {HbA1CConstants.ReadingsIn115Days} but got {data.Count}");
         return data.Average > 0 && data.Count is > 0 and <= HbA1CConstants.ReadingsIn115Days;
     }
 
-    protected override CalculationData HandleError(CalculationData data)
+    protected override CalculationData RunCalculation(CalculationData data)
     {
-        return data with
-        {
-            Status = new CalculationDataStatus
-            {
-                Success = false,
-                FirstFailedStep = nameof(HbA1CCalculatorHandler),
-                Message = data.Count <= HbA1CConstants.ReadingsIn115Days 
-                    ? "This calculation requires a valid average glucose value." 
-                    : $"Too many readings to calculate HbA1c reliably. Expected (max) {HbA1CConstants.ReadingsIn115Days} but got {data.Count}",
-            }
-        };
-    }
-
-    public override CalculationData Handle(CalculationData data)
-    {
-        if (!CanHandle(data))
-        {
-            return HandleError(data);
-        }
 
         var average = data.Average;
 
         var hba1C = (average + GlucoseConversionFactor) / HbA1CDivisor;
 
-        return HandleNext(data with
+        return data with
         {
             CurrentHbA1C = new HbA1CCalculation
             {
@@ -54,7 +38,7 @@ public class HbA1CCalculatorHandler: BaseCalculatorHandler
                 Delta = hba1C - data.PreviousHbA1C?.Value, // Null if data.PreviousHbA1C is null
                 Status = GetStatusByReadingCount(data.Count)
             }
-        });
+        };
     }
 
     private static HbA1CCalculationStatus GetStatusByReadingCount(int count)
