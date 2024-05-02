@@ -342,3 +342,6 @@ there is no guarantee regarding the accuracy, timeliness, or completeness of the
 If you experience symptoms or conditions that do not correspond with the data displayed by this project, you 
 should **always trust your body**. Immediately consult with a healthcare provider for accurate diagnosis and 
 appropriate treatment.
+
+---
+.
