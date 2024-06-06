@@ -44,10 +44,23 @@ public class PercentileCalculatorHandler: BaseCalculatorHandler
             }
         };
     }
-
+    
     private static float CalculatePercentile(IList<float> values, float percentile)
     {
-        var n = (int)Math.Ceiling((percentile / 100.0) * values.Count) - 1;
-        return values[n];
+        var sortedValues = values.OrderBy(x => x).ToList();
+        var position = percentile * (sortedValues.Count - 1f) / 100.0f;
+        var leftIndex = (int)Math.Floor(position);
+        var rightIndex = (int)Math.Ceiling(position);
+
+        if (leftIndex == rightIndex)
+        {
+            return sortedValues[leftIndex];
+        }
+
+        var leftValue = sortedValues[leftIndex];
+        var rightValue = sortedValues[rightIndex];
+        var fractional = position - leftIndex;
+
+        return leftValue + fractional * (rightValue - leftValue);
     }
 }
