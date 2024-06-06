@@ -13,23 +13,23 @@ public class TimeInRangeCalculatorHandler: BaseCalculatorHandler
     protected override CalculationData RunCalculation(CalculationData data)
     {
         var low = data.GlucoseValues.Count(v => v < GlucoseConstants.LowGlucoseThreshold);
-        var normal = data.GlucoseValues.Count(v => v >= GlucoseConstants.LowGlucoseThreshold && v <= GlucoseConstants.HighGlucoseThreshold);
+        var normal = data.GlucoseValues.Count(v => v >= GlucoseConstants.LowGlucoseThreshold && v < GlucoseConstants.HighGlucoseThreshold);
         var high = data.GlucoseValues.Count(v => v >= GlucoseConstants.HighGlucoseThreshold && v <= GlucoseConstants.VeryHighGlucoseThreshold);
         var veryHigh = data.GlucoseValues.Count(v => v > GlucoseConstants.VeryHighGlucoseThreshold);
-
+        
         return data with
         {
             TimeInRange = new CalculationDataTimeInRange
             {
-                Low = ToPercents(low, data.Count),
-                Normal = ToPercents(normal, data.Count),
-                High = ToPercents(high, data.Count),
-                VeryHigh = ToPercents(veryHigh, data.Count)
+                Low = ToPercent(low, data.Count),
+                Normal = ToPercent(normal, data.Count),
+                High = ToPercent(high, data.Count),
+                VeryHigh = ToPercent(veryHigh, data.Count)
             }
         };
     }
 
-    private static float ToPercents(float value, float total)
+    private static float ToPercent(float value, float total)
     {
         return value / total * 100;
     }
