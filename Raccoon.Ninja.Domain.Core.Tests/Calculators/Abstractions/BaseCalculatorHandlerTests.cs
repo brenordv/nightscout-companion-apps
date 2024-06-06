@@ -1,7 +1,6 @@
 ﻿using Raccoon.Ninja.Domain.Core.Calculators;
 using Raccoon.Ninja.Domain.Core.Calculators.Abstractions;
 using Raccoon.Ninja.Domain.Core.Calculators.Handlers;
-using Raccoon.Ninja.TestHelpers;
 using Raccoon.Ninja.TestHelpers.MockClasses.Handlers;
 
 namespace Raccoon.Ninja.Domain.Core.Tests.Calculators.Abstractions;
