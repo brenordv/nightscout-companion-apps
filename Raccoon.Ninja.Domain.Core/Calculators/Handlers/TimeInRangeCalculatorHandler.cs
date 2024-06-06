@@ -13,8 +13,8 @@ public class TimeInRangeCalculatorHandler: BaseCalculatorHandler
     protected override CalculationData RunCalculation(CalculationData data)
     {
         var low = data.GlucoseValues.Count(v => v < GlucoseConstants.LowGlucoseThreshold);
-        var normal = data.GlucoseValues.Count(v => v >= GlucoseConstants.LowGlucoseThreshold && v < GlucoseConstants.HighGlucoseThreshold);
-        var high = data.GlucoseValues.Count(v => v >= GlucoseConstants.HighGlucoseThreshold && v <= GlucoseConstants.VeryHighGlucoseThreshold);
+        var normal = data.GlucoseValues.Count(v => v is >= GlucoseConstants.LowGlucoseThreshold and < GlucoseConstants.HighGlucoseThreshold);
+        var high = data.GlucoseValues.Count(v => v is >= GlucoseConstants.HighGlucoseThreshold and <= GlucoseConstants.VeryHighGlucoseThreshold);
         var veryHigh = data.GlucoseValues.Count(v => v > GlucoseConstants.VeryHighGlucoseThreshold);
         
         return data with
