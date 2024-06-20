@@ -1,6 +1,7 @@
 ﻿using Raccoon.Ninja.Domain.Core.Calculators;
 using Raccoon.Ninja.Domain.Core.Calculators.Abstractions;
 using Raccoon.Ninja.Domain.Core.Calculators.Handlers;
+using Raccoon.Ninja.TestHelpers;
 using Raccoon.Ninja.TestHelpers.MockClasses.Handlers;
 
 namespace Raccoon.Ninja.Domain.Core.Tests.Calculators.Abstractions;
@@ -37,5 +38,23 @@ public class BaseCalculatorHandlerTests
         
         // Assert
         result.Average.Should().Be(expectedAverage);
+    }
+    
+    [Theory]
+    [MemberData(nameof(TheoryGenerator.InvalidFloatListsWithNull), MemberType = typeof(TheoryGenerator))]
+    public void HandleNext_WhenDataIsInvalid_ShouldReturnError(IList<float> glucoseReadings)
+    {
+        // Arrange
+        var data = Generators.CalculationDataMockSingle(glucoseReadings);
+        var handler = new DoNothingMockCalculator();
+        
+        // Act
+        var result = handler.Handle(data);
+        
+        // Assert
+        var status = result.Status;
+        status.Success.Should().BeFalse();
+        status.FirstFailedStep.Should().Be(nameof(DoNothingMockCalculator));
+        status.Message.Should().Be("No glucose values were provided.");
     }
 }
