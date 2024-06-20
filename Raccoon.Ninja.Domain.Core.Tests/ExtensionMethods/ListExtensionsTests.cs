@@ -46,4 +46,15 @@ public class ListExtensionsTests
         //Assert
         result.Should().BeFalse();
     }
+    
+    [Theory]
+    [MemberData(nameof(TheoryGenerator.GetUnsortedAndExpectedSortedReadings), MemberType = typeof(TheoryGenerator))]
+    public void ToSortedValueArray_Should_Return_Sorted_Values(IList<GlucoseReading> unsorted, IList<float> expected)
+    {
+        //Act
+        var result = unsorted.ToSortedValueArray();
+
+        //Assert
+        result.Should().BeEquivalentTo(expected);
+    }
 }

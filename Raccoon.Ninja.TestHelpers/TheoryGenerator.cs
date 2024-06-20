@@ -173,4 +173,32 @@ public static class TheoryGenerator
             },
         };
     }
+
+    public static TheoryData<IList<GlucoseReading>, IList<float>> GetUnsortedAndExpectedSortedReadings()
+    {
+        var data = new TheoryData<IList<GlucoseReading>, IList<float>>();
+
+        var unsortedReadings = new List<GlucoseReading>
+        {
+            new () { Value = 100 },
+            new () { Value = 90 },
+            new () { Value = 110 },
+            new () { Value = 80 },
+            new () { Value = 120 },
+            new () { Value = 70 },
+            new () { Value = 130 },
+            new () { Value = 60 },
+            new () { Value = 140 },
+            new () { Value = 50 },
+        };
+
+        var sortedReadings = new List<float>
+        {
+            50, 60, 70, 80, 90, 100, 110, 120, 130, 140
+        };
+
+        data.Add(unsortedReadings, sortedReadings);
+
+        return data;
+    }
 }

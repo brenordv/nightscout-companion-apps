@@ -52,11 +52,6 @@ public class PercentileCalculatorHandler: BaseCalculatorHandler
         var leftIndex = (int)Math.Floor(position);
         var rightIndex = (int)Math.Ceiling(position);
 
-        if (leftIndex == rightIndex)
-        {
-            return sortedValues[leftIndex];
-        }
-
         var leftValue = sortedValues[leftIndex];
         var rightValue = sortedValues[rightIndex];
         var fractional = position - leftIndex;
