@@ -21,7 +21,6 @@ public class CalculationDataTests
         data.StandardDeviation.Should().Be(default);
         data.CoefficientOfVariation.Should().Be(default);
         data.CurrentHbA1C.Should().BeNull();
-        data.PreviousHbA1C.Should().BeNull();
         data.TimeInRange.Should().NotBeNull();
         data.Percentile.Should().NotBeNull();
         data.Status.Should().NotBeNull();
@@ -62,7 +61,7 @@ public class CalculationDataTests
         
         // Assert
         data.Success.Should().BeTrue();
-        data.FirstFailedStep.Should().BeNull();
+        data.FailedAtStep.Should().BeNull();
         data.Message.Should().Be(default);
     }
 }

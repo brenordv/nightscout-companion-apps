@@ -131,7 +131,7 @@ public static class Generators
             .RuleFor(x => x.Id, f => f.Random.Guid().ToString())
             .RuleFor(x => x.Value, f => value ?? f.Random.Float(4, 8))
             .RuleFor(x => x.Delta, f => delta ?? f.Random.Float(-1, 2))
-            .RuleFor(x => x.DocType, f => AggregateType.HbA1CCalculation)
+            .RuleFor(x => x.DocType, f => DocumentType.StatisticalData)
             .RuleFor(x => x.ReferenceDate, f => DateOnly.FromDateTime(f.Date.Past()))
             .RuleFor(x => x.CreatedAtUtc, f => f.Date.Past().ToUnixTimestamp())
             .RuleFor(x => x.Status, f => GetRandomHbA1CCalculationStatusWithinReason(f, status, error))
@@ -146,10 +146,10 @@ public static class Generators
         return HbA1CCalculationResponseMockList(1, value, delta, status, error)[0];
     }
     
-    public static IList<HbA1CCalculation> HbA1CCalculationMockList(int qty, HbA1CCalculationStatus? status = null, 
+    public static IList<AggregationDataPoint> HbA1CCalculationMockList(int qty, HbA1CCalculationStatus? status = null, 
         string error = null)
     {
-        var faker = new Faker<HbA1CCalculation>()
+        var faker = new Faker<AggregationDataPoint>()
             .RuleFor(x => x.Id, f => f.Random.Guid().ToString())
             .RuleFor(x => x.ReferenceDate, f => DateOnly.FromDateTime(f.Date.Past()))
             .RuleFor(x => x.CreatedAtUtc, f => f.Date.Past().ToUnixTimestamp())
@@ -159,7 +159,7 @@ public static class Generators
         return faker.Generate(qty);
     }
     
-    public static HbA1CCalculation HbA1CCalculationMockSingle(HbA1CCalculationStatus? status = null, 
+    public static AggregationDataPoint HbA1CCalculationMockSingle(HbA1CCalculationStatus? status = null, 
         string error = null)
     {
         return HbA1CCalculationMockList(1, status, error)[0];

@@ -5,44 +5,50 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Raccoon.Ninja.Domain.Core.Calculators;
 using Raccoon.Ninja.Domain.Core.Calculators.Abstractions;
+using Raccoon.Ninja.Domain.Core.Converters;
 using Raccoon.Ninja.Domain.Core.Entities;
+using Raccoon.Ninja.Domain.Core.Entities.StatisticalDataPoint;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
 namespace Raccoon.Ninja.AzFn.ScheduledTasks;
 
-public class HbA1CCalcFunc
+public class StatisticsCalculationFunc
 {
     private readonly ILogger _logger;
 
-    public HbA1CCalcFunc(ILogger<HbA1CCalcFunc> logger)
+    public StatisticsCalculationFunc(ILogger<StatisticsCalculationFunc> logger)
     {
         _logger = logger;
     }
 
-    [Function("HbA1cCalcFunc")]
+    [Function("StatisticsCalculationFunc")]
     [CosmosDBOutput(
         "%CosmosDatabaseName%",
-        "%CosmosAggregateContainerName%", 
+        "%CosmosAggregateContainerName%",
         Connection = "CosmosConnectionString",
         CreateIfNotExists = false)]
-    public HbA1CCalculation Run(
+    public StatisticalDataPoint Run(
         [TimerTrigger("0 0 0 * * *"
-            #if DEBUG
+#if DEBUG
             , RunOnStartup = true
-            #endif
-            )] TimerInfo myTimer, 
+#endif
+        )]
+        TimerInfo myTimer,
         [CosmosDBInput(
-            databaseName: "%CosmosDatabaseName%", 
-            containerName: "%CosmosContainerName%",
+            "%CosmosDatabaseName%",
+            "%CosmosContainerName%",
             Connection = "CosmosConnectionString",
             SqlQuery = "SELECT TOP 33120 * FROM c ORDER BY c.readAt DESC"
-        )] IEnumerable<GlucoseReading> readings, 
+        )]
+        IEnumerable<GlucoseReading> readings,
         [CosmosDBInput(
-            databaseName: "%CosmosDatabaseName%", 
-            containerName: "%CosmosAggregateContainerName%",
+            "%CosmosDatabaseName%",
+            "%CosmosAggregateContainerName%",
             Connection = "CosmosConnectionString",
-            SqlQuery = "SELECT TOP 1 * FROM c WHERE c.docType = 1 ORDER BY c.createdAt DESC"
-        )] IEnumerable<HbA1CCalculation> previousCalculations)
+            SqlQuery = "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.status = 1 ORDER BY c.createdAt DESC"
+        )]
+        IEnumerable<StatisticalDataPoint> prevStatisticalDataPointFetch
+    )
     {
         var referenceDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
@@ -50,7 +56,7 @@ public class HbA1CCalcFunc
 
         try
         {
-            var previousCalculation = previousCalculations.FirstOrDefault();
+            var previousCalculations = prevStatisticalDataPointFetch.FirstOrDefault();
 
             var sortedGlucoseValues = readings.ToSortedValueArray();
 
@@ -58,22 +64,22 @@ public class HbA1CCalcFunc
 
             var calculatedData = chain.Handle(new CalculationData
             {
-                GlucoseValues = sortedGlucoseValues,
-                PreviousHbA1C = previousCalculation
+                GlucoseValues = sortedGlucoseValues
             });
-            
-            // TODO: Convert the calculated data into the appropriate CosmosDb documents. 
-            return null;
+
+            var result = EntityConverter.ToStatisticDataPoint(calculatedData, referenceDate, previousCalculations);
+
+            return result;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed to calculate HbA1c for {ReferenceDate}", referenceDate);
+            _logger.LogError(e, "Failed to calculate statistic data for {ReferenceDate}", referenceDate);
 
-            throw;
+            throw new Exception($"Failed to calculate statistic data for {referenceDate}", e);
         }
         finally
         {
-            _logger.LogTrace("HbA1c calculation for {ReferenceDate} finished!", referenceDate);
+            _logger.LogTrace("Statistic data calculation for {ReferenceDate} finished!", referenceDate);
         }
     }
 }

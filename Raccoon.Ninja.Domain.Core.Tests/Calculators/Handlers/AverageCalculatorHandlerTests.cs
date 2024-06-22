@@ -20,7 +20,7 @@ public class AverageCalculatorHandlerTests
         // Assert
         var status = result.Status;
         status.Success.Should().BeFalse();
-        status.FirstFailedStep.Should().Be(nameof(AverageCalculatorHandler));
+        status.FailedAtStep.Should().Be(nameof(AverageCalculatorHandler));
         status.Message.Should().Be("No glucose values were provided.");
     }
     

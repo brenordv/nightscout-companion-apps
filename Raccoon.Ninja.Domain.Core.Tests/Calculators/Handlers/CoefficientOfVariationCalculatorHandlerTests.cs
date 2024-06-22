@@ -29,7 +29,7 @@ public class CoefficientOfVariationCalculatorHandlerTests
         // Assert
         var status = result.Status;
         status.Success.Should().BeFalse();
-        status.FirstFailedStep.Should().Be(nameof(CoefficientOfVariationCalculatorHandler));
+        status.FailedAtStep.Should().Be(nameof(CoefficientOfVariationCalculatorHandler));
         status.Message.Should().Be("Cannot calculate Coefficient of Variation without Standard Deviation and Average.");
     }
     

@@ -43,7 +43,7 @@ public abstract class BaseCalculatorHandler
             {
                 Message = _errorMessage,
                 Success = false,
-                FirstFailedStep = GetType().Name
+                FailedAtStep = GetType().Name
             }
         };
     }

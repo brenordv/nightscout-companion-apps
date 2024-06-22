@@ -54,7 +54,7 @@ public class BaseCalculatorHandlerTests
         // Assert
         var status = result.Status;
         status.Success.Should().BeFalse();
-        status.FirstFailedStep.Should().Be(nameof(DoNothingMockCalculator));
+        status.FailedAtStep.Should().Be(nameof(DoNothingMockCalculator));
         status.Message.Should().Be("No glucose values were provided.");
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Raccoon.Ninja.Domain.Core.Calculators.Abstractions;
+using Raccoon.Ninja.Domain.Core.Entities;
 
 namespace Raccoon.Ninja.Domain.Core.Calculators.Handlers;
 

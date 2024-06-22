@@ -4,7 +4,7 @@ using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
 namespace Raccoon.Ninja.Domain.Core.Tests.Entities;
 
-public class HbA1CCalculationTests
+public class AggregationDataPointTests
 {
     [Fact]
     public void PropInit_ShouldSetPropertiesCorrectly()
@@ -18,7 +18,7 @@ public class HbA1CCalculationTests
         const float delta = 0.5f;
 
         // Act
-        var calculation = new HbA1CCalculation
+        var calculation = new AggregationDataPoint
         {
             Id = id,
             Value = value,
@@ -29,7 +29,6 @@ public class HbA1CCalculationTests
         };
 
         // Assert
-        calculation.DocType.Should().Be(AggregateType.HbA1CCalculation);
         calculation.ReferenceDate.Should().Be(referenceDate);
         calculation.CreatedAtUtc.Should().BeCloseTo(DateTime.UtcNow.ToUnixTimestamp(), 1000);
         calculation.Status.Should().Be(status);
@@ -44,7 +43,7 @@ public class HbA1CCalculationTests
         var referenceDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
         // Act
-        var calculation = HbA1CCalculation.FromError(error, referenceDate);
+        var calculation = AggregationDataPoint.FromError(error, referenceDate);
 
         // Assert
         calculation.Id.Should().NotBeNullOrWhiteSpace();
@@ -53,7 +52,6 @@ public class HbA1CCalculationTests
         calculation.Status.Should().Be(HbA1CCalculationStatus.Error);
         calculation.Error.Should().Be(error);
         calculation.ReferenceDate.Should().Be(referenceDate);
-        calculation.DocType.Should().Be(AggregateType.HbA1CCalculation);
     }
 
     [Fact]
@@ -68,7 +66,7 @@ public class HbA1CCalculationTests
         const float delta = 0.5f;
         
 
-        var calculation1 = new HbA1CCalculation
+        var calculation1 = new AggregationDataPoint
         {
             Id = id,
             Value = value,
@@ -78,7 +76,7 @@ public class HbA1CCalculationTests
             Error = error
         };
 
-        var calculation2 = new HbA1CCalculation
+        var calculation2 = new AggregationDataPoint
         {
             Id = id,
             Value = value,
@@ -96,13 +94,12 @@ public class HbA1CCalculationTests
     public void Constructor_WithNoArguments_ShouldSetDefaultValues()
     {
         // Act
-        var calculation = new HbA1CCalculation();
+        var calculation = new AggregationDataPoint();
 
         // Assert
         calculation.Id.Should().NotBeNullOrWhiteSpace();
         calculation.Value.Should().Be(default);
         calculation.Delta.Should().BeNull();
-        calculation.DocType.Should().Be(AggregateType.HbA1CCalculation);
         calculation.CreatedAtUtc.Should().BeCloseTo(DateTime.UtcNow.ToUnixTimestamp(), 1000);
         calculation.Status.Should().Be(HbA1CCalculationStatus.NotCalculated);
         calculation.Error.Should().BeNull();
