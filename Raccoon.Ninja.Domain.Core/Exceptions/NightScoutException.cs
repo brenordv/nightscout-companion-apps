@@ -2,6 +2,10 @@
 
 public class NightScoutException : Exception
 {
+    public NightScoutException()
+    {
+    }
+
     public NightScoutException(string message) : base(message)
     {
     }
