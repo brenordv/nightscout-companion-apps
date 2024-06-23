@@ -10,9 +10,6 @@ public record StatisticMageValue
     [JsonProperty("threshold20")]
     public StatisticMageValueResult Threshold20 { get; init; }
 
-    [JsonProperty("threshold30")]
-    public StatisticMageValueResult Threshold30 { get; init; }
-
     [JsonProperty("absolute")]
     public StatisticMageValueResult Absolute { get; init; }
 }
