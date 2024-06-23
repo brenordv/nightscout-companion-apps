@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Raccoon.Ninja.Domain.Core.Entities.StatisticalDataPoint;
 
 public record StatisticsPipelineError
 {
-    [JsonProperty("failedStep")] public string FailedStep { get; init; }
+    [JsonPropertyName("failedStep")]
+    public string FailedStep { get; init; }
 
-    [JsonProperty("errorMessage")] public string ErrorMessage { get; init; }
+    [JsonPropertyName("errorMessage")]
+    public string ErrorMessage { get; init; }
 }

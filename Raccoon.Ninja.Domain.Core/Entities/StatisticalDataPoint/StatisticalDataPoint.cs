@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Raccoon.Ninja.Domain.Core.Enums;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 using Raccoon.Ninja.Domain.Core.Models;
@@ -7,52 +7,53 @@ namespace Raccoon.Ninja.Domain.Core.Entities.StatisticalDataPoint;
 
 public record StatisticalDataPoint : BaseEntity
 {
-    [JsonProperty("docType")]
+    [JsonPropertyName("docType")]
     public DocumentType DocType { get; init; } = DocumentType.StatisticalData;
 
-    [JsonProperty("referenceDate")]
+    [JsonPropertyName("referenceDate")]
     public DateOnly ReferenceDate { get; init; }
 
-    [JsonProperty("daysSinceLastCalculation")]
+    [JsonPropertyName("daysSinceLastCalculation")]
     public int DaysSinceLastCalculation { get; init; }
 
-    [JsonProperty("createdAt")]
+    [JsonPropertyName("createdAt")]
     public long CreatedAt { get; init; } = DateTime.UtcNow.ToUnixTimestamp();
 
-    [JsonProperty("status")]
+    [JsonPropertyName("status")]
     public StatisticalDataPointDocStatus Status { get; init; } = StatisticalDataPointDocStatus.NotCalculated;
 
-    [JsonProperty("error", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonPropertyName("error")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public StatisticsPipelineError Error { get; init; }
 
-    [JsonProperty("average")]
+    [JsonPropertyName("average")]
     public StatisticSimpleFloatValue Average { get; init; }
 
-    [JsonProperty("median")]
+    [JsonPropertyName("median")]
     public StatisticSimpleFloatValue Median { get; init; }
 
-    [JsonProperty("min")]
+    [JsonPropertyName("min")]
     public StatisticSimpleFloatValue Min { get; init; }
 
-    [JsonProperty("max")]
+    [JsonPropertyName("max")]
     public StatisticSimpleFloatValue Max { get; init; }
 
-    [JsonProperty("mage")]
+    [JsonPropertyName("mage")]
     public StatisticMageValue Mage { get; init; }
 
-    [JsonProperty("standardDeviation")]
+    [JsonPropertyName("standardDeviation")]
     public StatisticSimpleFloatValue StandardDeviation { get; init; }
 
-    [JsonProperty("coefficientOfVariation")]
+    [JsonPropertyName("coefficientOfVariation")]
     public StatisticSimpleFloatValue CoefficientOfVariation { get; init; }
 
-    [JsonProperty("hbA1c")]
+    [JsonPropertyName("hbA1c")]
     public StatisticHbA1CValue HbA1C { get; init; }
 
-    [JsonProperty("timeInRange")]
+    [JsonPropertyName("timeInRange")]
     public StatisticTimeInRangeValue TimeInRange { get; init; }
 
-    [JsonProperty("percentile")]
+    [JsonPropertyName("percentile")]
     public StatisticPercentileValue Percentile { get; init; }
 
     public static StatisticalDataPoint FromError(

@@ -1,21 +1,21 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Raccoon.Ninja.Domain.Core.Entities.StatisticalDataPoint;
 
 public record StatisticPercentileValue
 {
-    [JsonProperty("p10")]
+    [JsonPropertyName("p10")]
     public StatisticSimpleFloatValue P10 { get; init; }
 
-    [JsonProperty("p25")]
+    [JsonPropertyName("p25")]
     public StatisticSimpleFloatValue P25 { get; init; }
 
-    [JsonProperty("p50")]
+    [JsonPropertyName("p50")]
     public StatisticSimpleFloatValue P75 { get; init; }
 
-    [JsonProperty("p75")]
+    [JsonPropertyName("p75")]
     public StatisticSimpleFloatValue P90 { get; init; }
 
-    [JsonProperty("iqr")]
+    [JsonPropertyName("iqr")]
     public StatisticSimpleFloatValue Iqr { get; init; }
 }

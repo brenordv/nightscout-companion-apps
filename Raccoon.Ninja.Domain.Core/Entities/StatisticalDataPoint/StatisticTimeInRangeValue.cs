@@ -1,18 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Raccoon.Ninja.Domain.Core.Entities.StatisticalDataPoint;
 
 public record StatisticTimeInRangeValue
 {
-    [JsonProperty("low")]
+    [JsonPropertyName("low")]
     public StatisticSimpleFloatValue Low { get; init; }
 
-    [JsonProperty("normal")]
+    [JsonPropertyName("normal")]
     public StatisticSimpleFloatValue Normal { get; init; }
 
-    [JsonProperty("high")]
+    [JsonPropertyName("high")]
     public StatisticSimpleFloatValue High { get; init; }
 
-    [JsonProperty("veryHigh")]
+    [JsonPropertyName("veryHigh")]
     public StatisticSimpleFloatValue VeryHigh { get; init; }
 }

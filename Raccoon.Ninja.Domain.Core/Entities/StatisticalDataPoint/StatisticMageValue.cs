@@ -1,15 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Raccoon.Ninja.Domain.Core.Entities.StatisticalDataPoint;
 
 public record StatisticMageValue
 {
-    [JsonProperty("threshold10")]
+    [JsonPropertyName("threshold10")]
     public StatisticMageValueResult Threshold10 { get; init; }
 
-    [JsonProperty("threshold20")]
+    [JsonPropertyName("threshold20")]
     public StatisticMageValueResult Threshold20 { get; init; }
 
-    [JsonProperty("absolute")]
+    [JsonPropertyName("absolute")]
     public StatisticMageValueResult Absolute { get; init; }
 }

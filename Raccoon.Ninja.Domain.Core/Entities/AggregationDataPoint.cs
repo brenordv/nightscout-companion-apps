@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 using Raccoon.Ninja.Domain.Core.Enums;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
@@ -7,19 +7,19 @@ namespace Raccoon.Ninja.Domain.Core.Entities;
 [Obsolete("This is going to be removed on a newer version.")]
 public record AggregationDataPoint : BaseValueEntity
 {
-    [JsonProperty("docType")]
+    [JsonPropertyName("docType")]
     public DocumentType DocType { get; init; }
 
-    [JsonProperty("referenceDate")]
+    [JsonPropertyName("referenceDate")]
     public DateOnly ReferenceDate { get; init; }
 
-    [JsonProperty("createdAt")]
+    [JsonPropertyName("createdAt")]
     public long CreatedAtUtc { get; init; } = DateTime.UtcNow.ToUnixTimestamp();
 
-    [JsonProperty("status")]
+    [JsonPropertyName("status")]
     public HbA1CCalculationStatus Status { get; init; } = HbA1CCalculationStatus.NotCalculated;
 
-    [JsonProperty("error")]
+    [JsonPropertyName("error")]
     public string Error { get; init; }
 
     /// <summary>

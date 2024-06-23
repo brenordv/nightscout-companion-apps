@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Raccoon.Ninja.Domain.Core.Entities.StatisticalDataPoint;
 
 public record StatisticMageValueResult : StatisticSimpleFloatValue
 {
-    [JsonProperty("excursionsDetected")]
+    [JsonPropertyName("excursionsDetected")]
     public bool ExcursionsDetected { get; init; }
 
     public static StatisticMageValueResult FromSimpleFloatValue(
