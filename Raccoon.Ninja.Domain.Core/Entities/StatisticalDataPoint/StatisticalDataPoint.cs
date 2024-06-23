@@ -38,7 +38,7 @@ public record StatisticalDataPoint : BaseEntity
     public StatisticSimpleFloatValue Max { get; init; }
 
     [JsonProperty("mage")]
-    public StatisticSimpleFloatValue Mage { get; init; }
+    public StatisticMageValue Mage { get; init; }
 
     [JsonProperty("standardDeviation")]
     public StatisticSimpleFloatValue StandardDeviation { get; init; }

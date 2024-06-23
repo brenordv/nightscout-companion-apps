@@ -10,9 +10,9 @@ public record CalculationData
     public float Median { get; init; }
     public float Min { get; init; }
     public float Max { get; init; }
-    public float Mage { get; init; }
     public float StandardDeviation { get; init; }
     public float CoefficientOfVariation { get; init; }
+    public CalculationDataMage Mage { get; init; }
     public CalculationDataHbA1C CurrentHbA1C { get; init; }
     public CalculationDataTimeInRange TimeInRange { get; init; } = new();
     public CalculationDataPercentile Percentile { get; init; } = new();
@@ -23,6 +23,19 @@ public record CalculationDataHbA1C
 {
     public float Value { get; init; }
     public HbA1CCalculationStatus Status { get; init; }
+}
+
+public record CalculationDataMage
+{
+    public CalculationDataMageResult Threshold10 { get; init; }
+    public CalculationDataMageResult Threshold20 { get; init; }
+    public CalculationDataMageResult Absolute { get; init; }
+}
+
+public record CalculationDataMageResult
+{
+    public float Value { get; init; }
+    public bool ExcursionsDetected { get; init; }
 }
 
 public record CalculationDataPercentile

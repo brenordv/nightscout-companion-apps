@@ -25,7 +25,7 @@ public static class EntityConverter
             Median = CalculateSimpleFloatResult(from.Median, previousCalculations?.Median?.Value),
             Min = CalculateSimpleFloatResult(from.Min, previousCalculations?.Min?.Value),
             Max = CalculateSimpleFloatResult(from.Max, previousCalculations?.Max?.Value),
-            Mage = CalculateSimpleFloatResult(from.Mage, previousCalculations?.Mage?.Value),
+            Mage = CalculateMageResult(from.Mage, previousCalculations?.Mage),
             StandardDeviation =
                 CalculateSimpleFloatResult(from.StandardDeviation, previousCalculations?.StandardDeviation?.Value),
             CoefficientOfVariation = CalculateSimpleFloatResult(from.CoefficientOfVariation,
@@ -45,6 +45,24 @@ public static class EntityConverter
         {
             Value = currentValue,
             Delta = currentValue - previousValue
+        };
+    }
+
+    private static StatisticMageValue CalculateMageResult(
+        CalculationDataMage from,
+        StatisticMageValue previous)
+    {
+        return new StatisticMageValue
+        {
+            Threshold10 = StatisticMageValueResult.FromSimpleFloatValue(
+                CalculateSimpleFloatResult(from.Threshold10.Value, previous?.Threshold10?.Value),
+                from.Threshold10.ExcursionsDetected),
+            Threshold20 = StatisticMageValueResult.FromSimpleFloatValue(
+                CalculateSimpleFloatResult(from.Threshold20.Value, previous?.Threshold20?.Value),
+                from.Threshold20.ExcursionsDetected),
+            Absolute = StatisticMageValueResult.FromSimpleFloatValue(
+                CalculateSimpleFloatResult(from.Absolute.Value, previous?.Absolute?.Value),
+                from.Absolute.ExcursionsDetected)
         };
     }
 

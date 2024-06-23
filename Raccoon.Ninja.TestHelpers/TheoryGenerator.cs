@@ -16,7 +16,7 @@ public static class TheoryGenerator
             new List<float>()
         };
     }
-    
+
     public static TheoryData<Trend, string> AllTrendsWithExpectedStrings()
     {
         return new TheoryData<Trend, string>
@@ -30,7 +30,7 @@ public static class TheoryGenerator
             { Trend.SingleDown, "Plummet Mode" },
             { Trend.DoubleDown, "Double the plunge" },
             { Trend.TripleDown, "Free-fall Frenzy" },
-            { Trend.NotComputable, "Wandering in the Unknown" },
+            { Trend.NotComputable, "Wandering in the Unknown" }
         };
     }
 
@@ -97,58 +97,75 @@ public static class TheoryGenerator
             { Generators.ListWithFloats(HbA1CConstants.ReadingsIn1Day, 170f).ToList(), 7.5505223f },
             { Generators.ListWithFloats(HbA1CConstants.ReadingsIn1Day, 210f).ToList(), 8.944251f },
             { Generators.ListWithFloats(HbA1CConstants.ReadingsIn1Day, 300f).ToList(), 12.080139f },
-            { Generators.ListWithFloats(HbA1CConstants.ReadingsIn1Day, 400f).ToList(), 15.56446f },
+            { Generators.ListWithFloats(HbA1CConstants.ReadingsIn1Day, 400f).ToList(), 15.56446f }
         };
     }
 
-    public static TheoryData<CalculationData, float> ValidMageDataSets()
+    public static TheoryData<CalculationData, CalculationDataMage> ValidMageDataSets()
     {
-        var dataSet = new TheoryData<CalculationData, float>();
-        
-        var glucoseReadings = new List<float>
-        {
-            70, 76, 82, 88, 94, 100, 106, 112, 118, 124, // Spike 1
-            70, 76, 82, 88, 94, 100, 106, 112, 118, 124, // Spike 2
-            70, 76, 82, 88, 94, 100, 106, 112, 118, 124, // Spike 3 
-            70, 76, 82, 88, 94, 100, 106, 112, 118, 124, // Spike 4
-            70, 76, 82, 88, 94, 100, 106, 112, 118, 124, // Spike 5
-            70, 76, 82, 88, 94, 100, 106, 112, 118, 124, // Spike 6
-            70, 76, 82, 88, 94, 100, 106, 112, 118, 124, // Spike 7
-            70, 76, 82, 88, 94, 100, 106, 112, 118, 124, // Spike 8
-            70, 76, 82, 88, 94, 100, 106, 112, 118, 124, // Spike 9
-            70, 76, 82, 88, 94, 100, 106, 112, 118, 124  // Spike 10
-        };
+        var dataSet = new TheoryData<CalculationData, CalculationDataMage>();
+
+        // var glucoseReadings = new List<float> { 50, 55, 60, 58, 62, 65, 63, 70, 75, 80 };
+        // var standardDev = TestUtils.CalculateStandardDeviation(glucoseReadings);
+        //
+        // var calculationData = new CalculationData
+        // {
+        //     GlucoseValues = glucoseReadings,
+        //     StandardDeviation = standardDev,
+        //     Average = glucoseReadings.Average()
+        // };
+        //
+        // dataSet.Add(calculationData, new CalculationDataMage
+        // {
+        //     Threshold10 = new CalculationDataMageResult
+        //     {
+        //         Value = 15.0f,
+        //         ExcursionsDetected = true
+        //     },
+        //     Threshold20 = new CalculationDataMageResult
+        //     {
+        //         Value = 17.5f,
+        //         ExcursionsDetected = true
+        //     },
+        //     Threshold30 = new CalculationDataMageResult
+        //     {
+        //         Value = 20.0f,
+        //         ExcursionsDetected = true
+        //     },
+        //     Absolute = new CalculationDataMageResult
+        //     {
+        //         Value = 10.5f,
+        //         ExcursionsDetected = true
+        //     }
+        // });
+
+        var glucoseReadings = new List<float> { 100, 110, 90, 105, 95, 120, 85, 130, 80, 115 };
         var standardDev = TestUtils.CalculateStandardDeviation(glucoseReadings);
         var calculationData = new CalculationData
         {
             GlucoseValues = glucoseReadings,
-            StandardDeviation = standardDev
+            StandardDeviation = standardDev,
+            Average = glucoseReadings.Average()
         };
 
-        
-        dataSet.Add(calculationData, 54f);
-        
-        glucoseReadings = new List<float>
+        dataSet.Add(calculationData, new CalculationDataMage
         {
-            30, 62, 94, 126, 158, 190, 222, 254, 286, 318, // Spike 1
-            30, 62, 94, 126, 158, 190, 222, 254, 286, 318, // Spike 2
-            30, 62, 94, 126, 158, 190, 222, 254, 286, 318, // Spike 3
-            30, 62, 94, 126, 158, 190, 222, 254, 286, 318, // Spike 4
-            30, 62, 94, 126, 158, 190, 222, 254, 286, 318, // Spike 5
-            30, 62, 94, 126, 158, 190, 222, 254, 286, 318, // Spike 6
-            30, 62, 94, 126, 158, 190, 222, 254, 286, 318, // Spike 7
-            30, 62, 94, 126, 158, 190, 222, 254, 286, 318, // Spike 8
-            30, 62, 94, 126, 158, 190, 222, 254, 286, 318, // Spike 9
-            30, 62, 94, 126, 158, 190, 222, 254, 286, 318 // Spike 10
-        };
-        standardDev = TestUtils.CalculateStandardDeviation(glucoseReadings);
-        calculationData = new CalculationData
-        {
-            GlucoseValues = glucoseReadings,
-            StandardDeviation = standardDev
-        };
-        
-        dataSet.Add(calculationData, 288f);
+            Threshold10 = new CalculationDataMageResult
+            {
+                Value = 19.6f,
+                ExcursionsDetected = true
+            },
+            Threshold20 = new CalculationDataMageResult
+            {
+                Value = 25.0f,
+                ExcursionsDetected = true
+            },
+            Absolute = new CalculationDataMageResult
+            {
+                Value = 13.0f,
+                ExcursionsDetected = true
+            }
+        });
 
         return dataSet;
     }
@@ -159,18 +176,46 @@ public static class TheoryGenerator
         {
             new CalculationData
             {
-                GlucoseValues = Generators.ListWithFloats(10).ToList()
+                GlucoseValues = new List<float>(),
+                StandardDeviation = 100.0f,
+                Average = 10.0f
+            },
+            new CalculationData
+            {
+                GlucoseValues = Generators.ListWithFloats(1).ToList(),
+                StandardDeviation = 100.0f,
+                Average = 10.0f
+            },
+            new CalculationData
+            {
+                GlucoseValues = Generators.ListWithFloats(2).ToList(),
+                StandardDeviation = 100.0f,
+                Average = 10.0f
             },
             new CalculationData
             {
                 GlucoseValues = null,
-                StandardDeviation = 0
+                StandardDeviation = 0,
+                Average = 0
             },
             new CalculationData
             {
                 GlucoseValues = new List<float>(),
-                StandardDeviation = 0
+                StandardDeviation = 0,
+                Average = 0
             },
+            new CalculationData
+            {
+                GlucoseValues = Generators.ListWithFloats(20).ToList(),
+                StandardDeviation = 100.0f,
+                Average = 0
+            },
+            new CalculationData
+            {
+                GlucoseValues = Generators.ListWithFloats(20).ToList(),
+                StandardDeviation = 0,
+                Average = 10.0f
+            }
         };
     }
 
@@ -180,16 +225,16 @@ public static class TheoryGenerator
 
         var unsortedReadings = new List<GlucoseReading>
         {
-            new () { Value = 100 },
-            new () { Value = 90 },
-            new () { Value = 110 },
-            new () { Value = 80 },
-            new () { Value = 120 },
-            new () { Value = 70 },
-            new () { Value = 130 },
-            new () { Value = 60 },
-            new () { Value = 140 },
-            new () { Value = 50 },
+            new() { Value = 100 },
+            new() { Value = 90 },
+            new() { Value = 110 },
+            new() { Value = 80 },
+            new() { Value = 120 },
+            new() { Value = 70 },
+            new() { Value = 130 },
+            new() { Value = 60 },
+            new() { Value = 140 },
+            new() { Value = 50 }
         };
 
         var sortedReadings = new List<float>

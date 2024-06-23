@@ -52,7 +52,7 @@ public class StatisticsCalculationFunc
     {
         var referenceDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
-        _logger.LogTrace("Starting HbA1c calculation for {ReferenceDate}", referenceDate);
+        _logger.LogTrace("Starting statistics calculation for {ReferenceDate}", referenceDate);
 
         try
         {

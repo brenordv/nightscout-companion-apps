@@ -7,6 +7,6 @@ public record StatisticSimpleFloatValue
     [JsonProperty("value")]
     public float Value { get; init; }
 
-    [JsonProperty("delta")]
+    [JsonProperty("delta", NullValueHandling = NullValueHandling.Ignore)]
     public float? Delta { get; init; }
 }
