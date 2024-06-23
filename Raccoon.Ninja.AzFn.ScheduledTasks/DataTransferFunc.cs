@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using Raccoon.Ninja.AzFn.ScheduledTasks.ExtensionMethods;
 using Raccoon.Ninja.Domain.Core.Entities;
+using Raccoon.Ninja.Domain.Core.Exceptions;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 using Raccoon.Ninja.Extensions.MongoDb.Builders;
 using Raccoon.Ninja.Extensions.MongoDb.ExtensionMethods;
@@ -69,7 +70,7 @@ public class DataTransferFunc
             const string errorMessage = "Failed to transfer data from MongoDb to CosmosDb";
             _logger.LogError(e, errorMessage);
 
-            throw new Exception(errorMessage, e);
+            throw new NightScoutException(errorMessage, e);
         }
         finally
         {

@@ -8,6 +8,7 @@ using Raccoon.Ninja.Domain.Core.Calculators.Abstractions;
 using Raccoon.Ninja.Domain.Core.Converters;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.Entities.StatisticalDataPoint;
+using Raccoon.Ninja.Domain.Core.Exceptions;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
 namespace Raccoon.Ninja.AzFn.ScheduledTasks;
@@ -75,7 +76,7 @@ public class StatisticsCalculationFunc
         {
             _logger.LogError(e, "Failed to calculate statistic data for {ReferenceDate}", referenceDate);
 
-            throw new Exception($"Failed to calculate statistic data for {referenceDate}", e);
+            throw new NightScoutException($"Failed to calculate statistic data for {referenceDate}", e);
         }
         finally
         {

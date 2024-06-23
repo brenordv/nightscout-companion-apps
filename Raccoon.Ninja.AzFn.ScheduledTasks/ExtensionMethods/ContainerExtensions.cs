@@ -16,7 +16,8 @@ public static class ContainerExtensions
         var result = new Dictionary<DocumentType, AggregationDataPoint>();
         foreach (var docType in GetAllAggregationDocTypes())
         {
-            var query = new QueryDefinition("SELECT TOP 1 * FROM c WHERE c.docType = @docType ORDER BY c.createdAt DESC")
+            var query = new QueryDefinition(
+                    "SELECT TOP 1 * FROM c WHERE c.docType = @docType ORDER BY c.createdAt DESC")
                 .WithParameter("@docType", (int)docType);
             var iterator = container.GetItemQueryIterator<AggregationDataPoint>(query);
             var fetched = await iterator.ReadNextAsync();
@@ -27,8 +28,8 @@ public static class ContainerExtensions
 
         return result;
     }
-    
-    private static IList<DocumentType> GetAllAggregationDocTypes()
+
+    private static DocumentType[] GetAllAggregationDocTypes()
     {
         var values = (DocumentType[])Enum.GetValues(typeof(DocumentType));
         var result = values.Skip(1).ToArray();
