@@ -11,7 +11,8 @@ public static class EntityConverter
         DateOnly referenceDate,
         StatisticalDataPoint previousCalculations)
     {
-        ArgumentNullException.ThrowIfNull(from);
+        if (from is null)
+            return null;
 
         if (!from.Status.Success)
             return StatisticalDataPoint.FromError(referenceDate, from.Status.FailedAtStep, from.Status.Message);
