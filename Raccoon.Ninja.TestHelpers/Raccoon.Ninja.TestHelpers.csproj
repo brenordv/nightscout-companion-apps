@@ -9,7 +9,7 @@
     <ProjectReference Include="..\Raccoon.Ninja.Extensions.MongoDb\Raccoon.Ninja.Extensions.MongoDb.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Bogus" Version="35.4.0" />
-    <PackageReference Include="xunit.extensibility.core" Version="2.6.6" />
+    <PackageReference Include="Bogus" Version="35.5.1" />
+    <PackageReference Include="xunit.extensibility.core" Version="2.8.1" />
   </ItemGroup>
 </Project>
