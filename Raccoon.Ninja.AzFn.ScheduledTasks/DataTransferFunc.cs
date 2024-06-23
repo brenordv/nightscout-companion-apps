@@ -66,9 +66,10 @@ public class DataTransferFunc
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed to transfer data from MongoDb to CosmosDb");
+            const string errorMessage = "Failed to transfer data from MongoDb to CosmosDb";
+            _logger.LogError(e, errorMessage);
 
-            throw;
+            throw new Exception(errorMessage, e);
         }
         finally
         {
