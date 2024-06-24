@@ -30,14 +30,14 @@ public class DataLatestHbA1CFunc
             "%CosmosAggregateContainerName%",
             Connection = "CosmosConnectionString",
             SqlQuery =
-                "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.status = 2 and c.hbA1c.status = 1 ORDER BY c.createdAt DESC"
+                "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.status = 1 and c.hbA1c.status = 1 ORDER BY c.createdAt DESC"
         )]
         IEnumerable<StatisticalDataPoint> latestSuccessCalculations, [CosmosDBInput(
             "%CosmosDatabaseName%",
             "%CosmosAggregateContainerName%",
             Connection = "CosmosConnectionString",
             SqlQuery =
-                "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.status = 2 and c.hbA1c.status = 2 ORDER BY c.createdAt DESC"
+                "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.status = 1 and c.hbA1c.status = 2 ORDER BY c.createdAt DESC"
         )]
         IEnumerable<StatisticalDataPoint> latestPartialSuccessCalculations)
     {
