@@ -83,7 +83,10 @@ public record StatisticalDataPoint : BaseEntity
             ReferenceDate = ReferenceDate,
             CreatedAtUtc = CreatedAt,
             Status = HbA1C.Status,
-            Error = Error?.ErrorMessage
+            Error = Error?.ErrorMessage,
+            Delta = HbA1C.Delta,
+            DocType = (DocumentType)1, // Fixed value for obsolete enum. This will be removed in future version.
+            Value = HbA1C.Value
         };
     }
 }
