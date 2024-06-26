@@ -5,8 +5,8 @@
     <Nullable>disable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyVersion>2.0.2</AssemblyVersion>
-    <FileVersion>2.0.2</FileVersion>
+    <AssemblyVersion>2.0.3</AssemblyVersion>
+    <FileVersion>2.0.3</FileVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
     <AssemblyName>CGMDataDisplay</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
