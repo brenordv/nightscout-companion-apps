@@ -7,9 +7,6 @@ namespace Raccoon.Ninja.Domain.Core.Entities.StatisticalDataPoint;
 
 public record StatisticDataPoint : BaseEntity
 {
-    [JsonPropertyName("docType")]
-    public DocumentType DocType { get; init; } = DocumentType.StatisticalData;
-
     [JsonPropertyName("referenceDate")]
     public DateOnly ReferenceDate { get; init; }
 
