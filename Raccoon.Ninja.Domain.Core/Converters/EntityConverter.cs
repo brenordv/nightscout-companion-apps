@@ -6,18 +6,18 @@ namespace Raccoon.Ninja.Domain.Core.Converters;
 
 public static class EntityConverter
 {
-    public static StatisticalDataPoint ToStatisticDataPoint(
+    public static StatisticDataPoint ToStatisticDataPoint(
         CalculationData from,
         DateOnly referenceDate,
-        StatisticalDataPoint previousCalculations)
+        StatisticDataPoint previousCalculations)
     {
         if (from is null)
             return null;
 
         if (!from.Status.Success)
-            return StatisticalDataPoint.FromError(referenceDate, from.Status.FailedAtStep, from.Status.Message);
+            return StatisticDataPoint.FromError(referenceDate, from.Status.FailedAtStep, from.Status.Message);
 
-        var result = new StatisticalDataPoint
+        var result = new StatisticDataPoint
         {
             ReferenceDate = referenceDate,
             Status = StatisticalDataPointDocStatus.Success,

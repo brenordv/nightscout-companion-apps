@@ -273,13 +273,13 @@ public static class Generators
         };
     }
 
-    public static StatisticalDataPoint StatisticalDataPointMockSingle(
+    public static StatisticDataPoint StatisticalDataPointMockSingle(
         DateOnly? referenceDate = null,
         StatisticalDataPointDocStatus status = StatisticalDataPointDocStatus.Success)
     {
         var faker = new Faker();
 
-        return new StatisticalDataPoint
+        return new StatisticDataPoint
         {
             ReferenceDate = referenceDate ?? DateOnly.FromDateTime(faker.Date.Past()),
             Status = status,

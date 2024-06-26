@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 using Raccoon.Ninja.Domain.Core.Enums;
-using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
 namespace Raccoon.Ninja.Domain.Core.Entities;
 
@@ -12,9 +11,6 @@ public record AggregationDataPoint : BaseValueEntity
 
     [JsonPropertyName("referenceDate")]
     public DateOnly ReferenceDate { get; init; }
-
-    [JsonPropertyName("createdAt")]
-    public long CreatedAtUtc { get; init; } = DateTime.UtcNow.ToUnixTimestamp();
 
     [JsonPropertyName("status")]
     public HbA1CCalculationStatus Status { get; init; } = HbA1CCalculationStatus.NotCalculated;

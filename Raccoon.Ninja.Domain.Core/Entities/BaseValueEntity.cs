@@ -2,7 +2,7 @@
 
 namespace Raccoon.Ninja.Domain.Core.Entities;
 
-public record BaseValueEntity: BaseEntity
+public record BaseValueEntity: BaseControlledEntity
 {
     [JsonPropertyName("value")] 
     public float Value { get; init; }

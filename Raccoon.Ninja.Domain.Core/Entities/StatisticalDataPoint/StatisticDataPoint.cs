@@ -5,7 +5,7 @@ using Raccoon.Ninja.Domain.Core.Models;
 
 namespace Raccoon.Ninja.Domain.Core.Entities.StatisticalDataPoint;
 
-public record StatisticalDataPoint : BaseEntity
+public record StatisticDataPoint : BaseEntity
 {
     [JsonPropertyName("docType")]
     public DocumentType DocType { get; init; } = DocumentType.StatisticalData;
@@ -56,12 +56,12 @@ public record StatisticalDataPoint : BaseEntity
     [JsonPropertyName("percentile")]
     public StatisticPercentileValue Percentile { get; init; }
 
-    public static StatisticalDataPoint FromError(
+    public static StatisticDataPoint FromError(
         DateOnly referenceDate,
         string failedStep,
         string errorMessage)
     {
-        return new StatisticalDataPoint
+        return new StatisticDataPoint
         {
             Status = StatisticalDataPointDocStatus.Error,
             ReferenceDate = referenceDate,

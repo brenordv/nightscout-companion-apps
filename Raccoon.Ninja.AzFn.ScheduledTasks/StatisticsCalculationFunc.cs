@@ -28,7 +28,7 @@ public class StatisticsCalculationFunc
         "%CosmosAggregateContainerName%",
         Connection = "CosmosConnectionString",
         CreateIfNotExists = false)]
-    public StatisticalDataPoint Run(
+    public StatisticDataPoint Run(
         [TimerTrigger("0 0 0 * * *"
 #if DEBUG
             , RunOnStartup = true
@@ -48,7 +48,7 @@ public class StatisticsCalculationFunc
             Connection = "CosmosConnectionString",
             SqlQuery = "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.status = 1 ORDER BY c.createdAt DESC"
         )]
-        IEnumerable<StatisticalDataPoint> prevStatisticalDataPointFetch
+        IEnumerable<StatisticDataPoint> prevStatisticalDataPointFetch
     )
     {
         var referenceDate = DateOnly.FromDateTime(DateTime.UtcNow);

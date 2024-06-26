@@ -32,21 +32,21 @@ public class DataLatestHbA1CFunc
             SqlQuery =
                 "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.status = 1 and c.hbA1c.status = 1 ORDER BY c.createdAt DESC"
         )]
-        IEnumerable<StatisticalDataPoint> latestSuccessCalculations, [CosmosDBInput(
+        IEnumerable<StatisticDataPoint> latestSuccessCalculations, [CosmosDBInput(
             "%CosmosDatabaseName%",
             "%CosmosAggregateContainerName%",
             Connection = "CosmosConnectionString",
             SqlQuery =
                 "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.status = 1 and c.hbA1c.status = 2 ORDER BY c.createdAt DESC"
         )]
-        IEnumerable<StatisticalDataPoint> latestPartialSuccessCalculations)
+        IEnumerable<StatisticDataPoint> latestPartialSuccessCalculations)
     {
         _logger.LogInformation("Data Latest HbA1c API call received. Request by IP: {Ip}",
             req.HttpContext.Connection.RemoteIpAddress);
 
-        StatisticalDataPoint latestSuccessful = null;
+        StatisticDataPoint latestSuccessful = null;
 
-        StatisticalDataPoint latestPartialSuccessful = null;
+        StatisticDataPoint latestPartialSuccessful = null;
 
         try
         {

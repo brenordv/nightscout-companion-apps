@@ -9,7 +9,7 @@ namespace Raccoon.Ninja.Domain.Core.Tests.Converters;
 public class EntityConverterTests
 {
     private static readonly DateOnly ReferenceDate = DateOnly.FromDateTime(DateTime.UtcNow);
-    private static readonly StatisticalDataPoint PreviousCalculation = Generators.StatisticalDataPointMockSingle();
+    private static readonly StatisticDataPoint PreviousCalculation = Generators.StatisticalDataPointMockSingle();
 
     [Fact]
     public void ToStatisticDataPoint_ShouldReturnNull_WhenInputIsNull()
