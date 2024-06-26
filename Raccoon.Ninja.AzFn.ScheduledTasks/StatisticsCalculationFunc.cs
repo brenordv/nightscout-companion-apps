@@ -93,7 +93,7 @@ public class StatisticsCalculationFunc
         }
     }
 
-    private StatisticDataPoint CalculateStatistics(
+    private static StatisticDataPoint CalculateStatistics(
         IEnumerable<GlucoseReading> readings,
         BaseCalculatorHandler chain,
         DateOnly referenceDate,
