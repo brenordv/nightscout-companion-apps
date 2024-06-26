@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Raccoon.Ninja.AzFn.DataApi.ExtensionMethods;
 using Raccoon.Ninja.AzFn.DataApi.Utils;
-using Raccoon.Ninja.Domain.Core.Entities;
+using Raccoon.Ninja.Domain.Core.Entities.StatisticalDataPoint;
 using Raccoon.Ninja.Domain.Core.Models;
-using Microsoft.Azure.Functions.Worker;
 
 namespace Raccoon.Ninja.AzFn.DataApi;
 
@@ -26,25 +26,27 @@ public class DataLatestHbA1CFunc
     public async Task<IActionResult> RunAsync(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)]
         HttpRequest req, [CosmosDBInput(
-            databaseName: "%CosmosDatabaseName%", 
-            containerName: "%CosmosAggregateContainerName%",
+            "%CosmosDatabaseName%",
+            "%CosmosAggregateContainerName%",
             Connection = "CosmosConnectionString",
-            SqlQuery = "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.status = 1 ORDER BY c.createdAt DESC"
+            SqlQuery =
+                "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.full.status = 1 and c.full.hbA1c.status = 1 ORDER BY c.createdAt DESC"
         )]
-        IEnumerable<HbA1CCalculation> latestSuccessCalculations, [CosmosDBInput(
-            databaseName: "%CosmosDatabaseName%", 
-            containerName: "%CosmosAggregateContainerName%",
+        IEnumerable<StatisticDataPointDocument> latestSuccessCalculations, [CosmosDBInput(
+            "%CosmosDatabaseName%",
+            "%CosmosAggregateContainerName%",
             Connection = "CosmosConnectionString",
-            SqlQuery = "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.status = 2 ORDER BY c.createdAt DESC"
+            SqlQuery =
+                "SELECT TOP 1 * FROM c WHERE c.docType = 1 and c.full.status = 1 and c.full.hbA1c.status = 2 ORDER BY c.createdAt DESC"
         )]
-        IEnumerable<HbA1CCalculation> latestPartialSuccessCalculations)
+        IEnumerable<StatisticDataPointDocument> latestPartialSuccessCalculations)
     {
         _logger.LogInformation("Data Latest HbA1c API call received. Request by IP: {Ip}",
-                    req.HttpContext.Connection.RemoteIpAddress);
+            req.HttpContext.Connection.RemoteIpAddress);
 
-        HbA1CCalculation latestSuccessful = null;
+        StatisticDataPointDocument latestSuccessful = null;
 
-        HbA1CCalculation latestPartialSuccessful = null;
+        StatisticDataPointDocument latestPartialSuccessful = null;
 
         try
         {
@@ -60,15 +62,15 @@ public class DataLatestHbA1CFunc
 
             return new OkObjectResult(new DataLatestHbA1CFuncResponse
             {
-                LatestSuccessful = latestSuccessful,
-                LatestPartialSuccessful = latestPartialSuccessful
+                LatestSuccessful = latestSuccessful?.Full.ToLegacyHbA1cCalculation(),
+                LatestPartialSuccessful = latestPartialSuccessful?.Full.ToLegacyHbA1cCalculation()
             });
         }
         catch (Exception e)
         {
             _logger.LogError(e,
-                            "Error while processing request from IP: {Ip} | Latest success : {LatestSuccessReading} / Latest Partial Success: {LatestPartialSuccess}",
-                            req.HttpContext.Connection.RemoteIpAddress, latestSuccessful, latestPartialSuccessful);
+                "Error while processing request from IP: {Ip} | Latest success : {LatestSuccessReading} / Latest Partial Success: {LatestPartialSuccess}",
+                req.HttpContext.Connection.RemoteIpAddress, latestSuccessful, latestPartialSuccessful);
 
             return new StatusCodeResult(500);
         }

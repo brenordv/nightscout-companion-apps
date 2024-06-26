@@ -4,7 +4,7 @@ using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
 namespace Raccoon.Ninja.Domain.Core.Entities;
 
-public record GlucoseReading: BaseEntity
+public record GlucoseReading: AggregationDataPoint
 {
     [JsonPropertyName("trend")]
     public Trend Trend { get; init; }

@@ -1,12 +1,9 @@
 ﻿using Raccoon.Ninja.Domain.Core.Entities;
-using Raccoon.Ninja.Domain.Core.Enums;
 
 namespace Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
 public static class ListExtensions
 {
-    private const int ReadingsIn115Days = 33120;
-
     /// <summary>
     /// A more performative way to check if a list has elements.
     /// </summary>
@@ -17,53 +14,14 @@ public static class ListExtensions
     {
         return list is not null && list.Count > 0;
     }
-    
-    public static HbA1CCalculation CalculateHbA1C(this IEnumerable<GlucoseReading> list, DateOnly referenceDate)
+
+    /// <summary>
+    /// Extracts the glucose values from the readings and returns them as a sorted (ascending) array.
+    /// </summary>
+    /// <param name="readings">List of GlucoseReadings to be used</param>
+    /// <returns>Array of values</returns>
+    public static IList<float> ToSortedValueArray(this IEnumerable<GlucoseReading> readings)
     {
-        if (list is null)
-            return HbA1CCalculation.FromError("No readings to calculate HbA1c", referenceDate);
-
-        var count = 0;
-        var sum = 0f;
-        foreach (var glucoseReading in list)
-        {
-            count++;
-            sum += glucoseReading.Value;
-        }
-
-        if (count == 0)
-        {
-            return HbA1CCalculation.FromError("No readings returned from Db to calculate HbA1c", referenceDate);
-        }
-        
-        var avg = sum / count;
-        var hbA1C = (avg + 46.7f) / 28.7f;
-
-        if (HasNumberOfReadingsExceededMax(count))
-        {
-            return HbA1CCalculation.FromError(
-                $"Too many readings to calculate HbA1c reliably. Expected (max) {ReadingsIn115Days} but got {count}", 
-                referenceDate);
-        }
-
-        return new HbA1CCalculation
-        {
-            Value = hbA1C,
-            ReferenceDate = referenceDate,
-            Status = GetStatusByReadingCount(count)
-        };
-    }
-    
-    private static bool HasNumberOfReadingsExceededMax(int count)
-    {
-        return count > ReadingsIn115Days;
-
-    }
-    
-    private static HbA1CCalculationStatus GetStatusByReadingCount(int count)
-    {
-        return count == ReadingsIn115Days 
-            ? HbA1CCalculationStatus.Success 
-            : HbA1CCalculationStatus.SuccessPartial;
+        return readings.Select(r => r.Value).OrderBy(v => v).ToArray();
     }
 }

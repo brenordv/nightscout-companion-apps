@@ -4,9 +4,9 @@ using System.Linq;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using Newtonsoft.Json;
 using Raccoon.Ninja.AzFn.ScheduledTasks.ExtensionMethods;
 using Raccoon.Ninja.Domain.Core.Entities;
+using Raccoon.Ninja.Domain.Core.Exceptions;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 using Raccoon.Ninja.Extensions.MongoDb.Builders;
 using Raccoon.Ninja.Extensions.MongoDb.ExtensionMethods;
@@ -26,17 +26,19 @@ public class DataTransferFunc
     [Function("DataTransferFunc")]
     [CosmosDBOutput(
         "%CosmosDatabaseName%",
-        "%CosmosContainerName%", 
+        "%CosmosContainerName%",
         Connection = "CosmosConnectionString",
         CreateIfNotExists = false)]
     public IEnumerable<GlucoseReading> Run(
-        [TimerTrigger("0 */5 * * * *", RunOnStartup = true)] TimerInfo timer, 
+        [TimerTrigger("0 */5 * * * *", RunOnStartup = true)]
+        TimerInfo timer,
         [CosmosDBInput(
-            databaseName: "%CosmosDatabaseName%", 
-            containerName: "%CosmosContainerName%",
+            "%CosmosDatabaseName%",
+            "%CosmosContainerName%",
             Connection = "CosmosConnectionString",
             SqlQuery = "SELECT TOP 1 * FROM c ORDER BY c.readAt DESC"
-        )] IEnumerable<GlucoseReading> previousReadings)
+        )]
+        IEnumerable<GlucoseReading> previousReadings)
     {
         _logger.LogInformation("Nightscout Data Transfer Function started");
 
@@ -65,9 +67,10 @@ public class DataTransferFunc
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed to transfer data from MongoDb to CosmosDb");
+            const string errorMessage = "Failed to transfer data from MongoDb to CosmosDb";
+            _logger.LogError(e, errorMessage);
 
-            throw;
+            throw new NightScoutException(errorMessage, e);
         }
         finally
         {
@@ -76,8 +79,8 @@ public class DataTransferFunc
     }
 
     /// <summary>
-    /// Initializes the MongoDb collection.
-    /// This is the source of data for Nightscout.
+    ///     Initializes the MongoDb collection.
+    ///     This is the source of data for Nightscout.
     /// </summary>
     /// <param name="log">Log instance created by Azure.</param>
     /// <returns>Collection Instance</returns>

@@ -22,18 +22,17 @@ public static class NightScoutMongoDocumentExtensions
             ReadTimestampUtc = nightScoutMongoDocument.ReadingTimestamp,
             Trend = nightScoutMongoDocument.Trend,
             Value = nightScoutMongoDocument.Value,
-            Delta = ShouldCalculateDelta(previousValue) ? nightScoutMongoDocument.Value - previousValue : null
+            Delta = CalculateDelta(nightScoutMongoDocument.Value, previousValue)
         };
     }
 
-    /// <summary>
-    /// We should calculate the delta if the previous value exists and is greater than 0.
-    /// </summary>
-    /// <remarks>The glucose value should never be negative, but safeguards are always good.</remarks>
-    /// <param name="previousValue">Value to be checked.</param>
-    /// <returns>true if should calculate delta</returns>
-    private static bool ShouldCalculateDelta(float? previousValue)
+    private static float? CalculateDelta(float currentValue, float? previousValue)
     {
-        return previousValue is > 0;
+        var validPreviousValue = previousValue is > 0;
+
+        if (!validPreviousValue)
+            return null;
+        
+        return currentValue - previousValue;
     }
 }

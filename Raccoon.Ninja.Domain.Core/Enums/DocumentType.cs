@@ -1,7 +1,7 @@
 ﻿namespace Raccoon.Ninja.Domain.Core.Enums;
 
-public enum AggregateType
+public enum DocumentType
 {
     Unknown = 0,
-    HbA1CCalculation = 1,
+    StatisticalData = 1
 }

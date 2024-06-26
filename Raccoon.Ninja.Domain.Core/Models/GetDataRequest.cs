@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Raccoon.Ninja.Domain.Core.Models;
 
 public record GetDataRequest
 {
-    [JsonProperty("key")] public string Key { get; set; }
+    [JsonPropertyName("key")]
+    public string Key { get; set; }
 }
