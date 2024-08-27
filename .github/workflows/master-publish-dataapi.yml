@@ -1,4 +1,4 @@
-name: Data API Function App CI/CD Workflow Using Template
+name: Data API Function App CI/CD
 
 on:
   push:

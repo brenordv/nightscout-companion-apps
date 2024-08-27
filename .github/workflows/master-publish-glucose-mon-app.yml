@@ -1,4 +1,4 @@
-name: CGM Data Display App CI/CD Using Reusable Workflow
+name: CGM Data Display App CI/CD
 
 on:
   push:

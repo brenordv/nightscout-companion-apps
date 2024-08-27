@@ -1,4 +1,4 @@
-name: Data Transfer Function CI/CD Using Reusable Workflow
+name: Data Transfer Function CI/CD
 
 on:
   push:
