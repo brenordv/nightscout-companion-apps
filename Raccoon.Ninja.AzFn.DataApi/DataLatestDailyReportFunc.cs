@@ -13,16 +13,16 @@ using Raccoon.Ninja.Domain.Core.Models;
 
 namespace Raccoon.Ninja.AzFn.DataApi;
 
-public class DataLatestHbA1CFunc
+public class DataLatestDailyReportFunc
 {
     private readonly ILogger _logger;
 
-    public DataLatestHbA1CFunc(ILogger<DataLatestHbA1CFunc> logger)
+    public DataLatestDailyReportFunc(ILogger<DataLatestDailyReportFunc> logger)
     {
         _logger = logger;
     }
 
-    [Function("DataLatestHbA1cFunc")]
+    [Function("DataLatestDailyReportFunc")]
     public async Task<IActionResult> RunAsync(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)]
         HttpRequest req, [CosmosDBInput(
@@ -60,10 +60,10 @@ public class DataLatestHbA1CFunc
             if (latestSuccessful is null && latestPartialSuccessful is null)
                 return new NoContentResult();
 
-            return new OkObjectResult(new DataLatestHbA1CFuncResponse
+            return new OkObjectResult(new DataLatestStatisticalAggregationFuncResponse
             {
-                LatestSuccessful = latestSuccessful?.Full.ToLegacyHbA1cCalculation(),
-                LatestPartialSuccessful = latestPartialSuccessful?.Full.ToLegacyHbA1cCalculation()
+                Latest = latestSuccessful,
+                LatestPartial = latestPartialSuccessful
             });
         }
         catch (Exception e)
