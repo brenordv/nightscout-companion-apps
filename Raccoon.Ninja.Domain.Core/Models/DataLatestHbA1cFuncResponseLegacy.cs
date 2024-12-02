@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Raccoon.Ninja.Domain.Core.Models;
 
 [ExcludeFromCodeCoverage]
-public record DataLatestHbA1cFuncResponseLegacy
+public record DataLatestHbA1CFuncResponseLegacy
 {
     [JsonPropertyName("latestSuccessful")]
     public AggregatedStatisticResponse LatestSuccessful { get; init; }
