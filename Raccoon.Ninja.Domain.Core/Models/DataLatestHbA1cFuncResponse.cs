@@ -1,15 +1,14 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-using Newtonsoft.Json;
 
 namespace Raccoon.Ninja.Domain.Core.Models;
 
 [ExcludeFromCodeCoverage]
-public record DataLatestHbA1CFuncResponse
+public record DataLatestStatisticalAggregationFuncResponse
 {
-    [JsonPropertyName("latestSuccessful")]
-    public HbA1CCalculationResponse LatestSuccessful { get; init; }
-    
-    [JsonPropertyName("latestPartialSuccessful")]
-    public HbA1CCalculationResponse LatestPartialSuccessful { get; init; }
-};
+    [JsonPropertyName("latest")]
+    public LatestStatisticsResponse Latest { get; init; }
+
+    [JsonPropertyName("latestPartial")]
+    public LatestStatisticsResponse LatestPartial { get; init; }
+}

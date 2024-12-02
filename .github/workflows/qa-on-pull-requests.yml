@@ -14,7 +14,7 @@ jobs:
       projectKey: 'brenordv_nightscout-companion-apps'
       organization: 'raccoon-ninja'
       verbose: true
-      sonarExclusions: '**/*Usings.cs,Raccoon.Ninja.TestHelpers/*'
+      sonarExclusions: '**/*Response.cs,**/*Usings.cs,Raccoon.Ninja.TestHelpers/*'
       coverageExclusions: '**/*Usings.cs,Raccoon.Ninja.TestHelpers/*,**/*Program.cs,Raccoon.Ninja.WForm.GlucoseIcon/Utils/AppSettings.cs,Raccoon.Ninja.AzFn.DataApi/*Func.cs,Raccoon.Ninja.AzFn.ScheduledTasks/*Func.cs'
 
     secrets:
