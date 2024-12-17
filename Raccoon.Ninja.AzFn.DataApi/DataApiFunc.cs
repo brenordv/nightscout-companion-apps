@@ -16,6 +16,7 @@ namespace Raccoon.Ninja.AzFn.DataApi;
 
 public class DataApiFunc
 {
+    private const int maxItems = 1;
     private readonly ILogger _logger;
 
     public DataApiFunc(ILogger<DataApiFunc> logger)
@@ -69,6 +70,7 @@ public class DataApiFunc
                 new QueryDefinition("SELECT TOP 1 * FROM c ORDER BY c.readAt DESC")
             );
 
+            var docsFetched = 0;
             while (iteratorLatestReading.HasMoreResults)
             {
                 var response = await iteratorLatestReading.ReadNextAsync();
@@ -80,7 +82,9 @@ public class DataApiFunc
                     return new OkObjectResult(results);
                 }
 
-                break;
+                docsFetched++;
+                if (docsFetched >= maxItems)
+                    break;
             }
 
             return new NoContentResult();

@@ -42,6 +42,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "97. Pipelines", "97. Pipeli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raccoon.Ninja.AzFn.ScheduledTasks.Tests", "Raccoon.Ninja.AzFn.ScheduledTasks.Tests\Raccoon.Ninja.AzFn.ScheduledTasks.Tests.csproj", "{D4D62A6B-724A-4499-B462-A9E95E7896CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raccoon.Ninja.AzFn.DataApi.Tests", "Raccoon.Ninja.AzFn.DataApi.Tests\Raccoon.Ninja.AzFn.DataApi.Tests.csproj", "{A4B79A3C-396D-429F-BC30-012DF68C690A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +90,10 @@ Global
 		{D4D62A6B-724A-4499-B462-A9E95E7896CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4D62A6B-724A-4499-B462-A9E95E7896CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4D62A6B-724A-4499-B462-A9E95E7896CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4B79A3C-396D-429F-BC30-012DF68C690A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4B79A3C-396D-429F-BC30-012DF68C690A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4B79A3C-396D-429F-BC30-012DF68C690A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4B79A3C-396D-429F-BC30-012DF68C690A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2B19A689-B703-450C-9E06-DFD0BE969053} = {11F72AFB-B94A-4E9A-8817-F1FB60E9DF6D}
@@ -100,5 +106,6 @@ Global
 		{7BC539F4-D458-40C0-8277-0E6D24416E8C} = {0F4894B1-AE2F-4119-94D4-82B7B33A7C39}
 		{1CAC242F-719D-4E31-BEF8-7E3972F12482} = {11F72AFB-B94A-4E9A-8817-F1FB60E9DF6D}
 		{D4D62A6B-724A-4499-B462-A9E95E7896CD} = {BC1845AD-353C-4548-A86D-80A7EBC55C34}
+		{A4B79A3C-396D-429F-BC30-012DF68C690A} = {BC1845AD-353C-4548-A86D-80A7EBC55C34}
 	EndGlobalSection
 EndGlobal
