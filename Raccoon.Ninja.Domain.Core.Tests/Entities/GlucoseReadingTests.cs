@@ -9,13 +9,14 @@ public class GlucoseReadingTests
     public void Ctor_WhenInstantiated_ShouldHaveDefaultPropertyValues()
     {
         //Arrange
-        var expectedTrend = Trend.TripleUp;
+        const Trend expectedTrend = Trend.TripleUp;
         const long expectedReadTimestampUtc = 0;
 
         //Act
         var sut = new GlucoseReading();
 
         //Assert
+        sut.Should().NotBeNull();
         sut.Trend.Should().Be(expectedTrend);
         sut.ReadTimestampUtc.Should().Be(expectedReadTimestampUtc);
     }
