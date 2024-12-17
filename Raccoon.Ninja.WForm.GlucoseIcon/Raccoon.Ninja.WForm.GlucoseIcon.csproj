@@ -1,29 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>disable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyVersion>3.0.0</AssemblyVersion>
-    <FileVersion>3.0.0</FileVersion>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyName>CGMDataDisplay</AssemblyName>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.26.0" />
-    <PackageReference Include="Refit" Version="8.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Raccoon.Ninja.Domain.Core\Raccoon.Ninja.Domain.Core.csproj" />
-    <ProjectReference Include="..\Raccoon.Ninja.Extensions.Desktop.Logging\Raccoon.Ninja.Extensions.Desktop.Logging.csproj" />
-    <ProjectReference Include="..\Raccoon.Ninja.Extensions.MongoDb\Raccoon.Ninja.Extensions.MongoDb.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>disable</Nullable>
+        <UseWindowsForms>true</UseWindowsForms>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AssemblyVersion>4.0.0</AssemblyVersion>
+        <FileVersion>4.0.0</FileVersion>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <AssemblyName>CGMDataDisplay</AssemblyName>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="MongoDB.Driver" Version="2.26.0"/>
+        <PackageReference Include="Refit" Version="8.0.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Raccoon.Ninja.Domain.Core\Raccoon.Ninja.Domain.Core.csproj"/>
+        <ProjectReference Include="..\Raccoon.Ninja.Extensions.Desktop.Logging\Raccoon.Ninja.Extensions.Desktop.Logging.csproj"/>
+        <ProjectReference Include="..\Raccoon.Ninja.Extensions.MongoDb\Raccoon.Ninja.Extensions.MongoDb.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 </Project>

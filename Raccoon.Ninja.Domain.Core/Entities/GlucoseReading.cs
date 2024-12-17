@@ -4,13 +4,11 @@ using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 
 namespace Raccoon.Ninja.Domain.Core.Entities;
 
-public record GlucoseReading: AggregationDataPoint
+public record GlucoseReading : BaseValueEntity
 {
-    [JsonPropertyName("trend")]
-    public Trend Trend { get; init; }
-    
-    [JsonPropertyName("readAt")]
-    public long ReadTimestampUtc { get; init; }
+    [JsonPropertyName("trend")] public Trend Trend { get; init; }
+
+    [JsonPropertyName("readAt")] public long ReadTimestampUtc { get; init; }
 
     [JsonIgnore] public DateTime ReadTimestampUtcAsDateTime => ReadTimestampUtc.ToUtcDateTime();
 }

@@ -73,7 +73,8 @@ public static class Generators
         for (var i = 0; i < qty; i++) yield return exactValue ?? faker.Random.Int(minValue ?? 0, maxValue ?? 100);
     }
 
-    public static CalculationData CalculationDataMockSingle(IList<float> glucoseValues, bool success = true, string failedAtStep = "Step 42", string errorMessage = "Error in step 42")
+    public static CalculationData CalculationDataMockSingle(IList<float> glucoseValues, bool success = true,
+        string failedAtStep = "Step 42", string errorMessage = "Error in step 42")
     {
         //TODO: Improve this.
         return new CalculationData
@@ -182,31 +183,6 @@ public static class Generators
             .RuleFor(x => x.Error, f => error);
 
         return faker.Generate(qty);
-    }
-
-    public static HbA1CCalculationResponse HbA1CCalculationResponseMockSingle(float? value = null,
-        float? delta = null, HbA1CCalculationStatus? status = null, string error = null)
-    {
-        return HbA1CCalculationResponseMockList(1, value, delta, status, error)[0];
-    }
-
-    public static IList<AggregationDataPoint> HbA1CCalculationMockList(int qty, HbA1CCalculationStatus? status = null,
-        string error = null)
-    {
-        var faker = new Faker<AggregationDataPoint>()
-            .RuleFor(x => x.Id, f => f.Random.Guid().ToString())
-            .RuleFor(x => x.ReferenceDate, f => DateOnly.FromDateTime(f.Date.Past()))
-            .RuleFor(x => x.CreatedAtUtc, f => f.Date.Past().ToUnixTimestamp())
-            .RuleFor(x => x.Status, f => GetRandomHbA1CCalculationStatusWithinReason(f, status, error))
-            .RuleFor(x => x.Error, f => error);
-
-        return faker.Generate(qty);
-    }
-
-    public static AggregationDataPoint HbA1CCalculationMockSingle(HbA1CCalculationStatus? status = null,
-        string error = null)
-    {
-        return HbA1CCalculationMockList(1, status, error)[0];
     }
 
     private static HbA1CCalculationStatus GetRandomHbA1CCalculationStatusWithinReason(Faker f,
