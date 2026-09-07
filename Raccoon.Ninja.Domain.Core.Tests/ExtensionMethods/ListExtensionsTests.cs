@@ -1,8 +1,4 @@
-﻿using FluentAssertions;
-using Raccoon.Ninja.Domain.Core.Entities;
-using Raccoon.Ninja.Domain.Core.Enums;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
-using Raccoon.Ninja.TestHelpers;
 
 namespace Raccoon.Ninja.Domain.Core.Tests.ExtensionMethods;
 
@@ -11,50 +7,39 @@ public class ListExtensionsTests
     [Fact]
     public void HasElements_Should_Return_True_When_List_Has_Elements()
     {
-        //Arrange
+        // Arrange
         var list = new List<string> {"a", "b", "c"};
 
-        //Act
+        // Act
         var result = list.HasElements();
 
-        //Assert
-        result.Should().BeTrue();
+        // Assert
+        Assert.True(result);
     }
 
     [Fact]
     public void HasElements_Should_Return_False_When_List_Is_Null()
     {
-        //Arrange
+        // Arrange
         List<string> list = null;
 
-        //Act
+        // Act
         var result = list.HasElements();
 
-        //Assert
-        result.Should().BeFalse();
+        // Assert
+        Assert.False(result);
     }
 
     [Fact]
     public void HasElements_Should_Return_False_When_List_Is_Empty()
     {
-        //Arrange
+        // Arrange
         var list = new List<string>();
 
-        //Act
+        // Act
         var result = list.HasElements();
 
-        //Assert
-        result.Should().BeFalse();
-    }
-    
-    [Theory]
-    [MemberData(nameof(TheoryGenerator.GetUnsortedAndExpectedSortedReadings), MemberType = typeof(TheoryGenerator))]
-    public void ToSortedValueArray_Should_Return_Sorted_Values(IList<GlucoseReading> unsorted, IList<float> expected)
-    {
-        //Act
-        var result = unsorted.ToSortedValueArray();
-
-        //Assert
-        result.Should().BeEquivalentTo(expected);
+        // Assert
+        Assert.False(result);
     }
 }

@@ -8,15 +8,14 @@ on:
 
 permissions:
   contents: write
-  deployments: write
 
 jobs:
   call-reusable-workflow:
     uses: ./.github/workflows/template-test-build-and-publish-to-azure.yml
     with:
-      dotnetVersion: '8.0.x'
+      dotnetVersion: '10.0.x'
       targetPlatform: win-x64
-      targetRuntime: net8.0
+      targetRuntime: net10.0
       projectFolder: Raccoon.Ninja.AzFn.DataApi
       projectFile: Raccoon.Ninja.AzFn.DataApi.csproj
       releaseFilePrefix: "AzFnDataApi"

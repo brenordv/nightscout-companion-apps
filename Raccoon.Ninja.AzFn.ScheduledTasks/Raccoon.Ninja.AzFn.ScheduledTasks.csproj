@@ -1,21 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <AzureFunctionsVersion>v4</AzureFunctionsVersion>
-        <AssemblyVersion>4.0.0</AssemblyVersion>
-        <FileVersion>4.0.0</FileVersion>
+        <AssemblyVersion>5.0.0</AssemblyVersion>
+        <FileVersion>5.0.0</FileVersion>
         <NeutralLanguage>en-US</NeutralLanguage>
         <OutputType>Exe</OutputType>
         <ImplicitUsings>enabled</ImplicitUsings>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.CosmosDB" Version="4.9.0"/>
-        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0"/>
-        <PackageReference Include="MongoDB.Driver" Version="2.26.0"/>
-        <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0"/>
-        <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.17.2"/>
-        <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.22.0"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.CosmosDB" Version="4.16.1"/>
+        <PackageReference Include="MongoDB.Driver" Version="3.11.1"/>
+        <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.1.0"/>
+        <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.52.0"/>
         <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" Version="4.3.1"/>
     </ItemGroup>
     <ItemGroup>

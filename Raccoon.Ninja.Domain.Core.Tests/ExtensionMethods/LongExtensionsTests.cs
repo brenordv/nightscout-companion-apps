@@ -1,6 +1,3 @@
-﻿using FluentAssertions;
-using Raccoon.Ninja.Domain.Core.Entities;
-using Raccoon.Ninja.Domain.Core.Enums;
 using Raccoon.Ninja.Domain.Core.ExtensionMethods;
 using Raccoon.Ninja.TestHelpers;
 
@@ -10,17 +7,15 @@ public class LongExtensionsTests
 {
     private static readonly TimeSpan MillisecondsAccountingFor3FirstPlaces = TimeSpan.FromMilliseconds(100);
 
-    
+
     [Theory]
     [MemberData(nameof(TheoryGenerator.TimeStampAndCorrespondingDateTimes), MemberType = typeof(TheoryGenerator))]
     public void ToUtcDateTime_Success(long timestamp, DateTime expected)
     {
-        //Arrange
+        // Arrange
         var actual = timestamp.ToUtcDateTime();
-        
-        //Assert
-        actual.Should().BeCloseTo(expected, MillisecondsAccountingFor3FirstPlaces);
+
+        // Assert
+        Assert.Equal(expected, actual, MillisecondsAccountingFor3FirstPlaces);
     }
-
-
 }

@@ -1,4 +1,3 @@
-﻿using FluentAssertions;
 using Raccoon.Ninja.AzFn.ScheduledTasks.ExtensionMethods;
 using Raccoon.Ninja.TestHelpers;
 
@@ -19,12 +18,12 @@ public class ListExtensionsTests
         var result = documents.ToGlucoseReadings(previousReading).ToList();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Should().HaveCount(quantityDocuments);
-        result[0].Value.Should().Be(documents[0].Value);
-        result[1].Value.Should().Be(documents[1].Value);
+        Assert.NotNull(result);
+        Assert.Equal(quantityDocuments, result.Count);
+        Assert.Equal(documents[0].Value, result[0].Value);
+        Assert.Equal(documents[1].Value, result[1].Value);
     }
-    
+
     [Fact]
     public void ToGlucoseReadings_WhenCalledWillIgnoreNulls_ShouldReturnCorrectResult()
     {
@@ -38,9 +37,9 @@ public class ListExtensionsTests
         var result = documents.ToGlucoseReadings(previousReading).ToList();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Should().HaveCount(quantityDocuments);
-        result[0].Value.Should().Be(documents[0].Value);
-        result[1].Value.Should().Be(documents[1].Value);
+        Assert.NotNull(result);
+        Assert.Equal(quantityDocuments, result.Count);
+        Assert.Equal(documents[0].Value, result[0].Value);
+        Assert.Equal(documents[1].Value, result[1].Value);
     }
 }

@@ -1,4 +1,3 @@
-﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Raccoon.Ninja.AzFn.DataApi.ExtensionMethods;
@@ -18,7 +17,7 @@ public class HttpRequestExtensionsTests
         var result = request.TryGetReadSinceParam();
 
         // Assert
-        result.Should().BeNull();
+        Assert.Null(result);
     }
 
     [Fact]
@@ -33,7 +32,7 @@ public class HttpRequestExtensionsTests
         var result = request.TryGetReadSinceParam();
 
         // Assert
-        result.Should().BeNull();
+        Assert.Null(result);
     }
 
     [Fact]
@@ -48,8 +47,8 @@ public class HttpRequestExtensionsTests
         var result = request.TryGetReadSinceParam();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Should().Be(123456L);
+        Assert.NotNull(result);
+        Assert.Equal(123456L, result);
     }
 
     [Fact]
@@ -71,7 +70,7 @@ public class HttpRequestExtensionsTests
         var result = request.TryGetReadSinceParam();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Should().Be(987654L);
+        Assert.NotNull(result);
+        Assert.Equal(987654L, result);
     }
 }

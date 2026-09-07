@@ -34,8 +34,7 @@ public class DataApiFunc
         )]
         Container container)
     {
-        _logger.LogInformation("Data API call received. Request by IP: {Ip}",
-            req.HttpContext.Connection.RemoteIpAddress);
+        _logger.LogInformation("Data API call received.");
 
         var results = new List<GlucoseReadingResponse>();
 
@@ -84,8 +83,7 @@ public class DataApiFunc
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Error while processing request from IP: {Ip} | Latest reading : {LatestReading}",
-                req.HttpContext.Connection.RemoteIpAddress, results);
+            _logger.LogError(e, "Error while processing request.");
 
             return new StatusCodeResult(500);
         }

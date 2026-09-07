@@ -1,3 +1,4 @@
+.docs/
 *.*~
 *.iws
 *.pyc
@@ -42,6 +43,7 @@
 [Rr]elease/
 [Rr]eleases/
 appsettings.json
+local.settings.json
 atlassian-ide-plugin.xml
 bld/
 build/

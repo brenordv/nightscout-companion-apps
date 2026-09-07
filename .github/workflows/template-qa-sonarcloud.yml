@@ -37,6 +37,9 @@ on:
         description: '[Required] SonarCloud token for authentication.'
         required: true
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build and analyze
@@ -44,25 +47,21 @@ jobs:
     steps:
       - name: Installing dotnet-coverage
         shell: powershell
-        run: dotnet tool install --global dotnet-coverage
-
-      - name: Installing xmldocmd
-        shell: powershell
-        run: dotnet tool install --global xmldocmd
+        run: dotnet tool install --global dotnet-coverage --version 18.11.0
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@dd06d9cba3e5552c54d9f8ea23572deb30010f7c # v6.0.0
         with:
           java-version: '17'
           distribution: 'temurin' # AdoptOpenJDK is now Eclipse Temurin
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           ref: ${{ inputs.branchName }}
 
       - name: Cache SonarCloud packages
-        uses: actions/cache@v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
@@ -70,7 +69,7 @@ jobs:
 
       - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
-        uses: actions/cache@v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .\.sonar\scanner
           key: ${{ runner.os }}-sonar-scanner
@@ -81,27 +80,34 @@ jobs:
         shell: powershell
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner --version 11.3.0
 
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.githubToken }}
           SONAR_TOKEN: ${{ secrets.sonarToken }}
+          SONAR_PROJECT_KEY: ${{ inputs.projectKey }}
+          SONAR_ORG: ${{ inputs.organization }}
+          SONAR_VERBOSE: ${{ inputs.verbose }}
+          SONAR_EXCLUSIONS: ${{ inputs.sonarExclusions }}
+          SONAR_COVERAGE_EXCLUSIONS: ${{ inputs.coverageExclusions }}
         shell: powershell
         run: |
-          $verboseFlag = if (${{ inputs.verbose }}) {"true"} else {"false"}
-          $sonarExclusions = "${{ inputs.sonarExclusions }}"
-          $coverageExclusions = "${{ inputs.coverageExclusions }}"
-          
-          $sonarBeginCmd = ".\.sonar\scanner\dotnet-sonarscanner begin /k:`"${{ inputs.projectKey }}`" /o:`"${{ inputs.organization }}`" /d:sonar.token=`"${{ secrets.sonarToken }}`" /d:sonar.host.url=`"https://sonarcloud.io`" /d:`"sonar.verbose=$verboseFlag`" /d:sonar.cs.vscoveragexml.reportsPaths=`"coverage.xml`""
-          if (-not [string]::IsNullOrWhiteSpace($sonarExclusions)) {
-            $sonarBeginCmd += " /d:`"sonar.exclusions=$sonarExclusions`""
+          $scannerArgs = @(
+            "/k:$env:SONAR_PROJECT_KEY",
+            "/o:$env:SONAR_ORG",
+            "/d:sonar.token=$env:SONAR_TOKEN",
+            "/d:sonar.host.url=https://sonarcloud.io",
+            "/d:sonar.verbose=$env:SONAR_VERBOSE",
+            "/d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml"
+          )
+          if (-not [string]::IsNullOrWhiteSpace($env:SONAR_EXCLUSIONS)) {
+            $scannerArgs += "/d:sonar.exclusions=$env:SONAR_EXCLUSIONS"
           }
-          if (-not [string]::IsNullOrWhiteSpace($coverageExclusions)) {
-            $sonarBeginCmd += " /d:`"sonar.coverage.exclusions=$coverageExclusions`""
+          if (-not [string]::IsNullOrWhiteSpace($env:SONAR_COVERAGE_EXCLUSIONS)) {
+            $scannerArgs += "/d:sonar.coverage.exclusions=$env:SONAR_COVERAGE_EXCLUSIONS"
           }
-          
-          Invoke-Expression $sonarBeginCmd
+          .\.sonar\scanner\dotnet-sonarscanner begin @scannerArgs
           dotnet build --configuration Release
-          dotnet-coverage collect 'dotnet test' -f xml -o 'coverage.xml'
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.sonarToken }}"
+          dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token=$env:SONAR_TOKEN

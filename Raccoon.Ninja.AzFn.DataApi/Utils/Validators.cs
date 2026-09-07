@@ -1,4 +1,6 @@
-﻿using System;
+using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Raccoon.Ninja.AzFn.DataApi.Utils;
 
@@ -10,10 +12,14 @@ public static class Validators
 
         var secret = GetSecret();
 
-        return !string.IsNullOrWhiteSpace(secret) && key.Equals(secret);
+        if (string.IsNullOrWhiteSpace(secret)) return false;
+
+        return CryptographicOperations.FixedTimeEquals(
+            Encoding.UTF8.GetBytes(key),
+            Encoding.UTF8.GetBytes(secret));
     }
-    
-    
+
+
     private static string GetSecret()
     {
         return Environment.GetEnvironmentVariable("SillySecret");

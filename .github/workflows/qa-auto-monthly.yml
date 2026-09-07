@@ -6,6 +6,9 @@ on:
     # This will help keep me being on top of any new security issue. :)
     - cron: '0 2 1 * *'
 
+permissions:
+  contents: read
+
 jobs:
   sonarcloud-analysis:
     uses: ./.github/workflows/template-qa-sonarcloud.yml
@@ -15,7 +18,7 @@ jobs:
       branchName: 'master'
       verbose: true
       sonarExclusions: '**/*Response.cs,**/*Usings.cs,Raccoon.Ninja.TestHelpers/*'
-      coverageExclusions: '**/*Usings.cs,Raccoon.Ninja.TestHelpers/*,**/*Program.cs,Raccoon.Ninja.WForm.GlucoseIcon/Utils/AppSettings.cs,Raccoon.Ninja.AzFn.DataApi/DataLatestDailyReportFunc.cs,Raccoon.Ninja.AzFn.ScheduledTasks/HbA1cCalcFunc.cs'
+      coverageExclusions: '**/*Usings.cs,Raccoon.Ninja.TestHelpers/*,**/*Program.cs,Raccoon.Ninja.Fn.GlucoseMonitor/*Func.cs'
 
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}

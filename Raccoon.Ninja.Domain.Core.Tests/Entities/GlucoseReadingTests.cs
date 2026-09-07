@@ -1,4 +1,4 @@
-﻿using Raccoon.Ninja.Domain.Core.Entities;
+using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Domain.Core.Enums;
 
 namespace Raccoon.Ninja.Domain.Core.Tests.Entities;
@@ -8,16 +8,16 @@ public class GlucoseReadingTests
     [Fact]
     public void Ctor_WhenInstantiated_ShouldHaveDefaultPropertyValues()
     {
-        //Arrange
+        // Arrange
         const Trend expectedTrend = Trend.TripleUp;
         const long expectedReadTimestampUtc = 0;
 
-        //Act
+        // Act
         var sut = new GlucoseReading();
 
-        //Assert
-        sut.Should().NotBeNull();
-        sut.Trend.Should().Be(expectedTrend);
-        sut.ReadTimestampUtc.Should().Be(expectedReadTimestampUtc);
+        // Assert
+        Assert.NotNull(sut);
+        Assert.Equal(expectedTrend, sut.Trend);
+        Assert.Equal(expectedReadTimestampUtc, sut.ReadTimestampUtc);
     }
 }

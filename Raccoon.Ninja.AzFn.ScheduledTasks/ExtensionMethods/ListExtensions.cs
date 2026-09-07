@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Generic;
 using Raccoon.Ninja.Domain.Core.Entities;
 using Raccoon.Ninja.Extensions.MongoDb.ExtensionMethods;
 using Raccoon.Ninja.Extensions.MongoDb.Models;
@@ -29,13 +28,5 @@ public static class ListExtensions
             yield return current;
             previous = current;
         }
-    }
-
-    public static IList<GlucoseReading> GetLastDays(this IList<GlucoseReading> readings, int days)
-    {
-        var lastDate = readings.Max(r => r.ReadTimestampUtcAsDateTime);
-        var firstDate = lastDate.AddDays(-days);
-
-        return readings.Where(r => r.ReadTimestampUtcAsDateTime >= firstDate).ToList();
     }
 }
