@@ -1,9 +1,9 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using Raccoon.Ninja.Domain.Core.Entities;
-using Raccoon.Ninja.Domain.Core.Exceptions;
-using Raccoon.Ninja.Domain.Core.ExtensionMethods;
+using Raccoon.Ninja.NightScout.Core.Entities;
+using Raccoon.Ninja.NightScout.Core.Exceptions;
+using Raccoon.Ninja.NightScout.Core.ExtensionMethods;
 using Raccoon.Ninja.Fn.GlucoseMonitor.ExtensionMethods;
 using Raccoon.Ninja.Fn.GlucoseMonitor.Mongo;
 

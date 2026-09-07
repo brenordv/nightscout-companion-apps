@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Raccoon.Ninja.Domain.Core.Models;
+namespace Raccoon.Ninja.NightScout.Core.Models;
 
 public record GetDataRequest
 {

@@ -1,6 +1,6 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Raccoon.Ninja.Domain.Core.Enums;
+using Raccoon.Ninja.NightScout.Core.Enums;
 
 namespace Raccoon.Ninja.Fn.GlucoseMonitor.Mongo;
 

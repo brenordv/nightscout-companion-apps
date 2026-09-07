@@ -1,4 +1,4 @@
-using Raccoon.Ninja.Domain.Core.ExtensionMethods;
+using Raccoon.Ninja.NightScout.Core.ExtensionMethods;
 using Raccoon.Ninja.TestHelpers;
 
 namespace Raccoon.Ninja.Domain.Core.Tests.ExtensionMethods;

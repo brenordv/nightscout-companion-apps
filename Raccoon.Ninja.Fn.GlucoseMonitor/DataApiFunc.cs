@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Raccoon.Ninja.Domain.Core.Entities;
-using Raccoon.Ninja.Domain.Core.Models;
+using Raccoon.Ninja.NightScout.Core.Entities;
+using Raccoon.Ninja.NightScout.Core.Models;
 using Raccoon.Ninja.Fn.GlucoseMonitor.ExtensionMethods;
 using Raccoon.Ninja.Fn.GlucoseMonitor.Utils;
 

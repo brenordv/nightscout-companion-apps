@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Raccoon.Ninja.Domain.Core.Entities;
+namespace Raccoon.Ninja.NightScout.Core.Entities;
 
 public record BaseValueEntity: BaseControlledEntity
 {

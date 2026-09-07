@@ -1,4 +1,4 @@
-using Raccoon.Ninja.Domain.Core.Enums;
+using Raccoon.Ninja.NightScout.Core.Enums;
 using Xunit;
 
 namespace Raccoon.Ninja.TestHelpers;

@@ -1,4 +1,4 @@
-﻿namespace Raccoon.Ninja.Domain.Core.Enums;
+﻿namespace Raccoon.Ninja.NightScout.Core.Enums;
 
 public enum Trend
 {

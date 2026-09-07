@@ -1,6 +1,6 @@
-﻿using Raccoon.Ninja.Domain.Core.Enums;
+﻿using Raccoon.Ninja.NightScout.Core.Enums;
 
-namespace Raccoon.Ninja.Domain.Core.Converters;
+namespace Raccoon.Ninja.NightScout.Core.Converters;
 
 public static partial class Converter
 {

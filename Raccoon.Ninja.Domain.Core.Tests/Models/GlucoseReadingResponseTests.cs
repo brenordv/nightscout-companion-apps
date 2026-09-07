@@ -1,6 +1,6 @@
-using Raccoon.Ninja.Domain.Core.Entities;
-using Raccoon.Ninja.Domain.Core.Enums;
-using Raccoon.Ninja.Domain.Core.Models;
+using Raccoon.Ninja.NightScout.Core.Entities;
+using Raccoon.Ninja.NightScout.Core.Enums;
+using Raccoon.Ninja.NightScout.Core.Models;
 
 namespace Raccoon.Ninja.Domain.Core.Tests.Models;
 

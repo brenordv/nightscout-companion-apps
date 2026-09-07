@@ -18,6 +18,6 @@
     <Project Path="Raccoon.Ninja.Fn.GlucoseMonitor.Tests/Raccoon.Ninja.Fn.GlucoseMonitor.Tests.csproj" />
     <Project Path="Raccoon.Ninja.TestHelpers/Raccoon.Ninja.TestHelpers.csproj" />
   </Folder>
-  <Project Path="Raccoon.Ninja.Domain.Core/Raccoon.Ninja.Domain.Core.csproj" />
   <Project Path="Raccoon.Ninja.Fn.GlucoseMonitor/Raccoon.Ninja.Fn.GlucoseMonitor.csproj" />
+  <Project Path="Raccoon.Ninja.NightScout.Core/Raccoon.Ninja.NightScout.Core.csproj" />
 </Solution>

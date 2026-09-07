@@ -1,6 +1,6 @@
 using Bogus;
-using Raccoon.Ninja.Domain.Core.Entities;
-using Raccoon.Ninja.Domain.Core.Enums;
+using Raccoon.Ninja.NightScout.Core.Entities;
+using Raccoon.Ninja.NightScout.Core.Enums;
 
 namespace Raccoon.Ninja.TestHelpers;
 

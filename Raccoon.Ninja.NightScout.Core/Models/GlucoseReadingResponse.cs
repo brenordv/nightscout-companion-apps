@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-using Raccoon.Ninja.Domain.Core.Converters;
-using Raccoon.Ninja.Domain.Core.Entities;
-using Raccoon.Ninja.Domain.Core.Enums;
-using Raccoon.Ninja.Domain.Core.ExtensionMethods;
+using Raccoon.Ninja.NightScout.Core.ExtensionMethods;
+using Raccoon.Ninja.NightScout.Core.Converters;
+using Raccoon.Ninja.NightScout.Core.Entities;
+using Raccoon.Ninja.NightScout.Core.Enums;
 
-namespace Raccoon.Ninja.Domain.Core.Models;
+namespace Raccoon.Ninja.NightScout.Core.Models;
 
 [ExcludeFromCodeCoverage]
 public record GlucoseReadingResponse

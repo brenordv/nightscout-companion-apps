@@ -1,4 +1,4 @@
-using Raccoon.Ninja.Domain.Core.Entities;
+using Raccoon.Ninja.NightScout.Core.Entities;
 
 namespace Raccoon.Ninja.Fn.GlucoseMonitor.Mongo;
 

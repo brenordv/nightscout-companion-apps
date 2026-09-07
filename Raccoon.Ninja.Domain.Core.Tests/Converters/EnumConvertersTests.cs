@@ -1,5 +1,5 @@
-using Raccoon.Ninja.Domain.Core.Converters;
-using Raccoon.Ninja.Domain.Core.Enums;
+using Raccoon.Ninja.NightScout.Core.Converters;
+using Raccoon.Ninja.NightScout.Core.Enums;
 using Raccoon.Ninja.TestHelpers;
 
 namespace Raccoon.Ninja.Domain.Core.Tests.Converters;

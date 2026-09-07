@@ -19,7 +19,7 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Raccoon.Ninja.Domain.Core\Raccoon.Ninja.Domain.Core.csproj"/>
+        <ProjectReference Include="..\Raccoon.Ninja.NightScout.Core\Raccoon.Ninja.NightScout.Core.csproj" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.52.0"/>

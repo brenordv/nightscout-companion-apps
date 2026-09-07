@@ -1,5 +1,5 @@
 using Newtonsoft.Json;
-using Raccoon.Ninja.Domain.Core.Models;
+using Raccoon.Ninja.NightScout.Core.Models;
 
 namespace Raccoon.Ninja.Fn.GlucoseMonitor.ExtensionMethods;
 

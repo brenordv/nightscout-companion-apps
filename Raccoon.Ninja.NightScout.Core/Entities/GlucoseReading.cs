@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
-using Raccoon.Ninja.Domain.Core.Enums;
-using Raccoon.Ninja.Domain.Core.ExtensionMethods;
+using Raccoon.Ninja.NightScout.Core.ExtensionMethods;
+using Raccoon.Ninja.NightScout.Core.Enums;
 
-namespace Raccoon.Ninja.Domain.Core.Entities;
+namespace Raccoon.Ninja.NightScout.Core.Entities;
 
 public record GlucoseReading : BaseValueEntity
 {

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Raccoon.Ninja.Domain.Core.Exceptions;
+namespace Raccoon.Ninja.NightScout.Core.Exceptions;
 
 [ExcludeFromCodeCoverage]
 public class NightScoutException : Exception

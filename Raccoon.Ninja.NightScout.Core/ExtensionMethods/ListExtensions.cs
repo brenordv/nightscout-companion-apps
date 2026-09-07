@@ -1,4 +1,4 @@
-namespace Raccoon.Ninja.Domain.Core.ExtensionMethods;
+namespace Raccoon.Ninja.NightScout.Core.ExtensionMethods;
 
 public static class ListExtensions
 {
