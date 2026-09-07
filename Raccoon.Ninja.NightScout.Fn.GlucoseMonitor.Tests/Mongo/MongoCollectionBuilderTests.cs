@@ -1,6 +1,6 @@
 using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Mongo;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor.Tests.Mongo;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Tests.Mongo;
 
 public class MongoCollectionBuilderTests
 {

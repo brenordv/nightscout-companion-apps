@@ -1,7 +1,7 @@
 using Raccoon.Ninja.NightScout.Core.ExtensionMethods;
 using Raccoon.Ninja.TestHelpers;
 
-namespace Raccoon.Ninja.Domain.Core.Tests.ExtensionMethods;
+namespace Raccoon.Ninja.NightScout.Core.Tests.ExtensionMethods;
 
 public class LongExtensionsTests
 {

@@ -1,7 +1,7 @@
 using Raccoon.Ninja.NightScout.Core.Entities;
 using Raccoon.Ninja.NightScout.Core.Enums;
 
-namespace Raccoon.Ninja.Domain.Core.Tests.Entities;
+namespace Raccoon.Ninja.NightScout.Core.Tests.Entities;
 
 public class GlucoseReadingTests
 {

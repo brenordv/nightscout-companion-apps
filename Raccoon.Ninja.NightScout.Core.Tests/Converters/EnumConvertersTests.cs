@@ -2,7 +2,7 @@ using Raccoon.Ninja.NightScout.Core.Converters;
 using Raccoon.Ninja.NightScout.Core.Enums;
 using Raccoon.Ninja.TestHelpers;
 
-namespace Raccoon.Ninja.Domain.Core.Tests.Converters;
+namespace Raccoon.Ninja.NightScout.Core.Tests.Converters;
 
 public class EnumConvertersTests
 {

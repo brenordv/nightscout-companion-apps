@@ -1,6 +1,6 @@
 using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Utils;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor.Tests.Utils;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Tests.Utils;
 
 public class ValidatorsTests : IDisposable
 {

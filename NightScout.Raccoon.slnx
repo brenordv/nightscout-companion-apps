@@ -14,8 +14,8 @@
     <File Path=".github/workflows/template-test-build-and-publish-to-azure.yml" />
   </Folder>
   <Folder Name="/Tests/">
-    <Project Path="Raccoon.Ninja.Domain.Core.Tests/Raccoon.Ninja.Domain.Core.Tests.csproj" />
-    <Project Path="Raccoon.Ninja.Fn.GlucoseMonitor.Tests/Raccoon.Ninja.Fn.GlucoseMonitor.Tests.csproj" />
+    <Project Path="Raccoon.Ninja.NightScout.Core.Tests/Raccoon.Ninja.NightScout.Core.Tests.csproj" />
+    <Project Path="Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Tests/Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Tests.csproj" />
     <Project Path="Raccoon.Ninja.TestHelpers/Raccoon.Ninja.TestHelpers.csproj" />
   </Folder>
   <Project Path="Raccoon.Ninja.NightScout.Core/Raccoon.Ninja.NightScout.Core.csproj" />

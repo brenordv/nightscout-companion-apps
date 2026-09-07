@@ -1,7 +1,7 @@
 using System.Text;
 using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.ExtensionMethods;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor.Tests.ExtensionMethods;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Tests.ExtensionMethods;
 
 public class StreamExtensionsTests
 {

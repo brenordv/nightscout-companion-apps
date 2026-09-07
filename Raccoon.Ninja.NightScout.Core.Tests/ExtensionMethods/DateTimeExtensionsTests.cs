@@ -1,6 +1,6 @@
 using Raccoon.Ninja.NightScout.Core.ExtensionMethods;
 
-namespace Raccoon.Ninja.Domain.Core.Tests.ExtensionMethods;
+namespace Raccoon.Ninja.NightScout.Core.Tests.ExtensionMethods;
 
 public class DateTimeExtensionsTests
 {

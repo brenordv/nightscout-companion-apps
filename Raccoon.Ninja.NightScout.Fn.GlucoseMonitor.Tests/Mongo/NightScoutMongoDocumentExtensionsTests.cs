@@ -1,7 +1,7 @@
 using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Mongo;
 using Raccoon.Ninja.NightScout.Core.Enums;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor.Tests.Mongo;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Tests.Mongo;
 
 public class NightScoutMongoDocumentExtensionsTests
 {

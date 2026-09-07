@@ -4,7 +4,7 @@ using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Mongo;
 using Raccoon.Ninja.NightScout.Core.Enums;
 using Raccoon.Ninja.NightScout.Core.ExtensionMethods;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor.Tests;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Tests;
 
 internal static class MongoDocumentGenerators
 {

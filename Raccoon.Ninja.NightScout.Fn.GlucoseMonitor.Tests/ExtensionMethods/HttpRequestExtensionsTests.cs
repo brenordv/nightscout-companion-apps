@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.ExtensionMethods;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor.Tests.ExtensionMethods;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Tests.ExtensionMethods;
 
 public class HttpRequestExtensionsTests
 {
