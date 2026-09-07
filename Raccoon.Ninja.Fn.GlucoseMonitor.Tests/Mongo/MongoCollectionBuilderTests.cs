@@ -1,4 +1,4 @@
-using Raccoon.Ninja.Fn.GlucoseMonitor.Mongo;
+using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Mongo;
 
 namespace Raccoon.Ninja.Fn.GlucoseMonitor.Tests.Mongo;
 

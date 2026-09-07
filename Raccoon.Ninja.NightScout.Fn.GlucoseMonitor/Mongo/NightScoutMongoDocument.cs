@@ -2,7 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Raccoon.Ninja.NightScout.Core.Enums;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor.Mongo;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Mongo;
 
 internal record NightScoutMongoDocument
 {

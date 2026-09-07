@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor.ExtensionMethods;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.ExtensionMethods;
 
 public static class HttpRequestExtensions
 {

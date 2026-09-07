@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor.Mongo;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Mongo;
 
 internal class MongoCollectionBuilder
 {

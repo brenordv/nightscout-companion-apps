@@ -5,10 +5,10 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Raccoon.Ninja.NightScout.Core.Entities;
 using Raccoon.Ninja.NightScout.Core.Models;
-using Raccoon.Ninja.Fn.GlucoseMonitor.ExtensionMethods;
-using Raccoon.Ninja.Fn.GlucoseMonitor.Utils;
+using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.ExtensionMethods;
+using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Utils;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor;
 
 public class DataApiFunc(ILogger<DataApiFunc> logger)
 {

@@ -1,6 +1,6 @@
 using Raccoon.Ninja.NightScout.Core.Entities;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor.Mongo;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Mongo;
 
 internal static class NightScoutMongoDocumentExtensions
 {

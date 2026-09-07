@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using Raccoon.Ninja.Fn.GlucoseMonitor.ExtensionMethods;
+using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.ExtensionMethods;
 
 namespace Raccoon.Ninja.Fn.GlucoseMonitor.Tests.ExtensionMethods;
 

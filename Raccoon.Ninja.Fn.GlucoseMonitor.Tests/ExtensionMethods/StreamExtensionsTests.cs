@@ -1,5 +1,5 @@
 using System.Text;
-using Raccoon.Ninja.Fn.GlucoseMonitor.ExtensionMethods;
+using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.ExtensionMethods;
 
 namespace Raccoon.Ninja.Fn.GlucoseMonitor.Tests.ExtensionMethods;
 

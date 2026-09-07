@@ -1,6 +1,6 @@
 using Bogus;
 using MongoDB.Bson;
-using Raccoon.Ninja.Fn.GlucoseMonitor.Mongo;
+using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Mongo;
 using Raccoon.Ninja.NightScout.Core.Enums;
 using Raccoon.Ninja.NightScout.Core.ExtensionMethods;
 

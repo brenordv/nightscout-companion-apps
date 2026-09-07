@@ -1,4 +1,4 @@
-using Raccoon.Ninja.Fn.GlucoseMonitor.ExtensionMethods;
+using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.ExtensionMethods;
 using Raccoon.Ninja.TestHelpers;
 
 namespace Raccoon.Ninja.Fn.GlucoseMonitor.Tests.ExtensionMethods;

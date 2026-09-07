@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using Raccoon.Ninja.NightScout.Core.Models;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor.ExtensionMethods;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.ExtensionMethods;
 
 public static class StreamExtensions
 {

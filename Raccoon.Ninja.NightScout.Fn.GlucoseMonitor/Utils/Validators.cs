@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor.Utils;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Utils;
 
 public static class Validators
 {

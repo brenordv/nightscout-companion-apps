@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Raccoon.Ninja.Fn.GlucoseMonitor\Raccoon.Ninja.Fn.GlucoseMonitor.csproj"/>
+        <ProjectReference Include="..\Raccoon.Ninja.NightScout.Fn.GlucoseMonitor\Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.csproj" />
         <ProjectReference Include="..\Raccoon.Ninja.TestHelpers\Raccoon.Ninja.TestHelpers.csproj"/>
     </ItemGroup>
 

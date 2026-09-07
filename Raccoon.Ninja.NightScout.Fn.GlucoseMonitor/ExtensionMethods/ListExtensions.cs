@@ -1,7 +1,7 @@
 using Raccoon.Ninja.NightScout.Core.Entities;
-using Raccoon.Ninja.Fn.GlucoseMonitor.Mongo;
+using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Mongo;
 
-namespace Raccoon.Ninja.Fn.GlucoseMonitor.ExtensionMethods;
+namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.ExtensionMethods;
 
 internal static class ListExtensions
 {
