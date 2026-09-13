@@ -2,7 +2,7 @@ using Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Utils;
 
 namespace Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Tests.Utils;
 
-public class ValidatorsTests : IDisposable
+public sealed class ValidatorsTests : IDisposable
 {
     private const string SecretEnvVar = "SillySecret";
     private readonly string _originalSecret = Environment.GetEnvironmentVariable(SecretEnvVar);

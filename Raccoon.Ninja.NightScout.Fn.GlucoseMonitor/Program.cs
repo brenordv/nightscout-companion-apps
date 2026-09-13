@@ -9,4 +9,4 @@ builder.ConfigureFunctionsWebApplication();
 builder.Logging.SetMinimumLevel(LogLevel.Warning);
 builder.Logging.AddFilter("Raccoon.Ninja", LogLevel.Information);
 
-builder.Build().Run();
+await builder.Build().RunAsync();
