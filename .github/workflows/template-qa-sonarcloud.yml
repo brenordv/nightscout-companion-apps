@@ -108,6 +108,13 @@ jobs:
             $scannerArgs += "/d:sonar.coverage.exclusions=$env:SONAR_COVERAGE_EXCLUSIONS"
           }
           .\.sonar\scanner\dotnet-sonarscanner begin @scannerArgs
+          if ($LASTEXITCODE -ne 0) { throw "sonarscanner begin failed (exit $LASTEXITCODE)" }
+
           dotnet build --configuration Release
+          if ($LASTEXITCODE -ne 0) { throw "dotnet build failed (exit $LASTEXITCODE)" }
+
           dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
+          if ($LASTEXITCODE -ne 0) { throw "dotnet test failed (exit $LASTEXITCODE)" }
+
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token=$env:SONAR_TOKEN
+          if ($LASTEXITCODE -ne 0) { throw "sonarscanner end failed (exit $LASTEXITCODE)" }
