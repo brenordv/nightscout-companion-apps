@@ -44,14 +44,17 @@ public class DataTransferFunc(ILogger<DataTransferFunc> logger)
             {
                 var targetTimestampUtc = DateTimeOffset.FromUnixTimeMilliseconds(targetTimestamp)
                     .UtcDateTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
-                _logger.LogInformation("No new readings since {TargetTimestampUtc}.", targetTimestampUtc);
+
+                if (_logger.IsEnabled(LogLevel.Information))
+                    _logger.LogInformation("No new readings since {TargetTimestampUtc}.", targetTimestampUtc);
 
                 return new List<GlucoseReading>();
             }
 
             var glucoseReadings = documents.ToGlucoseReadings(previousReading);
 
-            _logger.LogInformation("Transferred {Count} readings to Cosmos DB.", documents.Count);
+            if (_logger.IsEnabled(LogLevel.Information))
+                _logger.LogInformation("Transferred {Count} readings to Cosmos DB.", documents.Count);
 
             return glucoseReadings;
         }
