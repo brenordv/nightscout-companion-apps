@@ -7,6 +7,9 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+permissions:
+  contents: read
+
 jobs:
   sonarcloud-analysis:
     uses: ./.github/workflows/template-qa-sonarcloud.yml
@@ -15,7 +18,7 @@ jobs:
       organization: 'raccoon-ninja'
       verbose: true
       sonarExclusions: '**/*Response.cs,**/*Usings.cs,Raccoon.Ninja.TestHelpers/*'
-      coverageExclusions: '**/*Usings.cs,Raccoon.Ninja.TestHelpers/*,**/*Program.cs,Raccoon.Ninja.WForm.GlucoseIcon/Utils/AppSettings.cs,Raccoon.Ninja.AzFn.DataApi/*Func.cs,Raccoon.Ninja.AzFn.ScheduledTasks/*Func.cs'
+      coverageExclusions: '**/*Usings.cs,Raccoon.Ninja.TestHelpers/*,**/*Program.cs,**/*Func.cs'
 
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}

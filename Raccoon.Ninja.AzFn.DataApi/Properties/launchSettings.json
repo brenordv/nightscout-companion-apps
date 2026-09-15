@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "Raccoon.Ninja.AzFn.DataApi": {
-      "commandName": "Project",
-      "commandLineArgs": "--port 7189",
-      "launchBrowser": false
-    }
-  }
-}

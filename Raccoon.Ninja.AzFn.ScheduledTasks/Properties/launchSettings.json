@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "Raccoon.Ninja.AzFn.DataTransfer": {
-      "commandName": "Project",
-      "commandLineArgs": "--port 7139",
-      "launchBrowser": false
-    }
-  }
-}
