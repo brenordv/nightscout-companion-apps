@@ -58,4 +58,22 @@ public class MongoCollectionBuilderTests
         // Assert
         Assert.Same(builder, result);
     }
+
+    [Fact]
+    public void Build_ValidConfiguration_ReturnsCollectionForConfiguredNamespace()
+    {
+        // Arrange
+        var builder = new MongoCollectionBuilder()
+            .AddConnectionString("mongodb://localhost:27017")
+            .AddDatabaseName("nightscout")
+            .AddCollectionName("entries");
+
+        // Act
+        var collection = builder.Build<NightScoutMongoDocument>();
+
+        // Assert
+        Assert.NotNull(collection);
+        Assert.Equal("nightscout", collection.Database.DatabaseNamespace.DatabaseName);
+        Assert.Equal("entries", collection.CollectionNamespace.CollectionName);
+    }
 }
