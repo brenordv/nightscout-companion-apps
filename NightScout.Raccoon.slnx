@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="CHANGELOG.md" />
+    <File Path="global.json" />
+    <File Path="readme.md" />
+  </Folder>
+  <Folder Name="/Solution Items/Github Pipelines/">
+    <File Path=".github/workflows/master-publish-glucosemonitor.yml" />
+    <File Path=".github/workflows/qa-auto-monthly.yml" />
+    <File Path=".github/workflows/qa-on-pull-requests.yml" />
+    <File Path=".github/workflows/template-qa-sonarcloud.yml" />
+    <File Path=".github/workflows/template-test-build-and-publish-to-azure.yml" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Raccoon.Ninja.NightScout.Core.Tests/Raccoon.Ninja.NightScout.Core.Tests.csproj" />
+    <Project Path="Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Tests/Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Tests.csproj" />
+    <Project Path="Raccoon.Ninja.TestHelpers/Raccoon.Ninja.TestHelpers.csproj" />
+  </Folder>
+  <Project Path="Raccoon.Ninja.NightScout.Core/Raccoon.Ninja.NightScout.Core.csproj" />
+  <Project Path="Raccoon.Ninja.NightScout.Fn.GlucoseMonitor/Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.csproj" />
+</Solution>

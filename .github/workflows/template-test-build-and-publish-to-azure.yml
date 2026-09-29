@@ -22,15 +22,15 @@ on:
         required: true
         type: string
       projectFolder:
-        description: '[Required] The folder where the project is located. Example: "Raccoon.Ninja.AzFn.DataApi"'
+        description: '[Required] The folder where the project is located. Example: "Raccoon.Ninja.Fn.GlucoseMonitor"'
         required: true
         type: string
       projectFile:
-        description: '[Required] The project file. Example: "Raccoon.Ninja.AzFn.DataApi.csproj"'
+        description: '[Required] The project file. Example: "Raccoon.Ninja.Fn.GlucoseMonitor.csproj"'
         required: true
         type: string
       releaseFilePrefix:
-        description: '[Required] The prefix for the release file. Example: "AzFnDataApi"'
+        description: '[Required] The prefix for the release file. Example: "AzFnGlucoseMonitor"'
         required: true
         type: string
       publishToAzure:
@@ -49,6 +49,9 @@ on:
         description: '[Required only if publishToAzure is true] The Azure Publish Profile for deployment.'
         required: false
 
+permissions:
+  contents: read
+
 jobs:
   set_release_version:
     runs-on: ubuntu-latest
@@ -56,34 +59,33 @@ jobs:
       version: ${{ steps.set_version.outputs.version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Define next release version
         id: set_version
         run: echo "version=$(cat ${{ inputs.projectFolder }}/${{ inputs.projectFile }} | grep -oP '(?<=<AssemblyVersion>).*(?=<\/AssemblyVersion>)')" >> $GITHUB_OUTPUT
 
   test:
     needs: set_release_version
-    permissions:
-      deployments: write
-      contents: write
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           dotnet-version: ${{ inputs.dotnetVersion }}
 
       - name: Test
-        run: dotnet test ${{ inputs.projectFolder }}/${{ inputs.projectFile }} --verbosity normal
+        run: dotnet test
 
   check_tag:
     needs: [set_release_version, test]
     runs-on: ubuntu-latest
     env:
       VERSION: ${{ needs.set_release_version.outputs.version }}
+      GH_TOKEN: ${{ secrets.githubToken }}
+      REPO: ${{ github.repository }}
     outputs:
       tag_exists: ${{ steps.check_tag.outputs.tag_exists }}
       proceed_with_publish: ${{ steps.check_tag.outputs.proceed_with_publish }}
@@ -91,25 +93,30 @@ jobs:
     steps:
       - name: Set Artifact Name
         id: set_artifact_name
+        env:
+          RELEASE_FILE_PREFIX: ${{ inputs.releaseFilePrefix }}
+          TARGET_PLATFORM: ${{ inputs.targetPlatform }}
         run: |
-          echo "artifact_name=${{ inputs.releaseFilePrefix }}_${{ inputs.targetPlatform }}_${{ env.VERSION }}" >> $GITHUB_OUTPUT
+          echo "artifact_name=${RELEASE_FILE_PREFIX}_${TARGET_PLATFORM}_${VERSION}" >> "$GITHUB_OUTPUT"
       - name: Check if this version is already built
         id: check_tag
+        env:
+          ARTIFACT_NAME: ${{ steps.set_artifact_name.outputs.artifact_name }}
         run: |
-          TAG_EXISTS=$(curl -o /dev/null -s -w "%{http_code}\n" -H "Authorization: token ${{ secrets.githubToken }}" https://api.github.com/repos/${{ github.repository }}/git/refs/tags/${{ env.VERSION }})
+          TAG_EXISTS=$(curl -o /dev/null -s -w "%{http_code}\n" -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/$REPO/git/refs/tags/$VERSION")
 
           if [[ "$TAG_EXISTS" -eq 200 ]]; then
             echo "Tag exists. Checking for release asset."
-            RELEASE_ID=$(curl -s -H "Authorization: token ${{ secrets.githubToken }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ env.VERSION }} | jq -r '.id')
+            RELEASE_ID=$(curl -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/$REPO/releases/tags/$VERSION" | jq -r '.id')
 
             if [[ -z "$RELEASE_ID" || "$RELEASE_ID" == "null" ]]; then
               echo "Release ID is empty or null. Proceeding to publish."
-              echo "tag_exists=false" >> $GITHUB_OUTPUT
-              echo "proceed_with_publish=true" >> $GITHUB_OUTPUT
+              echo "tag_exists=false" >> "$GITHUB_OUTPUT"
+              echo "proceed_with_publish=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
 
-            RAW_RESPONSE=$(curl -s -H "Authorization: token ${{ secrets.githubToken }}" https://api.github.com/repos/${{ github.repository }}/releases/$RELEASE_ID/assets)
+            RAW_RESPONSE=$(curl -s -H "Authorization: token $GH_TOKEN" "https://api.github.com/repos/$REPO/releases/$RELEASE_ID/assets")
             echo "Raw Response: $RAW_RESPONSE"
 
             JSON_TYPE=$(echo "$RAW_RESPONSE" | jq -r 'type')
@@ -117,11 +124,11 @@ jobs:
               echo "RAW_RESPONSE is a JSON object."
               # Check if RAW_RESPONSE contains a "message" field with the value "Not Found"
               MESSAGE_VALUE=$(echo "$RAW_RESPONSE" | jq -r '.message // ""')
-            
+
               if [[ "$MESSAGE_VALUE" == "Not Found" ]]; then
                 echo "No assets found for this release. Proceeding to publish."
-                echo "tag_exists=true" >> $GITHUB_OUTPUT
-                echo "proceed_with_publish=true" >> $GITHUB_OUTPUT
+                echo "tag_exists=true" >> "$GITHUB_OUTPUT"
+                echo "proceed_with_publish=true" >> "$GITHUB_OUTPUT"
                 exit 0
               elif [[ ! -z "$MESSAGE_VALUE" ]]; then
                 echo "An unexpected error occurred: $MESSAGE_VALUE. Exiting."
@@ -130,16 +137,16 @@ jobs:
 
             elif [[ "$JSON_TYPE" == "array" ]]; then
               echo "RAW_RESPONSE is a JSON array."
-              ASSET_EXISTS=$(echo "$RAW_RESPONSE" | jq -r '.[] | select(.name=="${{ steps.set_artifact_name.outputs.artifact_name }}.zip").id')
-  
+              ASSET_EXISTS=$(echo "$RAW_RESPONSE" | jq -r --arg name "$ARTIFACT_NAME" '.[] | select(.name==($name + ".zip")).id')
+
               if [[ ! -z "$ASSET_EXISTS" ]]; then
                 echo "Release asset exists. No need to publish."
-                echo "tag_exists=true" >> $GITHUB_OUTPUT
-                echo "proceed_with_publish=false" >> $GITHUB_OUTPUT
+                echo "tag_exists=true" >> "$GITHUB_OUTPUT"
+                echo "proceed_with_publish=false" >> "$GITHUB_OUTPUT"
               else
                 echo "Release asset does not exist. Proceeding to publish."
-                echo "tag_exists=true" >> $GITHUB_OUTPUT
-                echo "proceed_with_publish=true" >> $GITHUB_OUTPUT
+                echo "tag_exists=true" >> "$GITHUB_OUTPUT"
+                echo "proceed_with_publish=true" >> "$GITHUB_OUTPUT"
               fi
             else
               echo "RAW_RESPONSE is neither a JSON object nor an array. Type: $JSON_TYPE"
@@ -148,8 +155,8 @@ jobs:
 
           else
             echo "Tag does not exist. Proceeding to publish."
-            echo "tag_exists=false" >> $GITHUB_OUTPUT
-            echo "proceed_with_publish=true" >> $GITHUB_OUTPUT
+            echo "tag_exists=false" >> "$GITHUB_OUTPUT"
+            echo "proceed_with_publish=true" >> "$GITHUB_OUTPUT"
           fi
 
   validate_azure_inputs_for_publishing:
@@ -157,16 +164,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check Azure Function App Name
+        env:
+          AZURE_FUNCTION_APP_NAME: ${{ secrets.azureFunctionAppName }}
         run: |
-          if [ -z "${{ secrets.azureFunctionAppName }}" ]; then
+          if [ -z "$AZURE_FUNCTION_APP_NAME" ]; then
             echo "Azure Function App Name (azureFunctionAppName) is empty or not set."
             exit 1
           else
-            echo "Azure Function App Name is set to '${{ secrets.azureFunctionAppName }}'."
+            echo "Azure Function App Name is set."
           fi
       - name: Check Azure Publish Profile
+        env:
+          AZURE_PUBLISH_PROFILE: ${{ secrets.azurePublishProfile }}
         run: |
-          if [ -z "${{ secrets.azurePublishProfile }}" ]; then
+          if [ -z "$AZURE_PUBLISH_PROFILE" ]; then
             echo "Azure Publish Profile (azurePublishProfile) is empty or not set."
             exit 1
           else
@@ -187,19 +198,16 @@ jobs:
   build:
     needs: [set_release_version, check_tag]
     if: needs.check_tag.outputs.proceed_with_publish == 'true'
-    permissions:
-      deployments: write
-      contents: write
     runs-on: windows-latest
     env:
       VERSION: ${{ needs.set_release_version.outputs.version }}
       ARTIFACT_NAME: ${{ needs.check_tag.outputs.artifact_name }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           dotnet-version: ${{ inputs.dotnetVersion }}
 
@@ -210,7 +218,7 @@ jobs:
         shell: pwsh
         run: |
           pushd './${{ inputs.projectFolder }}'
-          dotnet build --configuration Release --output ./output
+          dotnet publish --configuration Release --output ./output
           popd
 
       - name: Compressing artifact
@@ -220,14 +228,19 @@ jobs:
 
       - name: Uploading artifact
         id: upload_artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: "${{ env.ARTIFACT_NAME }}"
           path: "${{ env.ARTIFACT_NAME }}.zip"
           if-no-files-found: error  
 
   deploy:
-    needs: [ set_release_version, check_tag, build ]
+    needs: [ set_release_version, check_tag, build, validate_azure_inputs_for_publishing ]
+    if: |
+      always() &&
+      github.ref == 'refs/heads/master' &&
+      needs.build.result == 'success' &&
+      needs.validate_azure_inputs_for_publishing.result != 'failure'
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -237,11 +250,11 @@ jobs:
     steps:
       - name: Where Am I? What is going on?
         run: |
-          echo "$(pwd) | ${{ env.VERSION }}"
+          echo "$(pwd) | $VERSION"
           ls -la
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup Git
         run: |
@@ -249,7 +262,7 @@ jobs:
           git config user.email "github-actions@github.com"
 
       - name: Downloading artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: "${{ env.ARTIFACT_NAME }}"
 
@@ -258,7 +271,7 @@ jobs:
           unzip "${{ env.ARTIFACT_NAME }}.zip" -d "./output"
 
       - name: 'Publish to Azure Functions App'
-        uses: Azure/functions-action@v1
+        uses: Azure/functions-action@c5060b3b8bb1ebbcb531abd00c822ecbaa8ea656 # v1.5.7
         if: inputs.publishToAzure == true
         with:
           app-name: ${{ secrets.azureFunctionAppName }}
@@ -269,12 +282,12 @@ jobs:
       - name: Create Tag
         if: needs.check_tag.outputs.tag_exists == false
         run: |
-          git tag ${{ env.VERSION }}
-          git push origin ${{ env.VERSION }}
+          git tag "$VERSION"
+          git push origin "$VERSION"
 
       - name: Create Release
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         env:
           token: ${{ secrets.githubToken }}
         with:

@@ -1,6 +1,6 @@
-namespace Raccoon.Ninja.TestHelpers;
+﻿namespace Raccoon.Ninja.NightScout.Core.ExtensionMethods;
 
-public static class TestUtils
+public static class DateTimeExtensions
 {
     public static long ToUnixTimestamp(this DateTime dateTime)
     {
