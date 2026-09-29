@@ -22,11 +22,11 @@ on:
         required: true
         type: string
       projectFolder:
-        description: '[Required] The folder where the project is located. Example: "Raccoon.Ninja.Fn.GlucoseMonitor"'
+        description: '[Required] The folder where the project is located. Example: "Raccoon.Ninja.NightScout.Fn.GlucoseMonitor"'
         required: true
         type: string
       projectFile:
-        description: '[Required] The project file. Example: "Raccoon.Ninja.Fn.GlucoseMonitor.csproj"'
+        description: '[Required] The project file. Example: "Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.csproj"'
         required: true
         type: string
       releaseFilePrefix:
