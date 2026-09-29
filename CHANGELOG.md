@@ -9,14 +9,14 @@ semantic versioning.
 
 ### Breaking changes
 
-- Consolidated both function apps into a single function app, `Raccoon.Ninja.Fn.GlucoseMonitor`, hosting both
+- Consolidated both function apps into a single function app, `Raccoon.Ninja.NightScout.Fn.GlucoseMonitor`, hosting both
   `DataTransferFunc` and `DataApiFunc`. The new app has its own hostname and its own access keys, so every Data API
   client must repoint to the new host and key. Function names, the HTTP route, and the 5-minute timer schedule are
   unchanged.
 
 ### Changed
 
-- Moved `DataApiFunc`, `DataTransferFunc`, and their helpers into `Raccoon.Ninja.Fn.GlucoseMonitor`. The MongoDB read
+- Moved `DataApiFunc`, `DataTransferFunc`, and their helpers into `Raccoon.Ninja.NightScout.Fn.GlucoseMonitor`. The MongoDB read
   the transfer function needs now lives inside that project as internal code.
 - `Program.cs` now uses `FunctionsApplication.CreateBuilder(args)` with `ConfigureFunctionsWebApplication()`.
 - Raised the default log level to `Warning` in both `host.json` and the isolated worker, keeping `Raccoon.Ninja`
@@ -37,7 +37,7 @@ semantic versioning.
 - Removed the reusable `Raccoon.Ninja.Extensions.MongoDb` class library and its test project. The desktop apps that
   used it are already retired, so only the minimal internal read the transfer function needs remains. The dead
   `GetLatestDocument` extension was dropped.
-- Merged the three function and library test projects into one, `Raccoon.Ninja.Fn.GlucoseMonitor.Tests`.
+- Merged the three function and library test projects into one, `Raccoon.Ninja.NightScout.Fn.GlucoseMonitor.Tests`.
 
 ### Security
 

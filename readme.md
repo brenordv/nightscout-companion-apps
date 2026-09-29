@@ -35,7 +35,7 @@
 So I finally was able to use a CGM (continuous glucose monitor) and I was able to own the data from it, thanks to
 Nightscout and Azure! <3
 
-This project is one Azure Function app (`Raccoon.Ninja.Fn.GlucoseMonitor`) with two functions:
+This project is one Azure Function app (`Raccoon.Ninja.NightScout.Fn.GlucoseMonitor`) with two functions:
 
 1. A timer function that gets the data from MongoDB and saves it in Azure CosmosDB.
 2. An HTTP function that serves the data from Azure CosmosDB.
